@@ -12,17 +12,19 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import axios from "axios"
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { useNavigate } from "react-router-dom"
-import { useState } from "react"
 import { TabsContent } from "@/components/ui/tabs"
-import { useAppDispatch } from "@/store/hooks"
-import { authActions } from "@/store/features/auth/authSlice"
+import { useAppSelector } from "@/store/hooks"
+import { useEffect, useState } from "react"
+import { loginAPI } from "@/api/authApi"
+import { RootState } from "@/store/store"
 
 const Login = () => {
-	const [errorMessage, setErrorMessage] = useState<string>("");
-	const dispatch = useAppDispatch();
+	const [errorMsg, setErrorMsg] = useState<string>("");
+
+	const userAuth = useAppSelector((state: RootState) => state.auth)
+
 	const navigate = useNavigate();
 	const formSchema = z.object({
 		username: z.string().min(1, {
@@ -40,30 +42,37 @@ const Login = () => {
 			password: ""
 		}
 	})
+
 	const { formState } = form;
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		try {
-			localStorage.clear();
-			const response = await axios.post("http://localhost:3000/api/v1/user/login", values)
-			console.log(response);
+			const response = await loginAPI(values);
 
-			localStorage.setItem("token", response.data.token);
-			dispatch(authActions.isAuthenticated(true))
-			navigate("/home");
-			setErrorMessage("");
+			if (response.status === 200) {
+				localStorage.setItem("token", response.data.token)
+				navigate("/home");
+				setErrorMsg("")
+			}
+			else {
+				setErrorMsg("Username or password is incorrect")
+			}
 		}
 		catch (error: any) {
-			setErrorMessage(error.response.data.message)
+			console.log(userAuth)
 		}
 	}
+
+	useEffect(() => {
+		localStorage.clear();
+	}, [])
 
 	return (
 		<TabsContent value="Login">
 			<CardHeader className="space-y-1">
 				<CardTitle className="text-2xl">Login your account</CardTitle>
 				<p className="leading-7 [&:not(:first-child)]:mt-6 text-destructive font-medium">
-					{errorMessage}
+					{errorMsg}
 				</p>
 			</CardHeader>
 

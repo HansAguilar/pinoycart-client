@@ -1,40 +1,17 @@
 import {
 	NavigationMenu,
-	NavigationMenuContent,
 	NavigationMenuItem,
-	NavigationMenuLink,
 	NavigationMenuList,
 } from "@/components/ui/navigation-menu"
-import { NavLink } from "react-router-dom"
 import { ModeToggle } from "./ui/mode-toggle"
-import { Search, ShoppingCart } from "lucide-react"
-import { Input } from "./ui/input"
+import { ShoppingCart } from "lucide-react"
 import { Button } from "./ui/button"
-
-const links = [
-	{
-		title: "new",
-		link: "/new"
-	},
-	{
-		title: "women",
-		link: "/women"
-	},
-	{
-		title: "men",
-		link: "/men"
-	},
-	{
-		title: "kids",
-		link: "/kids"
-	},
-	{
-		title: "shoes",
-		link: "/shoes"
-	},
-]
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { useAppSelector } from "@/store/hooks"
 
 const Header = () => {
+	const user = useAppSelector((state) => state.auth.data)
 	return (
 		<header className="bg-secondary">
 			<NavigationMenu className="flex items-center justify-between flex-wrap container">
@@ -42,37 +19,59 @@ const Header = () => {
 					PinoyCart
 				</h2>
 
-				<NavigationMenuList className="flex items-center gap-4 w-full">
-					{/* {
-						links.map(item => (
-							<NavigationMenuItem key={item.title} className="w-full">
-								<NavLink to={item.link} className="uppercase w-full hover:text-primary"
-									style={({isActive}) => {
-										return isActive ? { color: "blue" } : {};
-									}}
-								>{item.title}</NavLink>
-							</NavigationMenuItem>
-						))
-					} */}
+				<NavigationMenuList className="flex items-center w-full">
 
-					{/* <div className="flex items-center w-full">
-						<Input type="text" placeholder="Search Product" className="min-w-[14rem] bg-accent-foreground text-black" />
-						<Button variant="outline" size="icon" className="bg-secondary">
-							<Search className="h-4 w-4" />
+					<NavigationMenuItem>
+						<ModeToggle />
+					</NavigationMenuItem>
+
+					<NavigationMenuItem>
+						<Button variant="outline" size="icon">
+							<ShoppingCart className="h-4 w-4" />
 						</Button>
-					</div> */}
-
-					<NavigationMenuItem>
-						<NavigationMenuLink>
-							<ModeToggle />
-						</NavigationMenuLink>
 					</NavigationMenuItem>
 
 					<NavigationMenuItem>
-						<NavigationMenuLink>
-							<ShoppingCart />
-						</NavigationMenuLink>
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button variant="ghost">
+									<Avatar>
+										<AvatarImage src="https://github.com/shadcn.png" className="" />
+										<AvatarFallback>CN</AvatarFallback>
+									</Avatar>
+								</Button>
+							</DropdownMenuTrigger>
+
+							<DropdownMenuContent className="w-56" align="end" forceMount>
+								<DropdownMenuLabel className="font-normal">
+									<div className="flex flex-col space-y-1">
+										<p className="text-sm font-medium leading-none">shadcn</p>
+										<p className="text-xs leading-none text-muted-foreground">
+											m@example.com
+										</p>
+									</div>
+								</DropdownMenuLabel>
+								<DropdownMenuSeparator />
+								<DropdownMenuGroup>
+									<DropdownMenuItem>
+										Profile
+									</DropdownMenuItem>
+									<DropdownMenuItem>
+										Billing
+									</DropdownMenuItem>
+									<DropdownMenuItem>
+										Settings
+									</DropdownMenuItem>
+									<DropdownMenuItem>New Team</DropdownMenuItem>
+								</DropdownMenuGroup>
+								<DropdownMenuSeparator />
+								<DropdownMenuItem>
+									Log out
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
 					</NavigationMenuItem>
+
 				</NavigationMenuList>
 			</NavigationMenu>
 		</header>
