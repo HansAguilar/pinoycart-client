@@ -1,17 +1,16 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { Button } from "@/components/ui/button";
 import { authActions } from "@/store/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge"
 import { LucideStar } from "lucide-react";
-import { fetchAllProducts } from "@/store/features/products/productSlice";
+import { fetchAllProducts } from "@/store/features/items/itemSlice";
 
 const Feed = () => {
     const dispatch = useAppDispatch();
-    const data = useAppSelector(state => state.products);
+    const data = useAppSelector(state => state.items);
     const auth = useAppSelector(state => state.auth);
 
     const navigate = useNavigate();
@@ -28,35 +27,17 @@ const Feed = () => {
 
     return (
         <>
-            {/* <Card className="max-w-max rounded-none flex flex-col gap-2">
-                <img src="https://cdn.thinglink.me/api/image/655498865562091522/1024/10/scaletowidth/0/0/1/1/false/true?wait=true" className="w-48 h-48" />
-                <Badge variant="secondary" className="max-w-max">Mall</Badge>
-                <h3>Item</h3>
-                <p className="text-lg text-destructive">₱ 150.00</p>
-                <div className="flex items-center gap-2">
-                    <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
-                    <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
-                    <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
-                    <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
-                    <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
-                </div>
-            </Card> */}
-
-            <div className="flex flex-wrap justify-between max-md:justify-around gap-4 border border-red-400 overflow-auto w-full m-auto">
+            <div className="w-full grid lg:grid-cols-5 md:grid-cols-5 sm:grid-cols-4 min-[400px]:grid-cols-2 gap-2">
                 {
-                    data?.products?.length > 0 ?
-                        data?.products.map(item => (
-                            <Card className="flex flex-col" key={item.itemName}>
+                    data?.items?.length > 0 ?
+                        data?.items.map(item => (
+                            <Card className="rounded-none flex flex-col lg:w-full gap-2" key={item.itemName}>
                                 {
-                                    item.itemImages?.map((img: string) => (
-                                        <div key={img}>
-                                            <img
-                                                src={`http://localhost:3000/uploads/${img}`}
-                                                alt="Photo by Drew Beamer"
-                                                className="rounded-md object-cover h-48 w-48"
-                                            />
-                                        </div>
-                                    ))
+                                    <img
+                                        src={`http://localhost:3000/uploads/${item.itemImages[0]}`}
+                                        alt="Photo"
+                                        className="object-cover h-48 w-full"
+                                    />
                                 }
                                 <Badge variant="secondary" className="max-w-max">Mall</Badge>
                                 <h3>{item.itemName}</h3>
@@ -72,17 +53,34 @@ const Feed = () => {
                         ))
                         :
                         Array.from({ length: 13 }).map((_, index) => (
-                            <Card className="max-w-max rounded-none flex flex-col gap-2" key={index}>
-                                <Skeleton className="w-48 h-48" />
-                                <Skeleton className="w-[50px] h-[20px]" />
-                                <Skeleton className="w-[180px] h-[20px]" />
-                                <Skeleton className="w-[120px] h-[20px]" />
+                            <Card className="rounded-none flex flex-col lg:w-full" key={index}>
+                                <div className="flex flex-col gap-2">
+                                    <Skeleton className="w-full h-48" />
+                                    <Skeleton className="w-1/4 h-4" />
+                                    <Skeleton className="w-10/12 h-4" />
+                                    <Skeleton className="w-2/3 h-4" />
+                                </div>
                             </Card>
                         ))
                 }
             </div>
 
-            {/* <Button variant="destructive" onClick={() => handleLogout()}>Logout</Button> */}
+            {/* <section className="text-gray-600 body-font">
+                <div className="container px-5 py-24 mx-auto">
+                    <div className="flex flex-wrap -m-4">
+                        <div className="lg:w-1/4 md:w-1/2 p-4 w-full">
+                            <a className="block relative h-48 rounded overflow-hidden">
+                                <img alt="ecommerce" className="object-cover object-center w-full h-full block" src="https://dummyimage.com/420x260"/>
+                            </a>
+                            <div className="mt-4">
+                                <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">CATEGORY</h3>
+                                <h2 className="text-gray-900 title-font text-lg font-medium">The Catalyzer</h2>
+                                <p className="mt-1">.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> */}
         </ >)
 }
 

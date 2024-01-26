@@ -1,24 +1,24 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import Layout from "./Layout";
 import { verifyToken } from "@/store/features/auth/authSlice";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useEffect } from "react";
+import { RootState } from "@/store/store";
 
 const PrivateRoutes = () => {
-    const auth = useAppSelector(state => state.auth);
+    const auth = useAppSelector((state: RootState) => state.auth);
+    const vendor = useAppSelector((state: RootState) => state.vendor.data);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         dispatch(verifyToken());
     }, [])
 
-    const RenderComponent = () => {
-        return auth.loading ? <p>Loading</p> : auth.isLogged ? <Layout /> : <Navigate to="/" />
+    if (auth.loading) {
+        return <p>Loading</p>;
     }
 
-    return (
-        <RenderComponent />
-    )
+    return auth.isLogged ? <Outlet /> : <Navigate to="/" />;
+
 }
 
 export default PrivateRoutes

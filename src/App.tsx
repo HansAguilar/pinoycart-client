@@ -3,6 +3,9 @@ import { ThemeProvider } from "@/components/ui/theme-provider"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Authentication from './pages/Authentication'
 import PrivateRoutes from './components/PrivateRoutes'
+import Layout from './components/Layout'
+import Feed from './components/Feed'
+import UserProfile from './pages/UserProfile'
 
 function App() {
   return (
@@ -10,7 +13,9 @@ function App() {
       <Router>
         <Routes>
           <Route element={<Authentication />} path='/' />
-          <Route element={<PrivateRoutes />} path='/home' />
+          <Route element={<PrivateRoutes />}>
+            <Route path="/user/*" element={<Layout />} />
+          </Route>
         </Routes>
       </Router>
     </ThemeProvider >

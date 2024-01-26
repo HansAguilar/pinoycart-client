@@ -1,20 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { IProduct } from "./productTypes";
+import { IItemsState } from "./itemTypes";
+import { addItemApi } from "@/api/itemsApi";
 
-interface IProductState {
-	loading: boolean;
-	products: IProduct[]
-}
 
-const initialState: IProductState = {
+const initialState: IItemsState = {
 	loading: true,
-	products: []
+	items: []
 }
 
-const productSlice = createSlice({
+const itemSlice = createSlice({
 	initialState,
-	name: "product",
+	name: "items",
 	reducers: {
 		getAllProducts: (state) => {
 			return state
@@ -27,13 +24,26 @@ const productSlice = createSlice({
 			})
 			.addCase(fetchAllProducts.fulfilled, (state, action) => {
 				state.loading = false;
-				state.products = action.payload.data;
+				state.items = action.payload.data;
 			})
 	},
 })
 
+
+export const addItem = createAsyncThunk(
+	"items/addItem",
+	async (items: any) => {
+		try {
+			const response = await addItemApi(items);
+			return response.data;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+)
+
 export const fetchAllProducts = createAsyncThunk(
-	'product/fetchAll',
+	'items/fetchAll',
 	async () => {
 		try {
 			const token = localStorage.getItem("token");
@@ -49,5 +59,5 @@ export const fetchAllProducts = createAsyncThunk(
 	}
 )
 
-export const authActions = productSlice.actions;
-export default productSlice.reducer;
+export const authActions = itemSlice.actions;
+export default itemSlice.reducer;

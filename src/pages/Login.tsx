@@ -20,20 +20,19 @@ import { useEffect, useState } from "react"
 import { loginAPI } from "@/api/authApi"
 import { RootState } from "@/store/store"
 
+const formSchema = z.object({
+	username: z.string().min(1, {
+		message: "Please enter your username",
+	}),
+	password: z.string().min(1, {
+		message: "Please enter your password"
+	}),
+})
+
 const Login = () => {
 	const [errorMsg, setErrorMsg] = useState<string>("");
-
 	const userAuth = useAppSelector((state: RootState) => state.auth)
-
 	const navigate = useNavigate();
-	const formSchema = z.object({
-		username: z.string().min(1, {
-			message: "Please enter your username",
-		}),
-		password: z.string().min(1, {
-			message: "Please enter your password"
-		}),
-	})
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -51,7 +50,7 @@ const Login = () => {
 
 			if (response.status === 200) {
 				localStorage.setItem("token", response.data.token)
-				navigate("/home");
+				navigate("/user/feed");
 				setErrorMsg("")
 			}
 			else {

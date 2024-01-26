@@ -1,4 +1,4 @@
-export interface IProduct {
+interface IItems {
     vendorID: string,
     itemName: string,
     itemDesc: string,
@@ -15,4 +15,9 @@ export interface IProduct {
             comment: string
         }
     ],
+}
+
+export interface IItemsState {
+	loading: boolean;
+	items: IItems[]
 }

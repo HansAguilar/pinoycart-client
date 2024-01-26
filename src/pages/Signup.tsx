@@ -9,31 +9,29 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import axios from 'axios'
 
+const formSchema = z.object({
+	username: z.string().min(3, {
+		message: "Username should be atleast 3 characters",
+	}),
+	password: z.string().min(1, {
+		message: "Please enter your password"
+	}),
+	cpassword: z.string().min(1, {
+		message: "Please enter your password"
+	}),
+	email: z.string().email({
+		message: "Please enter a valid email"
+	}),
+	phone: z.string().refine((value) => /^09\d{9}$/.test(value), {
+		message: 'Phone number must start with "09" and have 11 numeric characters',
+	})
+}).refine((data) => data.password === data.cpassword, {
+	message: "Passwords don't match",
+	path: ["cpassword"], // path of error
+});
+
 const Signup = () => {
 	const [errorMessage, setErrorMessage] = useState<string>("");
-
-	const formSchema = z.object({
-		username: z.string().min(3, {
-			message: "Username should be atleast 3 characters",
-		}),
-		password: z.string().min(1, {
-			message: "Please enter your password"
-		}),
-		cpassword: z.string().min(1, {
-			message: "Please enter your password"
-		}),
-		email: z.string().email({
-			message: "Please enter a valid email"
-		}),
-		phone: z.string()
-			.refine((value) => /^09\d{9}$/.test(value), {
-				message: 'Phone number must start with "09" and have 11 numeric characters',
-			})
-	})
-		.refine((data) => data.password === data.cpassword, {
-			message: "Passwords don't match",
-			path: ["cpassword"], // path of error
-		});
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),

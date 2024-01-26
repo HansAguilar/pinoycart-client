@@ -4,22 +4,24 @@ import {
 	NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 import { ModeToggle } from "./ui/mode-toggle"
-import { ShoppingCart } from "lucide-react"
+import { ShoppingCart, WineOff } from "lucide-react"
 import { Button } from "./ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { useAppSelector } from "@/store/hooks"
+import { NavLink } from "react-router-dom"
 
 const Header = () => {
 	const user = useAppSelector((state) => state.auth.data)
+
 	return (
 		<header className="bg-secondary">
-			<NavigationMenu className="flex items-center justify-between flex-wrap container">
-				<h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-center p-2">
-					PinoyCart
+			<NavigationMenu className="flex items-center  flex-wrap">
+				<h2 className="text-3xl font-semibold tracking-tight text-center p-2">
+					<NavLink to="feed">PinoyCart</NavLink>
 				</h2>
 
-				<NavigationMenuList className="flex items-center w-full">
+				<NavigationMenuList >
 
 					<NavigationMenuItem>
 						<ModeToggle />
@@ -36,7 +38,7 @@ const Header = () => {
 							<DropdownMenuTrigger asChild>
 								<Button variant="ghost">
 									<Avatar>
-										<AvatarImage src="https://github.com/shadcn.png" className="" />
+										<AvatarImage src="https://github.com/shadcn.png" />
 										<AvatarFallback>CN</AvatarFallback>
 									</Avatar>
 								</Button>
@@ -45,27 +47,30 @@ const Header = () => {
 							<DropdownMenuContent className="w-56" align="end" forceMount>
 								<DropdownMenuLabel className="font-normal">
 									<div className="flex flex-col space-y-1">
-										<p className="text-sm font-medium leading-none">shadcn</p>
+										<p className="text-sm font-medium leading-none">{user?.username}</p>
 										<p className="text-xs leading-none text-muted-foreground">
-											m@example.com
+											{user?.email}
 										</p>
 									</div>
 								</DropdownMenuLabel>
 								<DropdownMenuSeparator />
 								<DropdownMenuGroup>
-									<DropdownMenuItem>
-										Profile
-									</DropdownMenuItem>
-									<DropdownMenuItem>
-										Billing
-									</DropdownMenuItem>
-									<DropdownMenuItem>
-										Settings
-									</DropdownMenuItem>
-									<DropdownMenuItem>New Team</DropdownMenuItem>
+									<NavLink to="profile">
+										<DropdownMenuItem>
+											Profile
+										</DropdownMenuItem>
+									</NavLink>
+									<NavLink to="seller">
+										<DropdownMenuItem>
+											Seller
+										</DropdownMenuItem>
+									</NavLink>
 								</DropdownMenuGroup>
 								<DropdownMenuSeparator />
-								<DropdownMenuItem>
+								<DropdownMenuItem onClick={() => {
+									localStorage.clear()
+									window.location.href = "/"
+								}}>
 									Log out
 								</DropdownMenuItem>
 							</DropdownMenuContent>

@@ -21,7 +21,7 @@ export const verifyAPI = async (credentials: any) => {
 		const response = await axios.post(`${BASE_URL}/user/verify-token`, { token: credentials }, {
 			withCredentials: true
 		});
-		return response.data.message;
+		return response.data.data;
 	}
 
 	catch (error: any) {
