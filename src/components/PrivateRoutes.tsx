@@ -6,7 +6,6 @@ import { RootState } from "@/store/store";
 
 const PrivateRoutes = () => {
     const auth = useAppSelector((state: RootState) => state.auth);
-    const vendor = useAppSelector((state: RootState) => state.vendor.data);
     const dispatch = useAppDispatch();
 
     useEffect(() => {

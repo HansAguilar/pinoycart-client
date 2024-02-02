@@ -8,6 +8,7 @@ import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { UpdateVendor, UpdateVendorBanner, createVendor, fetchVendorInfo } from "@/store/features/vendor/vendorSlice";
+import { toast } from "sonner"
 
 interface IFormInputs {
     vendorName: string;
@@ -36,11 +37,14 @@ const SellerProfile = () => {
             formData.append("vendorName", data.vendorName)
             formData.append("vendorDesc", data.vendorDesc)
             dispatch(UpdateVendor(data))
+            toast.success("Successfully Updated", { duration: 2000 })
         }
     }
 
     const vendor = useAppSelector((state: RootState) => state.vendor.data);
     const user = useAppSelector((state: RootState) => state.auth.data);
+    const apiState = useAppSelector((state: RootState) => state.items);
+
     const [file, setFile] = useState("");
     const [errorImg, setErrorImg] = useState("");
     const [imageSend, setImageSend] = useState<any>();
@@ -120,7 +124,7 @@ const SellerProfile = () => {
                     </div>
 
                     <Button className="max-w-max" type="submit">
-                        {user?.role === "vendor" ? "Update" : "Save"} Vendor Info
+                        {user?.role === "vendor" ? "Update" : "Save"} Changes
                     </Button>
                 </form>
             </div >

@@ -4,7 +4,7 @@ import { UpdateBanner, UpdateVendorInfo, createVendorApi, getVendorByID } from "
 
 const initialState: IVendorState = {
     data: null,
-    loading: true
+    loading: true,
 }
 
 const vendorSlice = createSlice({
@@ -22,6 +22,7 @@ const vendorSlice = createSlice({
             })
             .addCase(createVendor.fulfilled, (state, action) => {
                 console.log(action.payload);
+                state.loading = false
             })
 
             .addCase(fetchVendorInfo.pending, (state) => {
@@ -29,17 +30,18 @@ const vendorSlice = createSlice({
             })
             .addCase(fetchVendorInfo.fulfilled, (state, action) => {
                 state.data = action.payload
+                state.loading = false
             })
 
-            .addCase(UpdateVendorBanner.fulfilled, (state, action) => {
-                console.log(action.payload);
+            .addCase(UpdateVendorBanner.fulfilled, (state) => {
+                state.loading = false
             })
             .addCase(UpdateVendorBanner.pending, (state) => {
                 state.loading = true
             })
 
-            .addCase(UpdateVendor.fulfilled, (state, action) => {
-                console.log(action.payload);
+            .addCase(UpdateVendor.fulfilled, (state) => {
+                state.loading = false
             })
             .addCase(UpdateVendor.pending, (state) => {
                 state.loading = true

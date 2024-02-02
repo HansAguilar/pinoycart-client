@@ -2,9 +2,8 @@ import axios from "axios"
 
 const BASE_URL = "http://localhost:3000/api/v1";
 
-const token = localStorage.getItem("token");
-
 export const createVendorApi = async (credentials: any) => {
+	const token = localStorage.getItem("token");
 	try {
 		const response = await axios.post(`${BASE_URL}/create-vendor`, credentials, {
 			withCredentials: true,
@@ -24,6 +23,8 @@ export const createVendorApi = async (credentials: any) => {
 
 
 export const getVendorByID = async (vendorID: string) => {
+	const token = localStorage.getItem("token");
+	
 	try {
 		const response = await axios.post(`${BASE_URL}/get-vendor`, { vendorID: vendorID }, {
 			withCredentials: true,
@@ -41,6 +42,7 @@ export const getVendorByID = async (vendorID: string) => {
 
 
 export const UpdateBanner = async (image: any) => {
+	const token = localStorage.getItem("token");
 	try {
 		const response = await axios.patch(`${BASE_URL}/update-vendor-banner`, image, {
 			withCredentials: true,
@@ -57,6 +59,7 @@ export const UpdateBanner = async (image: any) => {
 }
 
 export const UpdateVendorInfo = async (credentials: any) => {
+	const token = localStorage.getItem("token");
 	try {
 		const response = await axios.patch(`${BASE_URL}/update-vendor`, credentials, {
 			withCredentials: true,

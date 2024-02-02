@@ -6,6 +6,7 @@ import SellerSideBar from "@/components/SellerSideBar";
 import SellerProfile from "@/components/SellerProfile";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import SellerItems from "@/components/SellerItems";
+import { Toaster } from "@/components/ui/sonner";
 
 const Seller = () => {
     const user = useAppSelector((state: RootState) => state.auth.data);
@@ -31,6 +32,7 @@ const Seller = () => {
                         <Button className="max-w-max" onClick={() => setVendorData(true)}>Start Selling</Button>
                     </>
             }
+            <Toaster />
         </main>
     )
 }
