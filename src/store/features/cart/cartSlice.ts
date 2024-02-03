@@ -3,25 +3,42 @@ import { ICart } from "./cartTypes";
 import { addToCartAPI, getCartAPI } from "@/api/userApi";
 
 const intialState: ICart = {
-    cartItems: []
+    cartItems: [],
+    total: 0
 }
 
 const cartSlice = createSlice({
     initialState: intialState,
     name: "cart",
     reducers: {
-        addToCart: (state, action: PayloadAction<{ itemID: string, itemQuantity: number }>) => {
-            state.cartItems.push({
-                itemID: action.payload.itemID,
-                itemQuantity: action.payload.itemQuantity,
-            })
-        }
+        // addToCart: (state, action: PayloadAction<{ itemID: string, itemQuantity: number }>) => {
+        //     state.cartItems.push({
+        //         itemID: action.payload.itemID,
+        //         itemQuantity: action.payload.itemQuantity,
+        //     })
+        // },
+
+        addPrice: (state, action) => {
+            state.total += action.payload
+        },
+        minusPrice: (state, action) => {
+            state.total -= action.payload
+        },
+
+        //! TODO : remove cart
+        // removeCart
 
     },
     extraReducers(builder) {
         builder
             .addCase(getCart.fulfilled, (state, action) => {
-                state.cartItems.push(action.payload.data)
+                // action.payload.data.map((item: any) => {
+                //     state.cartItems.push(item)
+                // })
+
+                state.cartItems = action.payload.data;
+                state.total = state.cartItems.reduce((acc, item) => acc + item.itemPrice, 0);
+                // localStorage.setItem("cart", JSON.stringify(action.payload.data))
             })
     },
 
