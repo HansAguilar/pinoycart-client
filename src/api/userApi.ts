@@ -37,3 +37,24 @@ export const getCartAPI = async () => {
         return error.response.data;
     }
 }
+
+export const removeCartAPI = async (id: string) => {
+    const token = localStorage.getItem("token");
+    try {
+        const response = await axios.post(`${BASE_URL}/remove-cart`, {
+            cartID: id
+        },
+            {
+                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            }
+        );
+        return response;
+    }
+
+    catch (error: any) {
+        return error.response.data;
+    }
+}

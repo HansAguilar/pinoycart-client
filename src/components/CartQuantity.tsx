@@ -4,18 +4,18 @@ import { Button } from './ui/button';
 import { useAppDispatch } from '@/store/hooks';
 import { cartActions } from '@/store/features/cart/cartSlice';
 
-const CartQuantity = ({ price }: { price: number }) => {
+const CartQuantity = ({ price, itemID }: { price: number, itemID: string }) => {
     const [quantity, setQuantity] = useState<number>(1);
     const dispatch = useAppDispatch();
 
     const handleQuantity = (operation: string) => {
         if (operation === "minus" && quantity > 1) {
             setQuantity(prev => prev - 1)
-            dispatch(cartActions.minusPrice(price))
+            dispatch(cartActions.minusPrice({ itemPrice: price, quantity: quantity, _id: itemID }))
         }
         else if (operation === "plus") {
             setQuantity(prev => prev + 1)
-            dispatch(cartActions.addPrice(price))
+            dispatch(cartActions.addPrice({ itemPrice: price, quantity: quantity, _id: itemID }))
         }
     }
     return (

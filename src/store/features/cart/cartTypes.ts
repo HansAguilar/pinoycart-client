@@ -1,5 +1,5 @@
 interface CartItem {
-    itemID: string;
+    _id: string;
     itemName: string,
     itemDesc: string,
     itemPrice: number,
