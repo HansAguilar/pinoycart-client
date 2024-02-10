@@ -1,4 +1,4 @@
-interface IItems {
+export interface IItems {
     vendorID: {
         userID: string,
         vendorName: string,
@@ -37,7 +37,7 @@ export interface IItemsState {
         itemDesc: string,
         itemPrice: number,
         itemCategory: [string],
-        itemQuantity: number,
+        itemStock: number,
         itemImages: [string],
         itemLikes: number,
         itemRatings: number,

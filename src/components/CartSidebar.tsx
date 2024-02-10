@@ -15,6 +15,8 @@ const CartSidebar = () => {
 
     useEffect(() => {
         dispatch(getCart());
+        console.log(cart);
+        
     }, [])
 
     const handleRemoveItemCart = (id: string) => {
@@ -42,13 +44,11 @@ const CartSidebar = () => {
                                     </div>
                                 </div>
 
-                                <div>
-                                    <div>
-                                        <p>{item.itemQuantity}x {item.itemName}</p>
-                                        <p className="text-primary font-medium">₱ {item.itemPrice}</p>
-                                    </div>
+                                <div className='flex flex-col gap-2'>
+                                    <p>{item.itemName}</p>
                                     <div className='flex items-center gap-8 mt-auto'>
-                                        <CartQuantity price={item.itemPrice} itemID={item._id} />
+                                        <CartQuantity price={item.itemPrice} itemID={item._id} itemQty={item.itemQuantity} />
+                                        <p className="text-primary font-medium text-lg">₱ {item.itemPrice}</p>
                                     </div>
                                 </div>
                             </div>

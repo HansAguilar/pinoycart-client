@@ -24,12 +24,17 @@ const SellerProfile = () => {
     const dispatch = useAppDispatch();
 
     const onSubmit = (data: any) => {
-        if (user?.role === "customer") {
+        if (vendor.msg.includes("exists")) {
+            return toast.error(vendor.msg, { duration: 2000 })
+        }
+
+        else if (user?.role === "customer") {
             const formData = new FormData();
             formData.append("vendorName", data.vendorName)
             formData.append("vendorDesc", data.vendorDesc)
             formData.append("image", imageSend)
             dispatch(createVendor(formData))
+            toast.success("Seller Created Successfully", { duration: 2000 })
         }
 
         else {
@@ -41,9 +46,8 @@ const SellerProfile = () => {
         }
     }
 
-    const vendor = useAppSelector((state: RootState) => state.vendor.data);
+    const vendor = useAppSelector((state: RootState) => state.vendor);
     const user = useAppSelector((state: RootState) => state.auth.data);
-    const apiState = useAppSelector((state: RootState) => state.items);
 
     const [file, setFile] = useState("");
     const [errorImg, setErrorImg] = useState("");
@@ -60,7 +64,8 @@ const SellerProfile = () => {
             return setErrorImg("Only .jpg, .jpeg, .png and .webp formats are supported.")
         }
 
-        else if (user?.role === "vendor") {
+        setFile(URL.createObjectURL(uploadedFile));
+        if (user?.role === "vendor") {
             const formData = new FormData();
             formData.append("image", uploadedFile)
             dispatch(UpdateVendorBanner(formData))
@@ -89,17 +94,17 @@ const SellerProfile = () => {
             <div className="max-w-2xl">
                 {
                     user?.role === "vendor" &&
-                    <div className="flex justify-between border p-2 bg-secondary mb-10">
-                        <p>Seller Name: <span className="text-primary">{vendor?.vendorName}</span></p>
-                        <p>Seller Description: <span className="text-primary">{vendor?.vendorDesc}</span></p>
+                    <div className="flex justify-between my-4">
+                        <p>Seller Name: <span className="text-primary">{vendor.data?.vendorName}</span></p>
+                        <p>Seller Description: <span className="text-primary">{vendor.data?.vendorDesc}</span></p>
                     </div>
                 }
 
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 mt-4">
                     <div className="flex flex-col gap-2 relative">
                         <label htmlFor="image">Seller Banner</label>
                         <Avatar className="h-36 w-full rounded-none">
-                            <AvatarImage src={file ? file : `http://localhost:3000/uploads/${vendor?.vendorBanner}`} className=" w-full rounded-none object-fill aspect-auto" />
+                            <AvatarImage src={file ? file : `http://localhost:3000/uploads/${vendor.data?.vendorBanner}`} className=" w-full rounded-none object-contain aspect-auto" />
                             <AvatarFallback className="rounded-none">CN</AvatarFallback>
                             <Input id="image" type="file" {...register("image")} onChange={handleChange} className="pointer-events-none w-full h-full hidden" />
                         </Avatar>
@@ -109,7 +114,7 @@ const SellerProfile = () => {
                     <div className="flex items-center justify-between">
                         <label htmlFor="vendorName">Seller Name</label>
                         <div className="flex flex-col w-3/4">
-                            <Input id="vendorName" type="text" {...register("vendorName", { required: true, maxLength: 80, minLength: 2 })} defaultValue={vendor?.vendorName} />
+                            <Input id="vendorName" type="text" {...register("vendorName", { required: true, maxLength: 80, minLength: 2 })} defaultValue={vendor.data?.vendorName} />
                             {errors.vendorName && <p className="text-[0.8rem] font-medium text-destructive">Seller name must be at least 2 characters.</p>}
                         </div>
 
@@ -118,7 +123,7 @@ const SellerProfile = () => {
                     <div className="flex items-center justify-between">
                         <label htmlFor="vendorDesc">Seller Description</label>
                         <div className="flex flex-col w-3/4">
-                            <Textarea id="vendorDesc" {...register("vendorDesc", { required: true, maxLength: 80, minLength: 2 })} defaultValue={vendor?.vendorDesc} className="resize-none" />
+                            <Textarea id="vendorDesc" {...register("vendorDesc", { required: true, maxLength: 80, minLength: 2 })} defaultValue={vendor.data?.vendorDesc} className="resize-none" />
                             {errors.vendorDesc && <p className="text-[0.8rem] font-medium text-destructive">Seller description must be at least 2 characters.</p>}
                         </div>
                     </div>

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useAppDispatch } from "@/store/hooks";
 import { addItem } from "@/store/features/items/itemSlice";
 import { Separator } from "./ui/separator";
+import SellerTable from "./SellerTable";
 
 interface IFormInputs {
     itemName: string;
@@ -32,6 +33,7 @@ const SellerItems = () => {
         formData.append("itemPrice", data.itemPrice);
         formData.append("itemQuantity", data.itemQuantity);
         dispatch(addItem(formData))
+        window.location.reload();
     }
 
     return (
@@ -45,7 +47,7 @@ const SellerItems = () => {
 
             <Separator />
 
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 mt-4">
 
                 <div className="flex items-center justify-between">
                     <label htmlFor="itemName">Item Name</label>
@@ -71,7 +73,7 @@ const SellerItems = () => {
                 <div className="flex items-center justify-between">
                     <label htmlFor="images">Item Images</label>
                     <div className="flex flex-col w-3/4">
-                        <Input id="images" type="file" {...register("images")} onChange={(e) => setFiles(e.target.files)} multiple />
+                        <Input id="images" type="file" accept="image/*" {...register("images")} onChange={(e) => setFiles(e.target.files)} multiple />
                     </div>
                 </div>
 
@@ -91,6 +93,9 @@ const SellerItems = () => {
                 <Button className="max-w-max" type="submit"> Add Item</Button>
             </form>
 
+            <Separator />
+
+            <SellerTable />
         </>
 
     )

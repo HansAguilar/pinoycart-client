@@ -4,8 +4,8 @@ import { Button } from './ui/button';
 import { useAppDispatch } from '@/store/hooks';
 import { cartActions } from '@/store/features/cart/cartSlice';
 
-const CartQuantity = ({ price, itemID }: { price: number, itemID: string }) => {
-    const [quantity, setQuantity] = useState<number>(1);
+const CartQuantity = ({ price, itemID, itemQty }: { price: number, itemID: string, itemQty: number }) => {
+    const [quantity, setQuantity] = useState<number>(itemQty);
     const dispatch = useAppDispatch();
 
     const handleQuantity = (operation: string) => {

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { IItemsState } from "./itemTypes";
-import { addItemApi, getItemByIDAPI } from "@/api/itemsApi";
+import { addItemApi, deleteItemByIDAPI, getItemByIDAPI, updateItemByIDAPI } from "@/api/itemsApi";
 
 
 const initialState: IItemsState = {
@@ -17,9 +17,6 @@ const itemSlice = createSlice({
 		getAllProducts: (state) => {
 			return state
 		},
-		getProductByID: (state, action) => {
-
-		}
 	},
 	extraReducers(builder) {
 		builder
@@ -30,18 +27,33 @@ const itemSlice = createSlice({
 				state.loading = false;
 				state.items = action.payload.data;
 			})
-
 			.addCase(getItemByID.fulfilled, (state, action) => {
 				state.currentItem = action.payload;
 				state.loading = false;
 			})
-
+			.addCase(updateItem.fulfilled, (state) => {
+				state.loading = false;
+			})
 			.addCase(getItemByID.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(updateItem.pending, (state) => {
 				state.loading = true;
 			})
 	},
 })
 
+export const updateItem = createAsyncThunk(
+	"items/updateItem",
+	async (formdata) => {
+		try {
+			const response = await updateItemByIDAPI(formdata);
+			return response.data;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+)
 
 export const addItem = createAsyncThunk(
 	"items/addItem",
@@ -66,6 +78,19 @@ export const getItemByID = createAsyncThunk(
 		}
 	}
 )
+
+export const removeItemByID = createAsyncThunk(
+	"items/deleteItem",
+	async (itemID: any) => {
+		try {
+			const response = await deleteItemByIDAPI(itemID);
+			return response.data;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+)
+
 
 export const fetchAllProducts = createAsyncThunk(
 	'items/fetchAll',

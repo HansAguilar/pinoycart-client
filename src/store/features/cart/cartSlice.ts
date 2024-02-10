@@ -15,7 +15,7 @@ const cartSlice = createSlice({
             const cartIndex = state.cartItems.findIndex((cartItem) => cartItem._id === action.payload.item._id);
 
             if (cartIndex !== -1) {
-                state.cartItems[cartIndex].itemQuantity += action.payload.quantity;
+                state.cartItems[cartIndex].itemStock += action.payload.quantity;
             } else {
                 state.cartItems.push(action.payload.item);
             }
@@ -25,20 +25,20 @@ const cartSlice = createSlice({
 
         addPrice: (state, action: PayloadAction<{ itemPrice: number, quantity: number, _id: string }>) => {
             const cartIndex = state.cartItems.findIndex((cartItem) => cartItem._id === action.payload._id);
-            state.cartItems[cartIndex].itemQuantity += 1;
+            state.cartItems[cartIndex].itemStock += 1;
 
             state.total += action.payload.itemPrice
         },
         minusPrice: (state, action: PayloadAction<{ itemPrice: number, quantity: number, _id: string }>) => {
             const cartIndex = state.cartItems.findIndex((cartItem) => cartItem._id === action.payload._id);
-            state.cartItems[cartIndex].itemQuantity -= 1;
+            state.cartItems[cartIndex].itemStock -= 1;
 
             state.total -= action.payload.itemPrice 
         },
         removeCart: (state, action) => {
             let priceItem = 0;
             const newCart = state.cartItems.filter(item => {
-                priceItem = item.itemPrice * item.itemQuantity;
+                priceItem = item.itemPrice * item.itemStock;
                 return item._id !== action.payload;
             })
             state.cartItems = newCart;
@@ -54,10 +54,8 @@ const cartSlice = createSlice({
                 // })
                 if (action.payload) {
                     state.cartItems = action.payload.data;
-                    state.total = state.cartItems.reduce((acc, item) => acc + (item.itemPrice * item.itemQuantity), 0);
+                    state.total = state.cartItems.reduce((acc, item) => acc + (item.itemPrice * item.itemStock), 0);
                 }
-
-                // localStorage.setItem("cart", JSON.stringify(action.payload.data))
             })
     },
 

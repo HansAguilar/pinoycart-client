@@ -5,6 +5,8 @@ import { UpdateBanner, UpdateVendorInfo, createVendorApi, getVendorByID } from "
 const initialState: IVendorState = {
     data: null,
     loading: true,
+    items: [],
+    msg: ""
 }
 
 const vendorSlice = createSlice({
@@ -17,20 +19,22 @@ const vendorSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(createVendor.pending, (state) => {
+            .addCase(createVendor.pending, (state, action) => {
                 state.loading = true
             })
             .addCase(createVendor.fulfilled, (state, action) => {
-                console.log(action.payload);
                 state.loading = false
+                state.msg = action.payload.message
+                state.items = []
             })
 
             .addCase(fetchVendorInfo.pending, (state) => {
                 state.loading = true
             })
             .addCase(fetchVendorInfo.fulfilled, (state, action) => {
-                state.data = action.payload
+                state.data = action.payload.data
                 state.loading = false
+                state.items = action.payload.vendorItems
             })
 
             .addCase(UpdateVendorBanner.fulfilled, (state) => {
@@ -78,7 +82,7 @@ export const fetchVendorInfo = createAsyncThunk(
     async (vendorID: string) => {
         try {
             const response = await getVendorByID(vendorID);
-            return response.data;
+            return response;
         } catch (error) {
             console.log(error);
         }

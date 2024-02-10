@@ -2,8 +2,6 @@ import axios from "axios"
 
 const BASE_URL = "http://localhost:3000/api/v1";
 
-
-
 export const addItemApi = async (items: any) => {
 	const token = localStorage.getItem("token");
 	try {
@@ -24,6 +22,28 @@ export const addItemApi = async (items: any) => {
 };
 
 
+export const updateItemByIDAPI = async (formdata: any) => {
+	const token = localStorage.getItem("token");
+	try {
+		const response = await axios.patch(`${BASE_URL}/update-item`,
+			formdata,
+			{
+				withCredentials: true,
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': 'multipart/form-data',
+				}
+			});
+		return response;
+	}
+
+	catch (error: any) {
+		console.log(error);
+		return error.response.data;
+	}
+};
+
+
 export const getItemByIDAPI = async (itemID: any) => {
 	const token = localStorage.getItem("token");
 	try {
@@ -33,6 +53,27 @@ export const getItemByIDAPI = async (itemID: any) => {
 				Authorization: `Bearer ${token}`,
 			}
 		});
+		return response;
+	}
+
+	catch (error: any) {
+		console.log(error);
+		return error.response.data;
+	}
+};
+
+
+export const deleteItemByIDAPI = async (itemID: any) => {
+	const token = localStorage.getItem("token");
+	try {
+		const response = await axios.post(`${BASE_URL}/delete-item`,
+			{ itemID: itemID },
+			{
+				withCredentials: true,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				}
+			});
 		return response;
 	}
 
