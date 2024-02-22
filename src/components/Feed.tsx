@@ -21,7 +21,7 @@ const Feed = () => {
                 {
                     data?.items?.length > 0 ?
                         data?.items.map(item => (
-                            <NavLink to={`${item._id}`} key={item._id}>
+                            <NavLink to={`item/${item._id}`} key={item._id}>
                                 <Card className="rounded-none flex flex-col lg:w-full gap-2" key={item.itemName}>
                                     {
                                         <img
@@ -36,7 +36,7 @@ const Feed = () => {
                                         <p className="text-xs">{item.vendorID.vendorName}</p>
                                     </div>
                                     <p className="text-lg text-destructive">₱ {item.itemPrice}</p>
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2 pb-2">
                                         <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
                                         <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
                                         <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />

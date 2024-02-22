@@ -10,12 +10,40 @@ import { fetchVendorInfo } from '@/store/features/vendor/vendorSlice';
 import { addToCart, cartActions } from '@/store/features/cart/cartSlice';
 import { Card } from './ui/card';
 
+
+
 const ItemPage = () => {
     const { id } = useParams();
     const item = useAppSelector((state: RootState) => state.items);
+    const user = useAppSelector((state: RootState) => state.auth);
     const vendorInfo = useAppSelector((state: RootState) => state.vendor.data);
     const dispatch = useAppDispatch();
     const [quantity, setQuantity] = useState<number>(1);
+
+    //! DITO NAGTAPOS SA CART GUESS
+    const checkGuessCart = (item: any) => {
+        const getCartFromLocalStorage = localStorage.getItem('cart');
+        const tempCart: any[] = getCartFromLocalStorage ? JSON.parse(getCartFromLocalStorage) : [];
+
+        if (tempCart.length < 1) {
+            // If the cart is empty, add the item directly
+            tempCart.push(item);
+        } else {
+            // If the cart is not empty, find and update the existing item
+            const foundItemIndex = tempCart.findIndex((itemCart) => itemCart._id == id);
+
+            if (foundItemIndex !== -1) {
+                // If the item is found, update the quantity
+                tempCart[foundItemIndex].itemStock +=  Number(quantity);
+            } else {
+                // If the item is not found, add it to the cart
+                tempCart.push(item);
+            }
+        }
+
+        localStorage.setItem('cart', JSON.stringify(tempCart));
+    };
+
 
     useEffect(() => {
         dispatch(getItemByID(id));
@@ -23,9 +51,10 @@ const ItemPage = () => {
         const getVendor = async () => {
             dispatch(fetchVendorInfo(item.currentItem?.vendorID!));
         }
-        getVendor();
-        console.log(item.currentItem);
-        // localStorage.setItem("vendorID", item.currentItem?.vendorID!)
+
+        if (user.isLogged) {
+            getVendor();
+        }
     }, [item.currentItem?.vendorID]);
 
     const handleQuantity = (operation: string) => {
@@ -40,13 +69,15 @@ const ItemPage = () => {
     const handleAddToCart = (itemID: string) => {
         dispatch(addToCart([{
             itemID: itemID,
-            itemQuantity: quantity
+            itemStock: quantity
         }]))
         console.log([{
             itemID: itemID,
-            itemQuantity: quantity
+            itemStock: quantity
         }]);
-        const newItem = { ...item.currentItem, itemQuantity: quantity }
+
+        const newItem = { ...item.currentItem, itemStock: quantity };
+        checkGuessCart(newItem)
 
         dispatch(cartActions.addToCart({ item: newItem, quantity: quantity }));
     }
@@ -64,7 +95,7 @@ const ItemPage = () => {
                         {
                             item.currentItem?.itemImages.map((img, index) => {
                                 return (
-                                    index !== 0 && <img src={`http://localhost:3000/uploads/${img}`} className='h-full' />
+                                    index !== 0 && <img src={`http://localhost:3000/uploads/${img}`} key={img} className='h-full' />
                                 )
                             })
                         }

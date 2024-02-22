@@ -62,10 +62,6 @@ const Login = () => {
 		}
 	}
 
-	useEffect(() => {
-		localStorage.clear();
-	}, [])
-
 	return (
 		<TabsContent value="Login">
 			<CardHeader className="space-y-1">

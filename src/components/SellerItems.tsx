@@ -13,7 +13,7 @@ interface IFormInputs {
     itemCategory: string;
     images: [FileList];
     itemPrice: number;
-    itemQuantity: number;
+    itemStock: number;
 }
 
 const SellerItems = () => {
@@ -31,7 +31,7 @@ const SellerItems = () => {
         formData.append("itemDesc", data.itemDesc);
         formData.append("itemCategory", data.itemCategory);
         formData.append("itemPrice", data.itemPrice);
-        formData.append("itemQuantity", data.itemQuantity);
+        formData.append("itemStock", data.itemStock);
         dispatch(addItem(formData))
         window.location.reload();
     }
@@ -85,9 +85,9 @@ const SellerItems = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <label htmlFor="itemQuantity">Item Quantity</label>
+                    <label htmlFor="itemStock">Item Quantity</label>
                     <div className="flex flex-col w-3/4">
-                        <Input id="itemQuantity" type="text" {...register("itemQuantity")} />
+                        <Input id="itemStock" type="text" {...register("itemStock")} />
                     </div>
                 </div>
                 <Button className="max-w-max" type="submit"> Add Item</Button>

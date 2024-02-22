@@ -4,7 +4,8 @@ import { addToCartAPI, getCartAPI, removeCartAPI } from "@/api/userApi";
 
 const intialState: ICart = {
     cartItems: [],
-    total: 0
+    total: 0,
+    loading: false
 }
 
 const cartSlice = createSlice({
@@ -55,7 +56,11 @@ const cartSlice = createSlice({
                 if (action.payload) {
                     state.cartItems = action.payload.data;
                     state.total = state.cartItems.reduce((acc, item) => acc + (item.itemPrice * item.itemStock), 0);
+                    state.loading = false
                 }
+            })
+            .addCase(getCart.pending, (state, action) => {
+                state.loading = true;
             })
     },
 
@@ -80,6 +85,8 @@ export const addToCart = createAsyncThunk("cart/addToCart", async (items: any) =
 export const getCart = createAsyncThunk("cart/getCart", async () => {
     try {
         const response = await getCartAPI();
+        console.log(response.data);
+        
         return response.data;
     } catch (error) {
         console.log(error);

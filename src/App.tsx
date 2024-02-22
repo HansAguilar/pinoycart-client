@@ -12,10 +12,10 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Router>
         <Routes>
-          <Route element={<Authentication />} path='/' />
-          <Route element={<PrivateRoutes />}>
-            <Route path="/user/*" element={<Layout />} />
-          </Route>
+          <Route path="/*" element={<Layout />} />
+          <Route element={<Authentication />} path='/challenge' />
+          {/* <Route element={<PrivateRoutes />}> */}
+          {/* </Route> */}
         </Routes>
       </Router>
     </ThemeProvider >

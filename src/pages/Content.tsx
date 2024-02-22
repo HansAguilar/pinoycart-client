@@ -1,7 +1,7 @@
 import FilterProduct from "@/components/FilterProduct";
 import Feed from "@/components/Feed";
 
-const Dashboard = () => {
+const Content = () => {
 	return (
 		<main className="flex container py-8 m-auto gap-2 max-lg:flex-col w-full">
 			<FilterProduct />
@@ -10,4 +10,4 @@ const Dashboard = () => {
 	)
 }
 
-export default Dashboard
+export default Content

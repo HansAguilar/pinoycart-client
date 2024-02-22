@@ -45,7 +45,7 @@ const itemSlice = createSlice({
 
 export const updateItem = createAsyncThunk(
 	"items/updateItem",
-	async (formdata) => {
+	async (formdata: any) => {
 		try {
 			const response = await updateItemByIDAPI(formdata);
 			return response.data;

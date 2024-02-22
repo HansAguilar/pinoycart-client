@@ -13,5 +13,6 @@ interface CartItem {
 
 export interface ICart {
     cartItems: CartItem[];
-    total: number
+    total: number;
+    loading: boolean
 }

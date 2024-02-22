@@ -2,8 +2,12 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
+import { useAppSelector } from "@/store/hooks"
+import { RootState } from "@/store/store"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useEffect } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 import * as z from "zod"
 
 const profileFormSchema = z.object({
@@ -42,6 +46,7 @@ const defaultValues: Partial<ProfileFormValues> = {
 }
 
 export default function UserProfile() {
+    const user = useAppSelector((state: RootState) => state.auth);
     const form = useForm<ProfileFormValues>({
         resolver: zodResolver(profileFormSchema),
         defaultValues,
@@ -54,8 +59,16 @@ export default function UserProfile() {
     })
 
     function onSubmit(data: ProfileFormValues) {
-      
+
     }
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user.isLogged) {
+            navigate("/challenge")
+        }
+    }, [])
 
     return (
         <Form {...form}>
@@ -77,7 +90,7 @@ export default function UserProfile() {
                         </FormItem>
                     )}
                 />
-               
+
                 <div>
                     {fields.map((field, index) => (
                         <FormField

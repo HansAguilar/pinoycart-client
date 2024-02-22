@@ -6,17 +6,42 @@ import { Button } from './ui/button'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { RootState } from '@/store/store'
 import { cartActions, getCart, removeCart } from '@/store/features/cart/cartSlice'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 const CartSidebar = () => {
     const cart = useAppSelector((state: RootState) => state.cart)
+    const user = useAppSelector((state: RootState) => state.auth)
     const dispatch = useAppDispatch();
 
+    const [displayItems, setDisplayItems] = useState<any[]>([]);
+    const [total, setTotal] = useState<number>(0);
+
+    const navigate = useNavigate();
+
     useEffect(() => {
-        dispatch(getCart());
-        console.log(cart);
-        
+        if (user.isLogged) {
+            dispatch(getCart());
+            setDisplayItems(prev => ([...prev, cart]))
+        }
+        else {
+            const getCartFromLocalStorage = localStorage.getItem('cart');
+            const tempCart: any[] = getCartFromLocalStorage ? JSON.parse(getCartFromLocalStorage) : [];
+
+            let tempTotal = 0;
+
+            const updateDisplayItems = tempCart.map((item: any) => {
+                console.log(Number(item.itemPrice) * Number(item.itemStock));
+                
+                let res = Number(item.itemPrice) * Number(item.itemStock);
+                tempTotal += res;
+                return item;
+            })
+
+            setTotal(tempTotal)
+            setDisplayItems(updateDisplayItems);
+        }
     }, [])
 
     const handleRemoveItemCart = (id: string) => {
@@ -24,17 +49,17 @@ const CartSidebar = () => {
         dispatch(removeCart(id));
     };
     return (
-        <SheetContent>
+        <SheetContent className='overflow-y-auto'>
             <Separator className="mb-4" />
             <SheetHeader>
                 <div className="flex items-center justify-center gap-2">
                     <SheetTitle>My Cart</SheetTitle>
-                    <span className="text-sm"> ({cart.cartItems.length})</span>
+                    <span className="text-sm"> ({displayItems.length})</span>
                 </div>
             </SheetHeader>
             <div className="flex flex-col gap-4 my-4">
                 {
-                    cart.cartItems.map((item: any) => (
+                    displayItems.map((item: any) => (
                         <div key={item._id}>
                             <div className="rounded-sm flex items-center gap-4">
                                 <div className="relative">
@@ -47,7 +72,7 @@ const CartSidebar = () => {
                                 <div className='flex flex-col gap-2'>
                                     <p>{item.itemName}</p>
                                     <div className='flex items-center gap-8 mt-auto'>
-                                        <CartQuantity price={item.itemPrice} itemID={item._id} itemQty={item.itemQuantity} />
+                                        <CartQuantity price={item.itemPrice} itemID={item._id} itemQty={item.itemStock} />
                                         <p className="text-primary font-medium text-lg">₱ {item.itemPrice}</p>
                                     </div>
                                 </div>
@@ -61,14 +86,14 @@ const CartSidebar = () => {
 
             <div className="flex items-center justify-between">
                 <h3 className="text-primary font-medium">TOTAL</h3>
-                <p>₱ {cart.total}</p>
+                <p>₱ {cart.total ? cart.total : total}</p>
             </div>
 
             <Separator className="mt-4 mb-4" />
 
             <SheetFooter>
                 <SheetClose asChild>
-                    <Button type="submit">Save changes</Button>
+                    <Button type="submit" onClick={() => navigate("/challenge")}>Checkout</Button>
                 </SheetClose>
             </SheetFooter>
         </SheetContent>

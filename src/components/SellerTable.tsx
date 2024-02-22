@@ -26,6 +26,7 @@ import {
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner"
 
 interface IFormInputs {
     itemName: string;
@@ -72,6 +73,10 @@ const EditModal = ({ selectedItem, setAction, dispatch }: { selectedItem: any, s
         formData.append("itemStock", data.itemStock);
 
         dispatch(updateItem(formData))
+        toast.success("Item Updated Successfully", { duration: 2000 })
+        window.setTimeout(() => {
+            window.location.reload();
+        }, 2000)
     }
 
     return (
@@ -118,7 +123,7 @@ const EditModal = ({ selectedItem, setAction, dispatch }: { selectedItem: any, s
                 <div className="flex items-center justify-between">
                     <label htmlFor="itemQuantity">Item Quantity</label>
                     <div className="flex flex-col w-3/4">
-                        <Input id="itemQuantity" type="text" {...register("itemStock")} defaultValue={selectedItem.itemStock}/>
+                        <Input id="itemQuantity" type="text" {...register("itemStock")} defaultValue={selectedItem.itemStock} />
                     </div>
                 </div>
                 <AlertDialogFooter>
