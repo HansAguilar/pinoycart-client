@@ -6,7 +6,6 @@ export const addItemApi = async (items: any) => {
 	const token = localStorage.getItem("token");
 	try {
 		const response = await axios.post(`${BASE_URL}/add-item`, items, {
-			withCredentials: true,
 			headers: {
 				Authorization: `Bearer ${token}`,
 				'Content-Type': 'multipart/form-data',
@@ -28,7 +27,6 @@ export const updateItemByIDAPI = async (formdata: any) => {
 		const response = await axios.patch(`${BASE_URL}/update-item`,
 			formdata,
 			{
-				withCredentials: true,
 				headers: {
 					Authorization: `Bearer ${token}`,
 					'Content-Type': 'multipart/form-data',
@@ -47,12 +45,12 @@ export const updateItemByIDAPI = async (formdata: any) => {
 export const getItemByIDAPI = async (itemID: any) => {
 	const token = localStorage.getItem("token");
 	try {
-		const response = await axios.get(`${BASE_URL}/get-item/${itemID}`, {
-			withCredentials: true,
-			headers: {
-				Authorization: `Bearer ${token}`,
-			}
-		});
+		const response = await axios.get(`${BASE_URL}/get-item/${itemID}`,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				}
+			});
 		return response;
 	}
 
@@ -69,7 +67,6 @@ export const deleteItemByIDAPI = async (itemID: any) => {
 		const response = await axios.post(`${BASE_URL}/delete-item`,
 			{ itemID: itemID },
 			{
-				withCredentials: true,
 				headers: {
 					Authorization: `Bearer ${token}`,
 				}

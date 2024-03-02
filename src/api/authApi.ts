@@ -4,9 +4,7 @@ const BASE_URL = "http://localhost:3000/api/v1";
 
 export const loginAPI = async (credentials: any) => {
 	try {
-		const response = await axios.post(`${BASE_URL}/user/login`, credentials, {
-			withCredentials: true
-		});
+		const response = await axios.post(`${BASE_URL}/user/login`, credentials);
 		return response;
 	}
 
@@ -18,9 +16,7 @@ export const loginAPI = async (credentials: any) => {
 
 export const verifyAPI = async (token: any) => {
 	try {
-		const response = await axios.post(`${BASE_URL}/user/verify-token`, { token: token }, {
-			withCredentials: true
-		});
+		const response = await axios.post(`${BASE_URL}/user/verify-token`, { token: token });
 		return response.data.data;
 	}
 

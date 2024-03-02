@@ -6,7 +6,6 @@ export const createVendorApi = async (credentials: any) => {
 	const token = localStorage.getItem("token");
 	try {
 		const response = await axios.post(`${BASE_URL}/create-vendor`, credentials, {
-			withCredentials: true,
 			headers: {
 				Authorization: `Bearer ${token}`,
 				'Content-Type': 'multipart/form-data',
@@ -27,7 +26,6 @@ export const getVendorByID = async (vendorID: string) => {
 	
 	try {
 		const response = await axios.post(`${BASE_URL}/get-vendor`, { vendorID: vendorID }, {
-			withCredentials: true,
 			headers: {
 				Authorization: `Bearer ${token}`,
 			}
@@ -45,7 +43,6 @@ export const UpdateBanner = async (image: any) => {
 	const token = localStorage.getItem("token");
 	try {
 		const response = await axios.patch(`${BASE_URL}/update-vendor-banner`, image, {
-			withCredentials: true,
 			headers: {
 				Authorization: `Bearer ${token}`,
 			}
@@ -62,7 +59,6 @@ export const UpdateVendorInfo = async (credentials: any) => {
 	const token = localStorage.getItem("token");
 	try {
 		const response = await axios.patch(`${BASE_URL}/update-vendor`, credentials, {
-			withCredentials: true,
 			headers: {
 				Authorization: `Bearer ${token}`,
 			}

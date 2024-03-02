@@ -8,7 +8,6 @@ export const addToCartAPI = async (items: any) => {
         const response = await axios.post(`${BASE_URL}/add-cart`, {
             items: items
         }, {
-            withCredentials: true,
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -25,7 +24,6 @@ export const getCartAPI = async () => {
     const token = localStorage.getItem("token");
     try {
         const response = await axios.get(`${BASE_URL}/get-cart`, {
-            withCredentials: true,
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -45,7 +43,6 @@ export const removeCartAPI = async (id: string) => {
             cartID: id
         },
             {
-                withCredentials: true,
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }

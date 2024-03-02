@@ -24,7 +24,7 @@ const Header = () => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	const [cartLength, setCartLength] = useState<any>();
+	const [cartLength, setCartLength] = useState<number>(0);
 
 	useEffect(() => {
 		if (user.isLogged) {
@@ -33,8 +33,8 @@ const Header = () => {
 		else {
 			const getCartFromLocalStorage = localStorage.getItem('cart');
 			if (getCartFromLocalStorage) {
-				const le = JSON.parse(getCartFromLocalStorage);
-				setCartLength(le.length)
+				const localCartLength = JSON.parse(getCartFromLocalStorage);
+				setCartLength(localCartLength.length)
 			}
 		}
 	}, [])

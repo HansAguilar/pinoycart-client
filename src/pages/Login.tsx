@@ -15,10 +15,11 @@ import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { useNavigate } from "react-router-dom"
 import { TabsContent } from "@/components/ui/tabs"
-import { useAppSelector } from "@/store/hooks"
-import { useEffect, useState } from "react"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import { useState } from "react"
 import { loginAPI } from "@/api/authApi"
 import { RootState } from "@/store/store"
+import { authActions, verifyToken } from "@/store/features/auth/authSlice"
 
 const formSchema = z.object({
 	username: z.string().min(1, {
@@ -32,6 +33,7 @@ const formSchema = z.object({
 const Login = () => {
 	const [errorMsg, setErrorMsg] = useState<string>("");
 	const userAuth = useAppSelector((state: RootState) => state.auth)
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -47,11 +49,16 @@ const Login = () => {
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		try {
 			const response = await loginAPI(values);
+			console.log(response);
+			
 
 			if (response.status === 200) {
 				localStorage.setItem("token", response.data.token)
-				navigate("/user/items");
+				dispatch(authActions.isAuthenticated(true))
+				navigate("/");
 				setErrorMsg("")
+
+				dispatch(verifyToken());
 			}
 			else {
 				setErrorMsg("Username or password is incorrect")

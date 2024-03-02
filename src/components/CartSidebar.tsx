@@ -8,7 +8,7 @@ import { RootState } from '@/store/store'
 import { cartActions, getCart, removeCart } from '@/store/features/cart/cartSlice'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import empty from "../assets/emptycart.png";
 
 const CartSidebar = () => {
     const cart = useAppSelector((state: RootState) => state.cart)
@@ -33,7 +33,7 @@ const CartSidebar = () => {
 
             const updateDisplayItems = tempCart.map((item: any) => {
                 console.log(Number(item.itemPrice) * Number(item.itemStock));
-                
+
                 let res = Number(item.itemPrice) * Number(item.itemStock);
                 tempTotal += res;
                 return item;
@@ -42,6 +42,9 @@ const CartSidebar = () => {
             setTotal(tempTotal)
             setDisplayItems(updateDisplayItems);
         }
+
+        console.log(displayItems);
+
     }, [])
 
     const handleRemoveItemCart = (id: string) => {
@@ -59,28 +62,36 @@ const CartSidebar = () => {
             </SheetHeader>
             <div className="flex flex-col gap-4 my-4">
                 {
-                    displayItems.map((item: any) => (
-                        <div key={item._id}>
-                            <div className="rounded-sm flex items-center gap-4">
-                                <div className="relative">
-                                    <img src={`http://localhost:3000/uploads/${item.itemImages[0]}`} className='min-w-[90px] max-w-[30px]' />
-                                    <div onClick={() => handleRemoveItemCart(item._id)} className="bg-secondary absolute -top-2 -left-2 rounded-full p-1 hover:bg-destructive transition-all duration-100 ease-linear cursor-pointer">
-                                        <Cross2Icon className="h-4 w-4" />
+                    displayItems.length > 0 ?
+                        displayItems.map((item: any) => (
+                            <div key={item._id}>
+                                <div className="rounded-sm flex items-center gap-4">
+                                    <div className="relative">
+                                        <img src={item.itemImages ? `http://localhost:3000/uploads/${item.itemImages[0]}` : ""} className='min-w-[90px] max-w-[30px]' />
+                                        <div onClick={() => handleRemoveItemCart(item._id)} className="bg-secondary absolute -top-2 -left-2 rounded-full p-1 hover:bg-destructive transition-all duration-100 ease-linear cursor-pointer">
+                                            <Cross2Icon className="h-4 w-4" />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className='flex flex-col gap-2'>
-                                    <p>{item.itemName}</p>
-                                    <div className='flex items-center gap-8 mt-auto'>
-                                        <CartQuantity price={item.itemPrice} itemID={item._id} itemQty={item.itemStock} />
-                                        <p className="text-primary font-medium text-lg">₱ {item.itemPrice}</p>
+                                    <div className='flex flex-col gap-2'>
+                                        <p>{item.itemName}</p>
+                                        <div className='flex items-center gap-8 mt-auto'>
+                                            <CartQuantity price={item.itemPrice} itemID={item._id} itemQty={item.itemStock} />
+                                            <p className="text-primary font-medium text-lg">₱ {item.itemPrice}</p>
+                                        </div>
                                     </div>
                                 </div>
+                                <Separator className="mt-4" />
                             </div>
-                            <Separator className="mt-4" />
+
+                        ))
+                        :
+                        <div className='flex flex-col items-center'>
+                            <img src={empty} className="w-full" />
+                            <h4 className='text-white font-medium'>Your cart is empty</h4>
+                            <p className='text-slate-500 text-sm'>Cart's a bit lonely. Time to fill it with goodies!</p>
                         </div>
 
-                    ))
                 }
             </div>
 
@@ -93,7 +104,7 @@ const CartSidebar = () => {
 
             <SheetFooter>
                 <SheetClose asChild>
-                    <Button type="submit" onClick={() => navigate("/challenge")}>Checkout</Button>
+                    <Button type="submit" disabled={displayItems.length <= 0} onClick={() => navigate("/challenge")}>Checkout</Button>
                 </SheetClose>
             </SheetFooter>
         </SheetContent>

@@ -15,6 +15,8 @@ const Seller = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log(user);
+        
         if (!user.isLogged) {
             navigate('/challenge');
         }

@@ -45,7 +45,6 @@ const cartSlice = createSlice({
             state.cartItems = newCart;
             state.total -= priceItem;
         }
-
     },
     extraReducers(builder) {
         builder
@@ -53,7 +52,7 @@ const cartSlice = createSlice({
                 // action.payload.data.map((item: any) => {
                 //     state.cartItems.push(item)
                 // })
-                if (action.payload) {
+                if (action.payload.data.length > 0) {
                     state.cartItems = action.payload.data;
                     state.total = state.cartItems.reduce((acc, item) => acc + (item.itemPrice * item.itemStock), 0);
                     state.loading = false
@@ -73,8 +72,6 @@ export default cartSlice.reducer;
 
 export const addToCart = createAsyncThunk("cart/addToCart", async (items: any) => {
     try {
-        console.log(items);
-        
         const response = await addToCartAPI(items);
         return response.data;
     } catch (error) {
@@ -85,8 +82,6 @@ export const addToCart = createAsyncThunk("cart/addToCart", async (items: any) =
 export const getCart = createAsyncThunk("cart/getCart", async () => {
     try {
         const response = await getCartAPI();
-        console.log(response.data);
-        
         return response.data;
     } catch (error) {
         console.log(error);
