@@ -68,6 +68,7 @@ const Header = () => {
 						</NavigationMenuItem>
 
 						{
+							user.isLogged &&
 							<NavigationMenuItem>
 								<DropdownMenu>
 									<DropdownMenuTrigger asChild>
@@ -106,6 +107,7 @@ const Header = () => {
 											Log out
 										</DropdownMenuItem>
 									</DropdownMenuContent>
+
 								</DropdownMenu>
 							</NavigationMenuItem>
 						}
