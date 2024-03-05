@@ -9,7 +9,7 @@ import { Button } from "./ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { authActions } from "@/store/features/auth/authSlice"
 import { RootState } from "@/store/store"
 import { useEffect, useState } from "react"
@@ -67,6 +67,11 @@ const Header = () => {
 							</Button>
 						</NavigationMenuItem>
 
+						<NavigationMenuItem>
+							<Link to="/challenge" className="ml-6">
+								<Button variant="default">Login</Button>
+							</Link>
+						</NavigationMenuItem>
 						{
 							user.isLogged &&
 							<NavigationMenuItem>
