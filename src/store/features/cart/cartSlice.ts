@@ -33,7 +33,6 @@ const cartSlice = createSlice({
         minusPrice: (state, action: PayloadAction<{ itemPrice: number, quantity: number, _id: string }>) => {
             const cartIndex = state.cartItems.findIndex((cartItem) => cartItem._id === action.payload._id);
             state.cartItems[cartIndex].itemStock -= 1;
-
             state.total -= action.payload.itemPrice 
         },
         removeCart: (state, action) => {

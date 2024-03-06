@@ -22,7 +22,6 @@ const CartSidebar = () => {
 
     useEffect(() => {
         if (user.isLogged) {
-            console.log("aaaaa")
             dispatch(getCart());
             setDisplayItems(prev => ([...prev, cart]))
         }
@@ -43,7 +42,6 @@ const CartSidebar = () => {
             setTotal(tempTotal)
             setDisplayItems(updateDisplayItems);
         }
-        console.log(displayItems);
     }, [])
 
     const handleRemoveItemCart = (id: string) => {

@@ -34,7 +34,7 @@ const ItemPage = () => {
 
             if (foundItemIndex !== -1) {
                 // If the item is found, update the quantity
-                tempCart[foundItemIndex].itemStock +=  Number(quantity);
+                tempCart[foundItemIndex].itemStock += Number(quantity);
             } else {
                 // If the item is not found, add it to the cart
                 tempCart.push(item);
@@ -44,18 +44,15 @@ const ItemPage = () => {
         localStorage.setItem('cart', JSON.stringify(tempCart));
     };
 
-
     useEffect(() => {
         dispatch(getItemByID(id));
 
         const getVendor = async () => {
-            dispatch(fetchVendorInfo(item.currentItem?.vendorID!));
+            await dispatch(fetchVendorInfo(item.currentItem?.vendorID!));
         }
+        getVendor();
 
-        if (user.isLogged) {
-            getVendor();
-        }
-    }, [item.currentItem?.vendorID]);
+    }, [item.currentItem?.vendorID!]);
 
     const handleQuantity = (operation: string) => {
         if (operation === "minus" && quantity > 1) {
