@@ -21,33 +21,47 @@ const CartSidebar = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user.isLogged) {
-            dispatch(getCart());
-            setDisplayItems(prev => ([...prev, cart]))
-        }
-        else {
-            const getCartFromLocalStorage = localStorage.getItem('cart');
-            const tempCart: any[] = getCartFromLocalStorage ? JSON.parse(getCartFromLocalStorage) : [];
+        const fetchCartData = async () => {
+            if (user.isLogged) {
+                dispatch(getCart());
+            }
 
-            let tempTotal = 0;
+            else {
+                dispatch(cartActions.getLocalCart())
+                const getCartFromLocalStorage = localStorage.getItem('cart');
+                const tempCart: any[] = getCartFromLocalStorage ? JSON.parse(getCartFromLocalStorage) : [];
 
-            const updateDisplayItems = tempCart.map((item: any) => {
-                console.log(Number(item.itemPrice) * Number(item.itemStock));
-
-                let res = Number(item.itemPrice) * Number(item.itemStock);
-                tempTotal += res;
-                return item;
-            })
-
-            setTotal(tempTotal)
-            setDisplayItems(updateDisplayItems);
-        }
-    }, [])
+                let tempTotal = 0;
+                const updateDisplayItems = tempCart.map((item: any) => {
+                    let res = Number(item.itemPrice) * Number(item.itemStock);
+                    tempTotal += res;
+                    return item;
+                });
+                setTotal(tempTotal);
+                setDisplayItems(updateDisplayItems);
+            }
+        };
+        fetchCartData();
+        console.log(cart.cartItems)
+    }, [cart.total]);
 
     const handleRemoveItemCart = (id: string) => {
-        dispatch(cartActions.removeCart(id));
-        dispatch(removeCart(id));
+        if (user.isLogged) {
+            dispatch(cartActions.removeCart(id));
+            dispatch(removeCart(id));
+        }
+        else{
+            const getCartFromLocalStorage = localStorage.getItem('cart');
+            const tempCart: any[] = getCartFromLocalStorage ? JSON.parse(getCartFromLocalStorage) : [];
+            const newCart = tempCart.filter(item => {
+                return item._id !== id;
+            })
+
+            localStorage.setItem('cart', JSON.stringify(newCart));
+            dispatch(cartActions.removeItemLocalCart(id));
+        }
     };
+
     return (
         <SheetContent className='overflow-y-auto'>
             <Separator className="mb-4" />
@@ -65,7 +79,11 @@ const CartSidebar = () => {
                                 <div className="rounded-sm flex items-center gap-4">
                                     <div className="relative">
                                         <img src={item.itemImages ? `http://localhost:3000/uploads/${item.itemImages[0]}` : ""} className='min-w-[90px] max-w-[30px]' />
-                                        <div onClick={() => handleRemoveItemCart(item._id)} className="bg-secondary absolute -top-2 -left-2 rounded-full p-1 hover:bg-destructive transition-all duration-100 ease-linear cursor-pointer">
+                                        <div onClick={() => {
+
+                                            handleRemoveItemCart(item._id)
+                                        }}
+                                            className="bg-secondary absolute -top-2 -left-2 rounded-full p-1 hover:bg-destructive transition-all duration-100 ease-linear cursor-pointer">
                                             <Cross2Icon className="h-4 w-4" />
                                         </div>
                                     </div>

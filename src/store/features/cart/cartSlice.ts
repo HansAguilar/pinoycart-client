@@ -12,6 +12,28 @@ const cartSlice = createSlice({
     initialState: intialState,
     name: "cart",
     reducers: {
+        getLocalCart: (state) => {
+            const getCartFromLocalStorage = localStorage.getItem('cart');
+            const tempCart: any[] = getCartFromLocalStorage ? JSON.parse(getCartFromLocalStorage) : [];
+
+            let tempTotal = 0;
+            const updateDisplayItems = tempCart.map((item: any) => {
+                let res = Number(item.itemPrice) * Number(item.itemStock);
+                tempTotal += res;
+                return item;
+            });
+            state.cartItems = updateDisplayItems
+            state.total = tempTotal
+        },
+        removeItemLocalCart: (state, action) => {
+            let priceItem = 0;
+            const newCart = state.cartItems.filter(item => {
+                priceItem = item.itemPrice * item.itemStock;
+                return item._id !== action.payload;
+            })
+            state.cartItems = newCart;
+            state.total -= priceItem;
+        },
         addToCart: (state, action: PayloadAction<{ item: any, quantity: number }>) => {
             const cartIndex = state.cartItems.findIndex((cartItem) => cartItem._id === action.payload.item._id);
 
@@ -33,7 +55,7 @@ const cartSlice = createSlice({
         minusPrice: (state, action: PayloadAction<{ itemPrice: number, quantity: number, _id: string }>) => {
             const cartIndex = state.cartItems.findIndex((cartItem) => cartItem._id === action.payload._id);
             state.cartItems[cartIndex].itemStock -= 1;
-            state.total -= action.payload.itemPrice 
+            state.total -= action.payload.itemPrice
         },
         removeCart: (state, action) => {
             let priceItem = 0;
