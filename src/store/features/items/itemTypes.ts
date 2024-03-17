@@ -36,9 +36,9 @@ export interface IItemsState {
         itemName: string,
         itemDesc: string,
         itemPrice: number,
-        itemCategory: [string],
+        itemCategory: string[],
         itemStock: number,
-        itemImages: [string],
+        itemImages: string[],
         itemLikes: number,
         itemRatings: number,
         itemReviews: [
@@ -48,5 +48,5 @@ export interface IItemsState {
                 comment: string
             }
         ]
-    } | null 
+    } | undefined
 }

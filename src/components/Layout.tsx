@@ -6,6 +6,8 @@ import Seller from '@/pages/Seller'
 import ItemPage from './ItemPage'
 import { Toaster } from "@/components/ui/sonner"
 import MIssing from './MIssing'
+import Success from './Success'
+import Cancel from './Cancel'
 
 const Layout = () => {
     return (
@@ -17,6 +19,8 @@ const Layout = () => {
                     <Route path="/item/:id" element={<ItemPage />} />
                     <Route path="/profile" element={<UserProfile />} />
                     <Route path="/seller" element={<Seller />} />
+                    <Route path="/success" element={<Success />} />
+                    <Route path="/cancel" element={<Cancel />} />
                     <Route path="/*" element={<MIssing />} />
                 </Routes>
             </div>

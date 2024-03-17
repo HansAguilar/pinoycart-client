@@ -2,11 +2,12 @@ import { useForm } from "react-hook-form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useState } from "react";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addItem } from "@/store/features/items/itemSlice";
 import { Separator } from "./ui/separator";
 import SellerTable from "./SellerTable";
-
+import { toast } from "sonner";
+import { RootState } from "@/store/store";
 interface IFormInputs {
     itemName: string;
     itemDesc: string;
@@ -20,6 +21,7 @@ const SellerItems = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>();
     const [files, setFiles] = useState<any>();
     const dispatch = useAppDispatch();
+    const user = useAppSelector((state: RootState) => state.auth.data)
 
     const onSubmit = (data: any) => {
         const formData = new FormData();
@@ -32,8 +34,9 @@ const SellerItems = () => {
         formData.append("itemCategory", data.itemCategory);
         formData.append("itemPrice", data.itemPrice);
         formData.append("itemStock", data.itemStock);
+        formData.append("userID", user?._id as string);
         dispatch(addItem(formData))
-        window.location.reload();
+        toast.success("Item added successfully", { duration: 2000 })
     }
 
     return (

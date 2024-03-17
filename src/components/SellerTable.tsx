@@ -74,9 +74,6 @@ const EditModal = ({ selectedItem, setAction, dispatch }: { selectedItem: any, s
 
         dispatch(updateItem(formData))
         toast.success("Item Updated Successfully", { duration: 2000 })
-        window.setTimeout(() => {
-            window.location.reload();
-        }, 2000)
     }
 
     return (
@@ -158,7 +155,6 @@ const SellerTable = () => {
             itemPrice: 0,
             itemCategory: []
         });
-        window.location.reload();
     }
 
     return (

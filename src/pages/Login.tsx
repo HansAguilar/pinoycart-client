@@ -32,7 +32,7 @@ const formSchema = z.object({
 
 const Login = () => {
 	const [errorMsg, setErrorMsg] = useState<string>("");
-	const userAuth = useAppSelector((state: RootState) => state.auth)
+	const userAuth = useAppSelector((state: RootState) => state.auth);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ const Login = () => {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			username: "",
-			password: ""
+			password: "",
 		}
 	})
 
@@ -48,26 +48,29 @@ const Login = () => {
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		try {
-			const response = await loginAPI(values);
-			console.log(response);
-			
-
+			const getLocalCart = localStorage.getItem("cart");
+			const sendData = getLocalCart
+				? { ...values, localCart: JSON.parse(getLocalCart) }
+				: { ...values };
+	
+			const response = await loginAPI(sendData);
+	
 			if (response.status === 200) {
-				localStorage.setItem("token", response.data.token)
-				dispatch(authActions.isAuthenticated(true))
-				navigate("/");
-				setErrorMsg("")
-
+				const token = response.data.token;
+				localStorage.setItem("token", token);
+				dispatch(authActions.isAuthenticated(true));
 				dispatch(verifyToken());
+				navigate("/");
+				setErrorMsg("");
+			} else {
+				setErrorMsg("Username or password is incorrect");
 			}
-			else {
-				setErrorMsg("Username or password is incorrect")
-			}
-		}
-		catch (error: any) {
-			console.log(userAuth)
+		} catch (error) {
+			console.error("An error occurred during login:", error);
+			setErrorMsg("An unexpected error occurred. Please try again later.");
 		}
 	}
+	
 
 	return (
 		<TabsContent value="Login">

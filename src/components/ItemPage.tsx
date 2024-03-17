@@ -3,14 +3,14 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { RootState } from '@/store/store'
 import { LucideStar, Minus, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Separator } from './ui/separator';
 import { Button } from './ui/button';
 import { fetchVendorInfo } from '@/store/features/vendor/vendorSlice';
 import { addToCart, cartActions } from '@/store/features/cart/cartSlice';
 import { Card } from './ui/card';
-
-
+import { toast } from "sonner"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const ItemPage = () => {
     const { id } = useParams();
@@ -19,6 +19,20 @@ const ItemPage = () => {
     const vendorInfo = useAppSelector((state: RootState) => state.vendor.data);
     const dispatch = useAppDispatch();
     const [quantity, setQuantity] = useState<number>(1);
+
+    const displayOtherProducts = () => {
+        return (
+            item.items?.map((allItem, index) => {
+                if (allItem._id !== item.currentItem?._id) {
+                    return (
+                        <Link key={index} to={`/item/${allItem._id}`}>
+                            <img src={`http://localhost:3000/uploads/${allItem?.itemImages[0]}`} className='w-52 h-52' />
+                        </Link>
+                    )
+                }
+            })
+        )
+    }
 
     //! DITO NAGTAPOS SA CART GUESS
     const checkGuessCart = (item: any) => {
@@ -45,14 +59,20 @@ const ItemPage = () => {
     };
 
     useEffect(() => {
+
         dispatch(getItemByID(id));
 
         const getVendor = async () => {
             await dispatch(fetchVendorInfo(item.currentItem?.vendorID!));
         }
-        getVendor();
 
-    }, [item.currentItem?.vendorID!]);
+        if (item.currentItem?.vendorID) {
+            getVendor();
+        }
+        setQuantity(1);
+    }, [item.currentItem?.vendorID, id]);
+
+
 
     const handleQuantity = (operation: string) => {
         if (operation === "minus" && quantity > 1) {
@@ -64,23 +84,26 @@ const ItemPage = () => {
     }
 
     const handleAddToCart = (itemID: string) => {
-        dispatch(addToCart([{
-            itemID: itemID,
-            itemStock: quantity
-        }]))
-        console.log([{
-            itemID: itemID,
-            itemStock: quantity
-        }]);
-
+        const items = {
+            items: [{ itemQuantity: quantity, itemID: itemID }],
+            userID: user.data?._id!
+        }
+        dispatch(addToCart(items))
         const newItem = { ...item.currentItem, itemStock: quantity };
         checkGuessCart(newItem)
 
         dispatch(cartActions.addToCart({ item: newItem, quantity: quantity }));
+        toast.success("Item added to cart!", { duration: 2000 })
     }
 
     if (item.loading) {
-        return <p>Loading</p>
+        return (
+            <div className='flex flex-col max-w-4xl mx-auto mt-6'>
+                <Card className='flex'>
+                    <Skeleton className='w-3/6' />
+                </Card>
+            </div>
+        )
     }
 
     return (
@@ -135,15 +158,10 @@ const ItemPage = () => {
                 <p>Other products from {vendorInfo?.vendorName}</p>
                 <div className='flex gap-4'>
                     {
-                        item.items.map((allItem, index) => {
-                            if (allItem._id !== item.currentItem?._id) {
-                                return (
-                                    <div key={index}>
-                                        <img src={`http://localhost:3000/uploads/${allItem.itemImages[0]}`} className='w-52 h-52' />
-                                    </div>
-                                )
-                            }
-                        })
+                        vendorInfo ?
+                            displayOtherProducts()
+                            :
+                            <Skeleton className="w-full h-48" />
                     }
                 </div>
             </div>

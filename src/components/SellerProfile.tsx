@@ -22,6 +22,12 @@ const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/web
 const SellerProfile = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>();
     const dispatch = useAppDispatch();
+    const vendor = useAppSelector((state: RootState) => state.vendor);
+    const user = useAppSelector((state: RootState) => state.auth.data);
+
+    const [file, setFile] = useState("");
+    const [errorImg, setErrorImg] = useState("");
+    const [imageSend, setImageSend] = useState<any>();
 
     const onSubmit = (data: any) => {
         if (vendor.msg.includes("exists")) {
@@ -33,8 +39,9 @@ const SellerProfile = () => {
             formData.append("vendorName", data.vendorName)
             formData.append("vendorDesc", data.vendorDesc)
             formData.append("image", imageSend)
+            formData.append("userID", user._id)
             dispatch(createVendor(formData))
-            toast.success("Seller Created Successfully", { duration: 2000 })
+            toast.success("Seller created successfully", { duration: 2000 })
         }
 
         else {
@@ -42,16 +49,9 @@ const SellerProfile = () => {
             formData.append("vendorName", data.vendorName)
             formData.append("vendorDesc", data.vendorDesc)
             dispatch(UpdateVendor(data))
-            toast.success("Successfully Updated", { duration: 2000 })
+            toast.success("Updated successfully", { duration: 2000 })
         }
     }
-
-    const vendor = useAppSelector((state: RootState) => state.vendor);
-    const user = useAppSelector((state: RootState) => state.auth.data);
-
-    const [file, setFile] = useState("");
-    const [errorImg, setErrorImg] = useState("");
-    const [imageSend, setImageSend] = useState<any>();
 
     function handleChange(e: any) {
         const uploadedFile: File = e.target.files[0];
@@ -129,7 +129,13 @@ const SellerProfile = () => {
                     </div>
 
                     <Button className="max-w-max" type="submit">
-                        {user?.role === "vendor" ? "Update" : "Save"} Changes
+                        {
+                            user?.role === "vendor" 
+                            ? 
+                            "Save changes" 
+                            :
+                            "Create account"
+                        } 
                     </Button>
                 </form>
             </div >

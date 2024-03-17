@@ -2,7 +2,7 @@ import { Minus, Plus } from 'lucide-react';
 import { memo, useState } from 'react'
 import { Button } from './ui/button';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { cartActions } from '@/store/features/cart/cartSlice';
+import { addToCart, cartActions, minusToCart, removeCart } from '@/store/features/cart/cartSlice';
 import { RootState } from '@/store/store';
 
 const updateLocalCartStock = (operation: string, quantity: number, itemID: string) => {
@@ -20,25 +20,35 @@ const updateLocalCartStock = (operation: string, quantity: number, itemID: strin
     localStorage.setItem('cart', JSON.stringify(tempCart));
 }
 
-const CartQuantity = ({ price, itemID, itemQty, }: { price: number, itemID: string, itemQty: number }) => {
+const CartQuantity = ({ price, itemID, itemQty, userID }: { price: number, itemID: string, itemQty: number, userID: string }) => {
     const [quantity, setQuantity] = useState<number>(itemQty);
     const dispatch = useAppDispatch();
     const user = useAppSelector((state: RootState) => state.auth)
 
     const handleQuantity = (operation: string) => {
         if (user.isLogged) {
-            if (operation === "minus" && quantity > 1) {
+            if (operation === "minus") {
                 setQuantity(prev => prev - 1)
                 dispatch(cartActions.minusPrice({ itemPrice: price, quantity: quantity, _id: itemID }))
+                const items = {
+                    items: [{ itemQuantity: 1, itemID: itemID }],
+                    userID: userID
+                }
+                dispatch(minusToCart(items))
             }
             else if (operation === "plus") {
                 setQuantity(prev => prev + 1)
                 dispatch(cartActions.addPrice({ itemPrice: price, quantity: quantity, _id: itemID }))
+                const items = {
+                    items: [{ itemQuantity: 1, itemID: itemID }],
+                    userID: userID
+                }
+                dispatch(addToCart(items))
             }
         }
         else {
             updateLocalCartStock(operation, quantity, itemID)
-            if (operation === "minus" && quantity > 1) {
+            if (operation === "minus") {
                 setQuantity(prev => prev - 1)
             }
             else if (operation === "plus") {

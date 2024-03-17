@@ -9,6 +9,9 @@ import { cartActions, getCart, removeCart } from '@/store/features/cart/cartSlic
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import empty from "../assets/emptycart.png";
+import { loadStripe } from "@stripe/stripe-js";
+import axios from 'axios'
+import { toast } from "sonner"
 
 const CartSidebar = () => {
     const cart = useAppSelector((state: RootState) => state.cart)
@@ -23,7 +26,18 @@ const CartSidebar = () => {
     useEffect(() => {
         const fetchCartData = async () => {
             if (user.isLogged) {
-                dispatch(getCart());
+                dispatch(getCart(user.data?._id as string));
+
+                let tempTotal = 0;
+                const updateDisplayItems = cart.cartItems.map((item: any) => {
+                    let res = Number(item.itemPrice) * Number(item.itemStock);
+                    tempTotal += res;
+                    return item;
+                });
+
+                setDisplayItems(updateDisplayItems)
+                setTotal(tempTotal);
+                return;
             }
 
             else {
@@ -39,18 +53,18 @@ const CartSidebar = () => {
                 });
                 setTotal(tempTotal);
                 setDisplayItems(updateDisplayItems);
+                return;
             }
         };
         fetchCartData();
-        console.log(cart.cartItems)
-    }, [cart.total]);
+    }, [cart.total, user.isLogged]);
 
     const handleRemoveItemCart = (id: string) => {
         if (user.isLogged) {
             dispatch(cartActions.removeCart(id));
-            dispatch(removeCart(id));
+            dispatch(removeCart({ cartID: id, userID: user.data?._id! }));
         }
-        else{
+        else {
             const getCartFromLocalStorage = localStorage.getItem('cart');
             const tempCart: any[] = getCartFromLocalStorage ? JSON.parse(getCartFromLocalStorage) : [];
             const newCart = tempCart.filter(item => {
@@ -60,7 +74,32 @@ const CartSidebar = () => {
             localStorage.setItem('cart', JSON.stringify(newCart));
             dispatch(cartActions.removeItemLocalCart(id));
         }
+        toast.success("Item Removed!", { duration: 2000 })
     };
+
+    const handleCheckout = async () => {
+        if (!user.isLogged) {
+            return navigate("/challenge")
+        }
+        const stripe = await loadStripe(import.meta.env.VITE_STRIPE_KEY!);
+
+        const session = await axios.post("http://localhost:3000/api/v1/create-checkout-session",
+            { products: displayItems },
+            {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        )
+
+        const result = await stripe?.redirectToCheckout({
+            sessionId: session.data.id
+        })
+
+        if (result?.error) {
+            console.log(result.error)
+        }
+    }
 
     return (
         <SheetContent className='overflow-y-auto'>
@@ -78,7 +117,7 @@ const CartSidebar = () => {
                             <div key={item._id}>
                                 <div className="rounded-sm flex items-center gap-4">
                                     <div className="relative">
-                                        <img src={item.itemImages ? `http://localhost:3000/uploads/${item.itemImages[0]}` : ""} className='min-w-[90px] max-w-[30px]' />
+                                        <img src={item.itemImages ? `http://localhost:3000/uploads/${item.itemImages[0]}` : ""} className='min-w-[90px] max-w-[30px] h-24 object-cover' />
                                         <div onClick={() => {
 
                                             handleRemoveItemCart(item._id)
@@ -91,7 +130,7 @@ const CartSidebar = () => {
                                     <div className='flex flex-col gap-2'>
                                         <p>{item.itemName}</p>
                                         <div className='flex items-center gap-8 mt-auto'>
-                                            <CartQuantity price={item.itemPrice} itemID={item._id} itemQty={item.itemStock} />
+                                            <CartQuantity price={item.itemPrice} itemID={item._id} itemQty={item.itemStock} userID={user.data?._id as string} />
                                             <p className="text-primary font-medium text-lg">₱ {item.itemPrice}</p>
                                         </div>
                                     </div>
@@ -112,14 +151,14 @@ const CartSidebar = () => {
 
             <div className="flex items-center justify-between">
                 <h3 className="text-primary font-medium">TOTAL</h3>
-                <p>₱ {cart.total ? cart.total : total}</p>
+                <p>₱ {cart.total ? cart.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
             </div>
 
             <Separator className="mt-4 mb-4" />
 
             <SheetFooter>
                 <SheetClose asChild>
-                    <Button type="submit" disabled={displayItems.length <= 0} onClick={() => navigate("/challenge")}>Checkout</Button>
+                    <Button type="submit" disabled={displayItems.length <= 0} onClick={handleCheckout}>Checkout</Button>
                 </SheetClose>
             </SheetFooter>
         </SheetContent>

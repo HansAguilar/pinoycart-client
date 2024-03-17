@@ -19,12 +19,6 @@ const formSchema = z.object({
 	cpassword: z.string().min(1, {
 		message: "Please enter your password"
 	}),
-	email: z.string().email({
-		message: "Please enter a valid email"
-	}),
-	phone: z.string().refine((value) => /^09\d{9}$/.test(value), {
-		message: 'Phone number must start with "09" and have 11 numeric characters',
-	})
 }).refine((data) => data.password === data.cpassword, {
 	message: "Passwords don't match",
 	path: ["cpassword"], // path of error
@@ -38,8 +32,6 @@ const Signup = () => {
 		defaultValues: {
 			username: "",
 			password: "",
-			phone: "",
-			email: "",
 			cpassword: "",
 		}
 	})
@@ -72,41 +64,23 @@ const Signup = () => {
 						<FormField control={form.control} name="username" render={({ field }) => (
 							<FormItem className="flex flex-col items-start">
 								<FormLabel>Username</FormLabel>
-								<FormControl><Input placeholder="ex. michael06" {...field} /></FormControl>
+								<FormControl><Input {...field} /></FormControl>
 								<FormMessage />
 							</FormItem>
 						)} />
 
-						<div className='w-full flex items-start gap-4'>
-							<FormField control={form.control} name="password" render={({ field }) => (
-								<FormItem className="flex flex-col items-start w-full">
-									<FormLabel>Password</FormLabel>
-									<FormControl><Input type='password' {...field} /></FormControl>
-									<FormMessage />
-								</FormItem>
-							)} />
-
-							<FormField control={form.control} name="cpassword" render={({ field }) => (
-								<FormItem className="flex flex-col items-start w-full">
-									<FormLabel>Confirm password</FormLabel>
-									<FormControl><Input type='password' {...field} /></FormControl>
-									<FormMessage />
-								</FormItem>
-							)} />
-						</div>
-
-						<FormField control={form.control} name="email" render={({ field }) => (
-							<FormItem className="flex flex-col items-start">
-								<FormLabel>Email</FormLabel>
-								<FormControl><Input placeholder="ex. michael25@gmail.com" {...field} /></FormControl>
+						<FormField control={form.control} name="password" render={({ field }) => (
+							<FormItem className="flex flex-col items-start w-full">
+								<FormLabel>Password</FormLabel>
+								<FormControl><Input type='password' {...field} /></FormControl>
 								<FormMessage />
 							</FormItem>
 						)} />
 
-						<FormField control={form.control} name="phone" render={({ field }) => (
-							<FormItem className="flex flex-col items-start">
-								<FormLabel>Phone Number</FormLabel>
-								<FormControl><Input placeholder="ex. 09123458679" {...field} maxLength={11} /></FormControl>
+						<FormField control={form.control} name="cpassword" render={({ field }) => (
+							<FormItem className="flex flex-col items-start w-full">
+								<FormLabel>Confirm password</FormLabel>
+								<FormControl><Input type='password' {...field} /></FormControl>
 								<FormMessage />
 							</FormItem>
 						)} />

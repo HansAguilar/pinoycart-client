@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
+import { Separator } from "@/components/ui/separator"
 import { useAppSelector } from "@/store/hooks"
 import { RootState } from "@/store/store"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect } from "react"
-import { useFieldArray, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import * as z from "zod"
 
@@ -19,44 +19,18 @@ const profileFormSchema = z.object({
         .max(30, {
             message: "Username must not be longer than 30 characters.",
         }),
-    email: z
-        .string({
-            required_error: "Please select an email to display.",
-        })
-        .email(),
-    bio: z.string().max(160).min(4),
-    urls: z
-        .array(
-            z.object({
-                value: z.string().url({ message: "Please enter a valid URL." }),
-            })
-        )
-        .optional(),
 })
+
+interface IFormInputs {
+    username: string;
+}
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-    bio: "I own a computer.",
-    urls: [
-        { value: "https://shadcn.com" },
-        { value: "http://twitter.com/shadcn" },
-    ],
-}
-
 export default function UserProfile() {
     const user = useAppSelector((state: RootState) => state.auth);
-    const form = useForm<ProfileFormValues>({
-        resolver: zodResolver(profileFormSchema),
-        defaultValues,
-        mode: "onChange",
-    })
 
-    const { fields, append } = useFieldArray({
-        name: "urls",
-        control: form.control,
-    })
+    const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>();
 
     function onSubmit(data: ProfileFormValues) {
 
@@ -71,60 +45,26 @@ export default function UserProfile() {
     }, [])
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <FormField
-                    control={form.control}
-                    name="username"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Username</FormLabel>
-                            <FormControl>
-                                <Input placeholder="shadcn" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                This is your public display name. It can be your real name or a
-                                pseudonym. You can only change this once every 30 days.
-                            </FormDescription>
-
-                        </FormItem>
-                    )}
-                />
-
+        <main className="flex container m-auto flex-col gap-4 w-full">
+            <div className="py-8 flex flex-col w-full px-8">
                 <div>
-                    {fields.map((field, index) => (
-                        <FormField
-                            control={form.control}
-                            key={field.id}
-                            name={`urls.${index}.value`}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className={cn(index !== 0 && "sr-only")}>
-                                        URLs
-                                    </FormLabel>
-                                    <FormDescription className={cn(index !== 0 && "sr-only")}>
-                                        Add links to your website, blog, or social media profiles.
-                                    </FormDescription>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-
-                                </FormItem>
-                            )}
-                        />
-                    ))}
-                    <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        className="mt-2"
-                        onClick={() => append({ value: "" })}
-                    >
-                        Add URL
-                    </Button>
+                    <h3 className="text-lg font-medium">Profile</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                        This is how others will see you on the site.
+                    </p>
                 </div>
-                <Button type="submit">Update profile</Button>
-            </form>
-        </Form>
+                <Separator />
+                <form onSubmit={handleSubmit(onSubmit)} className="pt-8">
+                    <div className="flex items-center gap-4">
+                        <label htmlFor="vendorName">Username</label>
+                        <div className="flex flex-col w-3/4">
+                            <Input id="vendorName" type="text" {...register("username", { required: true, maxLength: 20, minLength: 2 })} defaultValue={user.data?.username} />
+                            {errors.username && <p className="text-[0.8rem] font-medium text-destructive">Username must be at least 2 characters.</p>}
+                        </div>
+                    </div>
+                    <Button type="submit" className="mt-4">Save Changes</Button>
+                </form>
+            </div>
+        </main>
     )
 }

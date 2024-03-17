@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ICart } from "./cartTypes";
-import { addToCartAPI, getCartAPI, removeCartAPI } from "@/api/userApi";
+import { addToCartAPI, getCartAPI, minusToCartAPI, removeCartAPI } from "@/api/userApi";
 
 const intialState: ICart = {
     cartItems: [],
@@ -56,6 +56,16 @@ const cartSlice = createSlice({
             const cartIndex = state.cartItems.findIndex((cartItem) => cartItem._id === action.payload._id);
             state.cartItems[cartIndex].itemStock -= 1;
             state.total -= action.payload.itemPrice
+
+            if (state.cartItems.length <= 1) {
+                let priceItem = 0;
+                const newCart = state.cartItems.filter(item => {
+                    priceItem = item.itemPrice * item.itemStock;
+                    return item._id !== action.payload._id;
+                })
+                state.cartItems = newCart;
+                state.total -= priceItem;
+            }
         },
         removeCart: (state, action) => {
             let priceItem = 0;
@@ -70,16 +80,24 @@ const cartSlice = createSlice({
     extraReducers(builder) {
         builder
             .addCase(getCart.fulfilled, (state, action) => {
-                // action.payload.data.map((item: any) => {
-                //     state.cartItems.push(item)
-                // })
                 if (action.payload.data.length > 0) {
                     state.cartItems = action.payload.data;
                     state.total = state.cartItems.reduce((acc, item) => acc + (item.itemPrice * item.itemStock), 0);
                     state.loading = false
                 }
             })
-            .addCase(getCart.pending, (state, action) => {
+            .addCase(getCart.pending, (state) => {
+                state.loading = true;
+            })
+
+            .addCase(addToCart.fulfilled, (state, action) => {
+                if (action.payload.data.length > 0) {
+                    state.cartItems = action.payload.data;
+                    state.total = state.cartItems.reduce((acc, item) => acc + (item.itemPrice * item.itemStock), 0);
+                    state.loading = false
+                }
+            })
+            .addCase(addToCart.pending, (state) => {
                 state.loading = true;
             })
     },
@@ -91,27 +109,36 @@ export const cartActions = cartSlice.actions;
 export default cartSlice.reducer;
 
 
-export const addToCart = createAsyncThunk("cart/addToCart", async (items: any) => {
+export const addToCart = createAsyncThunk("cart/addToCart", async ({ items, userID }: { items: any, userID: string }) => {
     try {
-        const response = await addToCartAPI(items);
+        const response = await addToCartAPI(items, userID);
         return response.data;
     } catch (error) {
         console.log(error);
     }
 })
 
-export const getCart = createAsyncThunk("cart/getCart", async () => {
+export const minusToCart = createAsyncThunk("cart/minusToCart", async ({ items, userID }: { items: any, userID: string }) => {
     try {
-        const response = await getCartAPI();
+        const response = await minusToCartAPI(items, userID);
         return response.data;
     } catch (error) {
         console.log(error);
     }
 })
 
-export const removeCart = createAsyncThunk("cart/removeCart", async (id: string) => {
+export const getCart = createAsyncThunk("cart/getCart", async (userID: string) => {
     try {
-        const response = await removeCartAPI(id);
+        const response = await getCartAPI(userID);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+export const removeCart = createAsyncThunk("cart/removeCart", async ({ cartID, userID }: { cartID: string, userID: string }) => {
+    try {
+        const response = await removeCartAPI(cartID, userID);
         return response.data;
     } catch (error) {
         console.log(error);

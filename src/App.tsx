@@ -2,23 +2,27 @@ import './App.css'
 import { ThemeProvider } from "@/components/ui/theme-provider"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Authentication from './pages/Authentication'
-import PrivateRoutes from './components/PrivateRoutes'
 import Layout from './components/Layout'
-import Feed from './components/Feed'
-import UserProfile from './pages/UserProfile'
+import { Provider } from 'react-redux';
+import { persistor, store } from './store/store'
+import { PersistGate } from 'redux-persist/integration/react'
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Router>
-        <Routes>
-          <Route path="/*" element={<Layout />} />
-          <Route element={<Authentication />} path='/challenge' />
-          {/* <Route element={<PrivateRoutes />}> */}
-          {/* </Route> */}
-        </Routes>
-      </Router>
-    </ThemeProvider >
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          <Router>
+            <Routes>
+              <Route path="/*" element={<Layout />} />
+              <Route element={<Authentication />} path='/challenge' />
+              {/* <Route element={<PrivateRoutes />}> */}
+              {/* </Route> */}
+            </Routes>
+          </Router>
+        </ThemeProvider >
+      </PersistGate>
+    </Provider>
   )
 }
 

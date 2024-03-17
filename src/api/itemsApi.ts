@@ -4,6 +4,8 @@ const BASE_URL = "http://localhost:3000/api/v1";
 
 export const addItemApi = async (items: any) => {
 	const token = localStorage.getItem("token");
+
+	console.log("items: " ,items)
 	try {
 		const response = await axios.post(`${BASE_URL}/add-item`, items, {
 			headers: {
@@ -16,6 +18,7 @@ export const addItemApi = async (items: any) => {
 	}
 
 	catch (error: any) {
+		console.log(error)
 		return error.response.data;
 	}
 };

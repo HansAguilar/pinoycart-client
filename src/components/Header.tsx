@@ -13,7 +13,6 @@ import { Link, useNavigate } from "react-router-dom"
 import { authActions } from "@/store/features/auth/authSlice"
 import { RootState } from "@/store/store"
 import { useEffect, useState } from "react"
-import { getCart } from "@/store/features/cart/cartSlice"
 import { Sheet, SheetTrigger } from "@/components/ui/sheet"
 import CartSidebar from "./CartSidebar"
 
@@ -27,17 +26,16 @@ const Header = () => {
 	const [cartLength, setCartLength] = useState<number>(0);
 
 	useEffect(() => {
-		if (user.isLogged) {
-			dispatch(getCart());
-		}
-		else {
+		if (!user.isLogged) {
 			const getCartFromLocalStorage = localStorage.getItem('cart');
 			if (getCartFromLocalStorage) {
 				const localCartLength = JSON.parse(getCartFromLocalStorage);
 				setCartLength(localCartLength.length)
 			}
 		}
-	}, [])
+
+		console.log("user", user)
+	}, [user.isLogged])
 
 
 	return (
@@ -67,54 +65,55 @@ const Header = () => {
 							</Button>
 						</NavigationMenuItem>
 
-						<NavigationMenuItem>
-							<Link to="/challenge" className="ml-6">
-								<Button variant="default">Login</Button>
-							</Link>
-						</NavigationMenuItem>
 						{
-							user.isLogged &&
-							<NavigationMenuItem>
-								<DropdownMenu>
-									<DropdownMenuTrigger asChild>
-										<Button variant="ghost">
-											<Avatar>
-												<AvatarImage src="https://github.com/shadcn.png" />
-												<AvatarFallback>CN</AvatarFallback>
-											</Avatar>
-										</Button>
-									</DropdownMenuTrigger>
+							user.isLogged ?
+								<NavigationMenuItem>
+									<DropdownMenu>
+										<DropdownMenuTrigger asChild>
+											<Button variant="ghost">
+												<Avatar>
+													<AvatarImage src={`https://ui-avatars.com/api/?name=${user.data?.username.charAt(0)}&background=6225c5&color=fff`} />
+													<AvatarFallback>CN</AvatarFallback>
+												</Avatar>
+											</Button>
+										</DropdownMenuTrigger>
 
-									<DropdownMenuContent className="w-56" align="end" forceMount>
-										<DropdownMenuLabel className="font-normal">
-											<div className="flex flex-col space-y-1">
-												<p className="text-sm font-medium leading-none">{user.data?.username}</p>
-												<p className="text-xs leading-none text-muted-foreground">
-													{user.data?.email}
-												</p>
-											</div>
-										</DropdownMenuLabel>
-										<DropdownMenuSeparator />
-										<DropdownMenuGroup>
-											<DropdownMenuItem onClick={() => navigate("profile")}>
-												Profile
+										<DropdownMenuContent className="w-56" align="end" forceMount>
+											<DropdownMenuLabel className="font-normal">
+												<div className="flex flex-col space-y-1">
+													<p className="text-sm font-medium leading-none">{user.data?.username}</p>
+													<p className="text-xs leading-none text-muted-foreground">
+														{user.data?.email}
+													</p>
+												</div>
+											</DropdownMenuLabel>
+											<DropdownMenuSeparator />
+											<DropdownMenuGroup>
+												<DropdownMenuItem onClick={() => navigate("profile")}>
+													Profile
+												</DropdownMenuItem>
+												<DropdownMenuItem onClick={() => navigate("seller")}>
+													Seller
+												</DropdownMenuItem>
+											</DropdownMenuGroup>
+											<DropdownMenuSeparator />
+											<DropdownMenuItem onClick={() => {
+												localStorage.clear();
+												dispatch(authActions.isAuthenticated(false));
+												navigate("/challenge");
+											}}>
+												Log out
 											</DropdownMenuItem>
-											<DropdownMenuItem onClick={() => navigate("seller")}>
-												Seller
-											</DropdownMenuItem>
-										</DropdownMenuGroup>
-										<DropdownMenuSeparator />
-										<DropdownMenuItem onClick={() => {
-											localStorage.clear();
-											dispatch(authActions.isAuthenticated(false));
-											navigate("/challenge");
-										}}>
-											Log out
-										</DropdownMenuItem>
-									</DropdownMenuContent>
+										</DropdownMenuContent>
 
-								</DropdownMenu>
-							</NavigationMenuItem>
+									</DropdownMenu>
+								</NavigationMenuItem>
+								:
+								<NavigationMenuItem>
+									<Link to="/challenge" className="ml-6">
+										<Button variant="default">Login</Button>
+									</Link>
+								</NavigationMenuItem>
 						}
 
 					</NavigationMenuList>
