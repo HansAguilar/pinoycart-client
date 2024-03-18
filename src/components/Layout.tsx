@@ -1,13 +1,18 @@
 import Content from '@/pages/Content'
 import Header from './Header'
 import { Route, Routes } from 'react-router-dom'
-import UserProfile from '@/pages/UserProfile'
+import UserProfile from '@/components/UserProfile'
 import Seller from '@/pages/Seller'
 import ItemPage from './ItemPage'
 import { Toaster } from "@/components/ui/sonner"
 import MIssing from './MIssing'
 import Success from './Success'
 import Cancel from './Cancel'
+import Footer from './Footer'
+import Settings from '@/pages/Settings'
+import SellerProfile from './SellerProfile'
+import SellerItems from './SellerItems'
+import CreateSeller from './CreateSeller'
 
 const Layout = () => {
     return (
@@ -15,15 +20,21 @@ const Layout = () => {
             <Header />
             <div className='flex-1 w-full'>
                 <Routes>
-                    <Route path="/"  element={<Content />} />
+                    <Route path="/" element={<Content />} />
                     <Route path="/item/:id" element={<ItemPage />} />
                     <Route path="/profile" element={<UserProfile />} />
                     <Route path="/seller" element={<Seller />} />
                     <Route path="/success" element={<Success />} />
                     <Route path="/cancel" element={<Cancel />} />
+                    <Route path="/settings" element={<Settings />}>
+                        <Route path="createseller" element={<CreateSeller />} />
+                        <Route path="sellerprofile" element={<SellerProfile />} />
+                        <Route path="selleritems" element={<SellerItems />} />
+                    </Route>
                     <Route path="/*" element={<MIssing />} />
                 </Routes>
             </div>
+            <Footer />
             <Toaster richColors />
         </div>
     )

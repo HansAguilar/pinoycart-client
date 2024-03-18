@@ -33,15 +33,12 @@ const Header = () => {
 				setCartLength(localCartLength.length)
 			}
 		}
-
-		console.log("user", user)
 	}, [user.isLogged])
-
 
 	return (
 		<Sheet>
 			<header className="bg-secondary">
-				<NavigationMenu className="flex items-center  flex-wrap">
+				<NavigationMenu className="flex items-center flex-wrap">
 					<h2 className="text-3xl font-semibold tracking-tight text-center p-2 cursor-pointer" onClick={() => navigate("/")}>
 						PinoyCart
 					</h2>
@@ -89,11 +86,8 @@ const Header = () => {
 											</DropdownMenuLabel>
 											<DropdownMenuSeparator />
 											<DropdownMenuGroup>
-												<DropdownMenuItem onClick={() => navigate("profile")}>
-													Profile
-												</DropdownMenuItem>
-												<DropdownMenuItem onClick={() => navigate("seller")}>
-													Seller
+												<DropdownMenuItem onClick={() => navigate("settings")}>
+													Settings
 												</DropdownMenuItem>
 											</DropdownMenuGroup>
 											<DropdownMenuSeparator />
@@ -115,11 +109,9 @@ const Header = () => {
 									</Link>
 								</NavigationMenuItem>
 						}
-
 					</NavigationMenuList>
 				</NavigationMenu>
 			</header>
-
 			<CartSidebar />
 		</Sheet >
 	)

@@ -35,10 +35,10 @@ const Seller = () => {
                         </TabsContent>
                     </Tabs>
                     :
-                    <>
+                    <div className="flex min-h-screen justify-center items-center">
                         <h2>You are not a seller. Click <span className="font-medium underline">Start Selling</span> to become a seller.</h2>
                         <Button className="max-w-max" onClick={() => setVendorData(true)}>Start Selling</Button>
-                    </>
+                    </div>
             }
             <Toaster />
         </main>

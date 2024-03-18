@@ -83,63 +83,65 @@ const SellerProfile = () => {
     }, [])
 
     return (
-        <>
-            <div>
-                <h3 className="text-lg font-medium">Profile</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                    This is how others will see you on the site.
-                </p>
+        <main className="flex container m-auto flex-col gap-4 w-full">
+            <div className="w-10/12 px-8">
+                <div>
+                    <h3 className="text-lg font-medium">Profile</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                        This is how others will see you on the site.
+                    </p>
+                </div>
+                <Separator />
+                <div>
+                    {
+                        user?.role === "vendor" &&
+                        <div className="flex justify-between my-4">
+                            <p>Seller Name: <span className="text-primary">{vendor.data?.vendorName}</span></p>
+                            <p>Seller Description: <span className="text-primary">{vendor.data?.vendorDesc}</span></p>
+                        </div>
+                    }
+
+                    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 mt-4">
+                        <div className="flex flex-col gap-2 relative">
+                            <label htmlFor="image">Seller Banner</label>
+                            <Avatar className="h-36 w-full rounded-none">
+                                <AvatarImage src={file ? file : `http://localhost:3000/uploads/${vendor.data?.vendorBanner}`} className=" w-full rounded-none object-contain aspect-auto" />
+                                <AvatarFallback className="rounded-none">CN</AvatarFallback>
+                                <Input id="image" type="file" {...register("image")} onChange={handleChange} className="pointer-events-none w-full h-full hidden" />
+                            </Avatar>
+                            <p className="text-[0.8rem] font-medium text-destructive">{errorImg}</p>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                            <label htmlFor="vendorName">Seller Name</label>
+                            <div className="flex flex-col w-3/4">
+                                <Input id="vendorName" type="text" {...register("vendorName", { required: true, maxLength: 80, minLength: 2 })} defaultValue={vendor.data?.vendorName} />
+                                {errors.vendorName && <p className="text-[0.8rem] font-medium text-destructive">Seller name must be at least 2 characters.</p>}
+                            </div>
+
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                            <label htmlFor="vendorDesc">Seller Description</label>
+                            <div className="flex flex-col w-3/4">
+                                <Textarea id="vendorDesc" {...register("vendorDesc", { required: true, maxLength: 80, minLength: 2 })} defaultValue={vendor.data?.vendorDesc} className="resize-none" />
+                                {errors.vendorDesc && <p className="text-[0.8rem] font-medium text-destructive">Seller description must be at least 2 characters.</p>}
+                            </div>
+                        </div>
+
+                        <Button className="max-w-max" type="submit">
+                            {
+                                user?.role === "vendor"
+                                    ?
+                                    "Save changes"
+                                    :
+                                    "Create account"
+                            }
+                        </Button>
+                    </form>
+                </div>
             </div>
-            <Separator />
-            <div className="max-w-2xl">
-                {
-                    user?.role === "vendor" &&
-                    <div className="flex justify-between my-4">
-                        <p>Seller Name: <span className="text-primary">{vendor.data?.vendorName}</span></p>
-                        <p>Seller Description: <span className="text-primary">{vendor.data?.vendorDesc}</span></p>
-                    </div>
-                }
-
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 mt-4">
-                    <div className="flex flex-col gap-2 relative">
-                        <label htmlFor="image">Seller Banner</label>
-                        <Avatar className="h-36 w-full rounded-none">
-                            <AvatarImage src={file ? file : `http://localhost:3000/uploads/${vendor.data?.vendorBanner}`} className=" w-full rounded-none object-contain aspect-auto" />
-                            <AvatarFallback className="rounded-none">CN</AvatarFallback>
-                            <Input id="image" type="file" {...register("image")} onChange={handleChange} className="pointer-events-none w-full h-full hidden" />
-                        </Avatar>
-                        <p className="text-[0.8rem] font-medium text-destructive">{errorImg}</p>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <label htmlFor="vendorName">Seller Name</label>
-                        <div className="flex flex-col w-3/4">
-                            <Input id="vendorName" type="text" {...register("vendorName", { required: true, maxLength: 80, minLength: 2 })} defaultValue={vendor.data?.vendorName} />
-                            {errors.vendorName && <p className="text-[0.8rem] font-medium text-destructive">Seller name must be at least 2 characters.</p>}
-                        </div>
-
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <label htmlFor="vendorDesc">Seller Description</label>
-                        <div className="flex flex-col w-3/4">
-                            <Textarea id="vendorDesc" {...register("vendorDesc", { required: true, maxLength: 80, minLength: 2 })} defaultValue={vendor.data?.vendorDesc} className="resize-none" />
-                            {errors.vendorDesc && <p className="text-[0.8rem] font-medium text-destructive">Seller description must be at least 2 characters.</p>}
-                        </div>
-                    </div>
-
-                    <Button className="max-w-max" type="submit">
-                        {
-                            user?.role === "vendor" 
-                            ? 
-                            "Save changes" 
-                            :
-                            "Create account"
-                        } 
-                    </Button>
-                </form>
-            </div >
-        </>
+        </main>
     )
 }
 
