@@ -21,6 +21,25 @@ export const addToCartAPI = async (items: any, userID: string) => {
     }
 }
 
+export const editUserAPI = async (userID: string, username: string) => {
+    const token = localStorage.getItem("token");
+    try {
+        const response = await axios.patch(`${BASE_URL}/edit-user`, {
+            userID,
+            username
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    }
+
+    catch (error: any) {
+        return error.response.data;
+    }
+}
+
 export const minusToCartAPI = async (items: any, userID: string) => {
     const token = localStorage.getItem("token");
     try {
@@ -61,6 +80,26 @@ export const removeCartAPI = async (cartID: string, userID: string) => {
     try {
         const response = await axios.post(`${BASE_URL}/remove-cart`,
             { cartID: cartID, userID: userID }
+            ,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            }
+        );
+        return response;
+    }
+
+    catch (error: any) {
+        return error.response.data;
+    }
+}
+
+export const changePasswordAPI = async (userID: string, password: string) => {
+    const token = localStorage.getItem("token");
+    try {
+        const response = await axios.post(`${BASE_URL}/change-password`,
+            { userID: userID, password: password }
             ,
             {
                 headers: {

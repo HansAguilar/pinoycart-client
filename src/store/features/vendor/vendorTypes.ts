@@ -14,6 +14,7 @@ export interface IVendorState {
 }
 
 interface IUserVendorInfo {
+    _id: string;
     userID: string,
     vendorName: string,
     vendorDesc: string,

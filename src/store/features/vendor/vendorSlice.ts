@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ICreateVendor, IVendorState } from "./vendorTypes";
-import { UpdateBanner, UpdateVendorInfo, createVendorApi, getVendorByID } from "@/api/vendorApi";
+import { UpdateBannerAPI, UpdateVendorInfo, createVendorApi, getVendorByID } from "@/api/vendorApi";
 
 const initialState: IVendorState = {
     data: null,
@@ -67,9 +67,9 @@ export const createVendor = createAsyncThunk(
 
 export const UpdateVendorBanner = createAsyncThunk(
     "vendor/UpdateVendorBanner",
-    async (image: any) => {
+    async ({ image, vendorID }: { image: File, vendorID: string }) => {
         try {
-            const response = await UpdateBanner(image);
+            const response = await UpdateBannerAPI(image, vendorID);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -91,9 +91,9 @@ export const fetchVendorInfo = createAsyncThunk(
 
 export const UpdateVendor = createAsyncThunk(
     "vendor/UpdateVendor",
-    async (credentials: any) => {
+    async ({ vendorName, vendorDesc, vendorID }: { vendorName: string, vendorDesc: string, vendorID: string }) => {
         try {
-            const response = await UpdateVendorInfo(credentials);
+            const response = await UpdateVendorInfo(vendorName, vendorDesc, vendorID);
             return response.data;
         } catch (error) {
             console.log(error);

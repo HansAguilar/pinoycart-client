@@ -28,13 +28,13 @@ const SellerProfile = () => {
     const [file, setFile] = useState("");
     const [errorImg, setErrorImg] = useState("");
     const [imageSend, setImageSend] = useState<any>();
+    const [showForm, setShowForm] = useState(false);
 
     const onSubmit = (data: any) => {
-        if (vendor.msg.includes("exists")) {
-            return toast.error(vendor.msg, { duration: 2000 })
-        }
-
-        else if (user?.role === "customer") {
+        // if (vendor.msg.includes("exists")) {
+        //     return toast.error(vendor.msg, { duration: 2000 })
+        // }
+       if (user?.role === "customer") {
             const formData = new FormData();
             formData.append("vendorName", data.vendorName)
             formData.append("vendorDesc", data.vendorDesc)
@@ -48,7 +48,8 @@ const SellerProfile = () => {
             const formData = new FormData();
             formData.append("vendorName", data.vendorName)
             formData.append("vendorDesc", data.vendorDesc)
-            dispatch(UpdateVendor(data))
+            formData.append("vendorID", vendor.data?._id!)
+            dispatch(UpdateVendor(formData))
             toast.success("Updated successfully", { duration: 2000 })
         }
     }
@@ -113,9 +114,9 @@ const SellerProfile = () => {
                         </div>
 
                         <div className="flex items-center justify-between">
-                            <label htmlFor="vendorName">Seller Name</label>
+                            <label htmlFor="vendorName">Seller Names</label>
                             <div className="flex flex-col w-3/4">
-                                <Input id="vendorName" type="text" {...register("vendorName", { required: true, maxLength: 80, minLength: 2 })} defaultValue={vendor.data?.vendorName} />
+                                <Input id="vendorName" type="text" {...register("vendorName", { required: true, maxLength: 80, minLength: 2 })} defaultValue={vendor.data?.vendorName} disabled/>
                                 {errors.vendorName && <p className="text-[0.8rem] font-medium text-destructive">Seller name must be at least 2 characters.</p>}
                             </div>
 
@@ -124,7 +125,7 @@ const SellerProfile = () => {
                         <div className="flex items-center justify-between">
                             <label htmlFor="vendorDesc">Seller Description</label>
                             <div className="flex flex-col w-3/4">
-                                <Textarea id="vendorDesc" {...register("vendorDesc", { required: true, maxLength: 80, minLength: 2 })} defaultValue={vendor.data?.vendorDesc} className="resize-none" />
+                                <Textarea id="vendorDesc" {...register("vendorDesc", { required: true, maxLength: 80, minLength: 2 })} defaultValue={vendor.data?.vendorDesc} className="resize-none" disabled/>
                                 {errors.vendorDesc && <p className="text-[0.8rem] font-medium text-destructive">Seller description must be at least 2 characters.</p>}
                             </div>
                         </div>
@@ -139,7 +140,10 @@ const SellerProfile = () => {
                             }
                         </Button>
                     </form>
+
                 </div>
+
+                <Button>Create an account</Button>
             </div>
         </main>
     )

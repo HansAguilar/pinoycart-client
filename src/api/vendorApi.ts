@@ -23,7 +23,7 @@ export const createVendorApi = async (credentials: any) => {
 
 export const getVendorByID = async (vendorID: string) => {
 	const token = localStorage.getItem("token");
-	
+
 	try {
 		const response = await axios.post(`${BASE_URL}/get-vendor`, { vendorID: vendorID }, {
 			headers: {
@@ -39,12 +39,17 @@ export const getVendorByID = async (vendorID: string) => {
 };
 
 
-export const UpdateBanner = async (image: any) => {
+export const UpdateBannerAPI = async (image: File, vendorID: string) => {
 	const token = localStorage.getItem("token");
+	console.log("image", image);
 	try {
-		const response = await axios.patch(`${BASE_URL}/update-vendor-banner`, image, {
+		const response = await axios.patch(`${BASE_URL}/update-vendor-banner`, {
+			image: image,
+			vendorID: vendorID
+		}, {
 			headers: {
 				Authorization: `Bearer ${token}`,
+				"Content-Type": "multipart/form-data"
 			}
 		});
 		return response.data;
@@ -55,10 +60,14 @@ export const UpdateBanner = async (image: any) => {
 	}
 }
 
-export const UpdateVendorInfo = async (credentials: any) => {
+export const UpdateVendorInfo = async (vendorName: string, vendorDesc: string, vendorID: string) => {
 	const token = localStorage.getItem("token");
 	try {
-		const response = await axios.patch(`${BASE_URL}/update-vendor`, credentials, {
+		const response = await axios.patch(`${BASE_URL}/update-vendor`, {
+			vendorName,
+			vendorDesc,
+			vendorID
+		}, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			}

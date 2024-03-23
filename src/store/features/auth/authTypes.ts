@@ -6,7 +6,7 @@ interface IUserInfo {
     phone: string;
     role: string;
     username: string
-    vendorInfo: string
+    vendorInfo: string 
     _id: string
 }
 

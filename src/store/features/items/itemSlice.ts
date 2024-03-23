@@ -40,6 +40,14 @@ const itemSlice = createSlice({
 			.addCase(updateItem.pending, (state) => {
 				state.loading = true;
 			})
+
+			.addCase(removeItemByID.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(removeItemByID.fulfilled, (state) => {
+				state.loading = true;
+			})
+			
 	},
 })
 
