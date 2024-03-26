@@ -3,7 +3,7 @@ import { RootState } from "@/store/store";
 import { useEffect, useState } from "react"
 import { Toaster } from "@/components/ui/sonner";
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import UserProfile from "../components/UserProfile";
+import UserProfile from "../components/settings/user/UserProfile";
 import { Separator } from "@/components/ui/separator";
 
 const privateLinks = [

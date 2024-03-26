@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { Input } from './ui/input';
+import { Input } from '../../ui/input';
 import { addItem } from '@/store/features/items/itemSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { RootState } from '@/store/store';
 import { useForm } from 'react-hook-form';
-import { Button } from './ui/button';
+import { Button } from '../../ui/button';
 import { toast } from 'sonner';
 import {
     DialogClose,
@@ -12,7 +12,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import { Separator } from './ui/separator';
+import { Separator } from '../../ui/separator';
 
 interface IFormInputs {
     itemName: string;
@@ -22,28 +22,45 @@ interface IFormInputs {
     itemPrice: number;
     itemStock: number;
 }
-const AddItemModal = () => {
+const AddItemModal = ({ items, setItems }: { items: any; setItems: React.Dispatch<React.SetStateAction<any[]>> }) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<IFormInputs>();
     const [files, setFiles] = useState<any>();
     const dispatch = useAppDispatch();
-    const user = useAppSelector((state: RootState) => state.auth.data)
+    const user = useAppSelector((state: RootState) => state.auth.data);
 
     const onSubmit = (data: any) => {
-        register
-        const formData = new FormData();
-        for (let i = 0; i < files.length; i++) {
-            formData.append("images", files[i])
-        }
+        if (files.length <= 4) {
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append("images", files[i])
+            }
 
-        formData.append("itemName", data.itemName);
-        formData.append("itemDesc", data.itemDesc);
-        formData.append("itemCategory", data.itemCategory);
-        formData.append("itemPrice", data.itemPrice);
-        formData.append("itemStock", data.itemStock);
-        formData.append("userID", user?._id as string);
-        dispatch(addItem(formData))
-        toast.success("Item added successfully", { duration: 2000 })
+            formData.append("itemName", data.itemName);
+            formData.append("itemDesc", data.itemDesc);
+            formData.append("itemCategory", data.itemCategory);
+            formData.append("itemPrice", data.itemPrice);
+            formData.append("itemStock", data.itemStock);
+            formData.append("userID", user?._id as string);
+            dispatch(addItem(formData))
+
+            const newItem = {
+                itemName: data.itemName,
+                itemDesc: data.itemDesc,
+                itemCategory: data.itemCategory,
+                itemPrice: data.itemPrice,
+                itemStock: data.itemStock,
+                userID: user?._id as string,
+            };
+
+            // Update items state with the new item object
+            setItems((prevItems: any[]) => ([...prevItems, newItem]));
+
+            toast.success("Item added successfully", { duration: 2000 })
+            reset();
+        }
     }
+
+
 
     return (
         <DialogContent>
@@ -72,17 +89,18 @@ const AddItemModal = () => {
 
                 <div className="flex flex-col gap-2 w-full">
                     <label className='font-medium text-sm' htmlFor="images">Item Images</label>
-                    <Input id="images" type="file" accept="image/*" {...register("images")} onChange={(e) => setFiles(e.target.files)} multiple />
+                    <Input id="images" type="file" accept="image/jpeg, image/png" {...register("images", { required: true })} onChange={(e) => setFiles(e.target.files)} multiple />
+                    {files && files.length >= 5 && <p className='text-sm font-medium text-destructive'>4 images only</p>}
                 </div>
 
                 <div className="flex flex-col gap-2 w-full">
                     <label className='font-medium text-sm' htmlFor="itemPrice">Item Price</label>
-                    <Input id="itemPrice" type="text" {...register("itemPrice")} />
+                    <Input id="itemPrice" type="text" {...register("itemPrice", { required: true, min: 1 })} />
                 </div>
 
                 <div className="flex flex-col gap-2 w-full">
                     <label className='font-medium text-sm' htmlFor="itemStock">Item Quantity</label>
-                    <Input id="itemStock" type="text" {...register("itemStock")} />
+                    <Input id="itemStock" type="text" {...register("itemStock", { required: true, min: 1 })} />
                 </div>
 
                 <div className='flex items-center justify-end gap-4'>

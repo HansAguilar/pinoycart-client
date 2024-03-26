@@ -4,8 +4,8 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "./ui/separator";
-import { Button } from "./ui/button";
+import { Separator } from "../../ui/separator";
+import { Button } from "../../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { UpdateVendor, UpdateVendorBanner, createVendor, fetchVendorInfo } from "@/store/features/vendor/vendorSlice";
 import { toast } from "sonner"

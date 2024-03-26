@@ -17,26 +17,26 @@ const Feed = () => {
 
     return (
         <>
-            <div className="w-full grid lg:grid-cols-5 md:grid-cols-5 sm:grid-cols-4 min-[400px]:grid-cols-2 gap-2">
+            <div className="w-full grid max-md:grid-cols-3 lg:grid-cols-5 md:grid-cols-5 sm:grid-cols-4 min-[400px]:grid-cols-2 max-sm:grid-cols-2 gap-2 max-sm:gap-4">
                 {
                     data?.items?.length > 0 ?
                         data?.items.map(item => (
-                            <NavLink to={`item/${item._id}`} key={item._id}>
+                            <NavLink to={`item/${item._id}`} key={item._id} className="hover:shadow">
                                 <Card className="rounded-none flex flex-col lg:w-full gap-2" key={item.itemName}>
                                     {
                                         <img
                                             src={`http://localhost:3000/uploads/${item.itemImages[0]}`}
                                             alt="Photo"
-                                            className="object-cover h-48 w-full"
+                                            className="object-cover max-sm:h-40 h-48 w-full"
                                         />
                                     }
                                     <Badge variant="secondary" className="max-w-max">Mall</Badge>
                                     <div>
-                                        <h3>{item.itemName}</h3>
+                                        <h3 className="font-medium text-sm truncate">{item.itemName}</h3>
                                         <p className="text-xs">{item.vendorID.vendorName}</p>
                                     </div>
                                     <p className="text-lg text-destructive">₱ {item.itemPrice}</p>
-                                    <div className="flex items-center gap-2 pb-2">
+                                    <div className="flex items-center pb-2">
                                         <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
                                         <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
                                         <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />

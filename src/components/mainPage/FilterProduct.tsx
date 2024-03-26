@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { Button } from "./ui/button"
+import { Button } from "../ui/button"
 import { Slider } from "@/components/ui/slider"
-import { Input } from "./ui/input"
+import { Input } from "../ui/input"
 import { Search } from "lucide-react"
 import { MixerHorizontalIcon } from "@radix-ui/react-icons"
 

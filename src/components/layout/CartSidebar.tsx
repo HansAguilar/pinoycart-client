@@ -1,14 +1,14 @@
-import { SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle } from './ui/sheet'
-import { Separator } from './ui/separator'
+import { SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '../ui/sheet'
+import { Separator } from '../ui/separator'
 import { Cross2Icon } from '@radix-ui/react-icons'
-import CartQuantity from './CartQuantity'
-import { Button } from './ui/button'
+import CartQuantity from '../itemPage/CartQuantity'
+import { Button } from '../ui/button'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { RootState } from '@/store/store'
 import { cartActions, getCart, removeCart } from '@/store/features/cart/cartSlice'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import empty from "../assets/emptycart.png";
+import empty from "../../assets/emptycart.png";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from 'axios'
 import { toast } from "sonner"

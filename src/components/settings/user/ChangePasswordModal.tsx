@@ -8,7 +8,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Input } from "./ui/input";
+import { Input } from "../../ui/input";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { changePassword } from "@/store/features/auth/authSlice";
 import { toast } from "sonner";

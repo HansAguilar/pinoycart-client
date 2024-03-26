@@ -13,9 +13,9 @@ export interface IItems {
     itemName: string,
     itemDesc: string,
     itemPrice: number,
-    itemCategory: [string],
+    itemCategory: string,
     itemStock: number,
-    itemImages: [string],
+    itemImages: string[],
     itemLikes: number,
     itemRatings: number,
     itemReviews: [

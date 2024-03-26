@@ -1,5 +1,5 @@
-import FilterProduct from "@/components/FilterProduct";
-import Feed from "@/components/Feed";
+import FilterProduct from "@/components/mainPage/FilterProduct";
+import Feed from "@/components/mainPage/Feed";
 
 const Content = () => {
 	return (

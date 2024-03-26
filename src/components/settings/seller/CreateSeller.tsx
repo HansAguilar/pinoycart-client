@@ -3,14 +3,14 @@ import { RootState } from '@/store/store';
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { Separator } from './ui/separator';
+import { Separator } from '../../ui/separator';
 import { UpdateVendor, UpdateVendorBanner, createVendor, fetchVendorInfo } from '@/store/features/vendor/vendorSlice';
 import { toast } from 'sonner';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import { Button } from './ui/button';
-import join from "../assets/ask.png"
+import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
+import { Input } from '../../ui/input';
+import { Textarea } from '../../ui/textarea';
+import { Button } from '../../ui/button';
+import join from "../../../assets/ask.png"
 import { Edit2, Upload, } from 'lucide-react';
 import {
     Tooltip,
@@ -18,7 +18,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Card } from './ui/card';
+import { Card } from '../../ui/card';
 
 interface IFormInputs {
     vendorName: string;

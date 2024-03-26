@@ -3,11 +3,11 @@ import {
 	NavigationMenuItem,
 	NavigationMenuList,
 } from "@/components/ui/navigation-menu"
-import { ModeToggle } from "./ui/mode-toggle"
+import { ModeToggle } from "../ui/mode-toggle"
 import { ShoppingCart } from "lucide-react"
-import { Button } from "./ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { Button } from "../ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { Link, useNavigate } from "react-router-dom"
 import { authActions } from "@/store/features/auth/authSlice"
