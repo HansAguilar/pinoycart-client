@@ -15,12 +15,12 @@ export interface IVendorState {
 
 interface IUserVendorInfo {
     _id: string;
-    userID: string,
-    vendorName: string,
-    vendorDesc: string,
-    vendorBanner: string | null,
-    vendorFollowers: number,
-    vendorRatings: number,
-    vendorFeedback: [string],
-    vendorItems: [string]
+    userID: string;
+    vendorName: string;
+    vendorDesc: string;
+    vendorBanner: string | null;
+    vendorFollowers: number;
+    vendorRatings: number;
+    vendorFeedback: string[];
+    vendorItems: string[];
 }

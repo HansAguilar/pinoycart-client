@@ -3,35 +3,43 @@ import SellerTable from "./SellerTable";
 import AddItemModal from "../items/AddItemModal";
 import { Dialog } from "../../ui/dialog";
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppSelector } from "@/store/hooks";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "@/store/store";
-import { fetchVendorInfo } from "@/store/features/vendor/vendorSlice";
-
-interface IItem {
-    _id: string;
-    itemName: string;
-    itemStock: number;
-    itemDesc: string;
-    itemPrice: number;
-    itemCategory: string[];
-    itemImages: string[]
-}
+import { IItems } from "@/store/features/items/itemTypes";
 
 const SellerItems = () => {
-    const [items, setItems] = useState<IItem[]>([]); //! nandito ung items para ma share ung pag update sa table pag ka add sa modal
+    const [items, setItems] = useState<IItems[]>([]); //! nandito ung items para ma share ung pag update sa table pag ka add sa modal
     const user = useAppSelector((state: RootState) => state.auth);
     const vendor = useAppSelector((state: RootState) => state.vendor);
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user?.isLogged) {
-            return navigate("/challenge")
-        }
+        const fetchData = async () => {
+            try {
+                if (!user?.isLogged) {
+                    return navigate("/challenge");
+                }
+                setItems(vendor.items);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
 
-        dispatch(fetchVendorInfo(user.data?.vendorInfo!));
-    }, [user])
+
+        if (user?.isLogged) {
+            fetchData();
+            console.log("wa", vendor.items);
+        }
+    }, [user]);
+
+    if (user.data?.role !== "vendor") {
+        return (
+            <main className="flex m-auto flex-col gap-4 w-full">
+                <p className="text-muted-foreground">Create a seller account to start selling items!</p>
+            </main>
+        )
+    }
 
     return (
         <Dialog>

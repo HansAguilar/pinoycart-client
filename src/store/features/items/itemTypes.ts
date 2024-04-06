@@ -1,5 +1,5 @@
 export interface IItems {
-    vendorID: {
+    vendorID?: {
         userID: string,
         vendorName: string,
         vendorDesc: string,
@@ -16,9 +16,9 @@ export interface IItems {
     itemCategory: string,
     itemStock: number,
     itemImages: string[],
-    itemLikes: number,
-    itemRatings: number,
-    itemReviews: [
+    itemRatings?: number,
+    itemLikes?: number,
+    itemReviews?: [
         {
             userID: string,
             rating: number,
@@ -31,7 +31,7 @@ export interface IItemsState {
     loading: boolean;
     items: IItems[];
     currentItem: {
-        _id: string,  
+        _id: string,
         vendorID: string;
         itemName: string,
         itemDesc: string,

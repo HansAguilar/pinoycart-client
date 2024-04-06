@@ -21,14 +21,14 @@ const FilterProduct = () => {
     }, [])
 
     return (
-        <div className={`flex-col max-lg:flex-col w-1/4 flex gap-4 max-lg:w-full`}>
+        <div className={`flex-col max-xl:flex-col w-1/4 flex gap-4 max-xl:w-full`}>
             <div className="w-full">
                 <div className="flex items-center">
-                    <Input type="seach" placeholder="What are you looking for?" />
-                    <Button variant="outline" size="icon">
+                    <Input type="seach" className="z-30 rounded-l" placeholder="What are you looking for?" />
+                    <Button variant="outline" className="rounded-none" size="icon">
                         <Search className="h-4 w-4" />
                     </Button>
-                    <Button variant="outline" size="icon" onClick={() => setShowModal(prev => !prev)}>
+                    <Button variant="outline" className="rounded-none" size="icon" onClick={() => setShowModal(prev => !prev)}>
                         <MixerHorizontalIcon className="h-4 w-4" />
                     </Button>
                 </div>

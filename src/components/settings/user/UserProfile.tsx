@@ -64,13 +64,13 @@ export default function UserProfile() {
 
                 <div className="flex flex-col w-2/3 px-4 max-lg:p-0 max-lg:w-full">
                     <div className="py-2">
-                        <h3 className="text-lg font-medium">Profile</h3>
-                        <p className="text-sm text-muted-foreground mb-4">
+                        <h3 className="text-lg font-semibold">Profile</h3>
+                        <p className="text-sm text-muted-foreground">
                             This is how others will see you on the site.
                         </p>
                     </div>
-                    <Separator />
-                    <form onSubmit={handleSubmit(onSubmit)} className="pt-4 flex flex-col gap-4">
+                    <Separator className="my-4"/>
+                    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                         {
                             !editUsername
                                 ?

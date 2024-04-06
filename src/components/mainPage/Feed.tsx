@@ -30,18 +30,26 @@ const Feed = () => {
                                             className="object-cover max-sm:h-40 h-48 w-full"
                                         />
                                     }
-                                    <Badge variant="secondary" className="max-w-max">Mall</Badge>
-                                    <div>
-                                        <h3 className="font-medium text-sm truncate">{item.itemName}</h3>
-                                        <p className="text-xs">{item.vendorID.vendorName}</p>
-                                    </div>
-                                    <p className="text-lg text-destructive">₱ {item.itemPrice}</p>
-                                    <div className="flex items-center pb-2">
-                                        <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
-                                        <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
-                                        <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
-                                        <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
-                                        <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
+
+                                    <div className="flex flex-col gap-2 p-2">
+                                        <Badge variant="secondary" className="max-w-max">Mall</Badge>
+                                        <div>
+                                            <h3 className="font-medium text-sm truncate">{item.itemName}</h3>
+                                            <p className="text-xs">{item.vendorID?.vendorName}</p>
+                                        </div>
+
+                                        <div className='flex items-center gap-2'>
+                                            <h2 className='line-through text-muted-foreground font-medium'>₱{(Number(item.itemPrice) + 10).toFixed(2)}</h2>
+                                            <h2 className='text-primary font-medium'>₱{(Number(item.itemPrice)).toFixed(2)}</h2>
+                                        </div>
+
+                                        <div className="flex items-center pb-2">
+                                            <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
+                                            <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
+                                            <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
+                                            <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
+                                            <LucideStar size={16} strokeWidth={1} fill="yellow" className="text-yellow-300" />
+                                        </div>
                                     </div>
                                 </Card>
                             </NavLink>

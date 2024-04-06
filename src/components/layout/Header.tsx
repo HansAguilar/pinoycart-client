@@ -33,11 +33,11 @@ const Header = () => {
 				setCartLength(localCartLength.length)
 			}
 		}
-	}, [user.isLogged])
+	}, [user.isLogged, cartLength, JSON.parse(localStorage.getItem('cart')!)?.length])
 
 	return (
 		<Sheet>
-			<header className="bg-secondary">
+			<header className="bg-secondary fixed w-full z-50">
 				<NavigationMenu className="flex items-center flex-wrap">
 					<h2 className="text-3xl font-semibold tracking-tight text-center p-2 cursor-pointer" onClick={() => navigate("/")}>
 						PinoyCart

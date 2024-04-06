@@ -25,14 +25,13 @@ const cartSlice = createSlice({
             state.cartItems = updateDisplayItems
             state.total = tempTotal
         },
-        removeItemLocalCart: (state, action) => {
-            let priceItem = 0;
-            const newCart = state.cartItems.filter(item => {
-                priceItem = item.itemPrice * item.itemStock;
-                return item._id !== action.payload;
-            })
-            state.cartItems = newCart;
-            state.total -= priceItem;
+        removeItemLocalCart: (state, action: PayloadAction<string>) => {
+            const removedItem = state.cartItems.find(item => item._id === action.payload);
+            if (removedItem) {
+                const priceItem = removedItem.itemPrice * removedItem.itemStock;
+                state.cartItems = state.cartItems.filter(item => item._id !== action.payload);
+                state.total -= priceItem;
+            }
         },
         addToCart: (state, action: PayloadAction<{ item: any, quantity: number }>) => {
             const cartIndex = state.cartItems.findIndex((cartItem) => cartItem._id === action.payload.item._id);
@@ -55,27 +54,26 @@ const cartSlice = createSlice({
         minusPrice: (state, action: PayloadAction<{ itemPrice: number, quantity: number, _id: string }>) => {
             const cartIndex = state.cartItems.findIndex((cartItem) => cartItem._id === action.payload._id);
             state.cartItems[cartIndex].itemStock -= 1;
-            state.total -= action.payload.itemPrice
+            state.total -= action.payload.itemPrice;
 
-            if (state.cartItems.length <= 1) {
-                let priceItem = 0;
-                const newCart = state.cartItems.filter(item => {
-                    priceItem = item.itemPrice * item.itemStock;
-                    return item._id !== action.payload._id;
-                })
-                state.cartItems = newCart;
-                state.total -= priceItem;
+            // If the item's stock reaches 0, remove it from the cart
+            if (state.cartItems[cartIndex].itemStock === 0) {
+                state.cartItems.splice(cartIndex, 1);
             }
         },
         removeCart: (state, action) => {
-            let priceItem = 0;
-            const newCart = state.cartItems.filter(item => {
-                priceItem = item.itemPrice * item.itemStock;
-                return item._id !== action.payload;
-            })
-            state.cartItems = newCart;
-            state.total -= priceItem;
+            const removedItem = state.cartItems.find(item => item._id === action.payload);
+            if (removedItem) {
+                const priceItem = removedItem.itemPrice * removedItem.itemStock;
+                state.cartItems = state.cartItems.filter(item => item._id !== action.payload);
+                state.total -= priceItem;
+            }
+        },
+        clearCart: (state) => {
+            state.cartItems = [];
+            state.total = 0;
         }
+
     },
     extraReducers(builder) {
         builder
@@ -91,11 +89,9 @@ const cartSlice = createSlice({
             })
 
             .addCase(addToCart.fulfilled, (state, action) => {
-                if (action.payload.data.length > 0) {
-                    state.cartItems = action.payload.data;
-                    state.total = state.cartItems.reduce((acc, item) => acc + (item.itemPrice * item.itemStock), 0);
-                    state.loading = false
-                }
+                state.cartItems = action.payload.data;
+                state.total = state.cartItems.reduce((acc, item) => acc + (item.itemPrice * item.itemStock), 0);
+                state.loading = false
             })
             .addCase(addToCart.pending, (state) => {
                 state.loading = true;

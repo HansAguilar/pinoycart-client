@@ -12,29 +12,20 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import CustomPagination from "./CustomPagination";
+import { IItems } from "@/store/features/items/itemTypes";
 
-interface IItem {
-    _id: string;
-    itemName: string;
-    itemStock: number;
-    itemDesc: string;
-    itemPrice: number;
-    itemCategory: string[];
-    itemImages: string[]
-}
-
-const SellerTable = ({ items, setItems }: { items: IItem[], setItems: any }) => {
+const SellerTable = ({ items, setItems }: { items: IItems[], setItems: any }) => {
     const vendor = useAppSelector((state: RootState) => state.vendor);
     const dispatch = useAppDispatch();
     const [action, setAction] = useState("");
 
-    const [selectedItem, setSelectedItem] = useState<IItem>({
+    const [selectedItem, setSelectedItem] = useState<IItems>({
         _id: "",
         itemName: "",
         itemStock: 0,
         itemDesc: "",
         itemPrice: 0,
-        itemCategory: [],
+        itemCategory: "",
         itemImages: []
     });
 
@@ -61,7 +52,7 @@ const SellerTable = ({ items, setItems }: { items: IItem[], setItems: any }) => 
             itemStock: 0,
             itemDesc: "",
             itemPrice: 0,
-            itemCategory: [],
+            itemCategory: "",
             itemImages: []
         });
     }
@@ -71,15 +62,14 @@ const SellerTable = ({ items, setItems }: { items: IItem[], setItems: any }) => 
     const [totalPages, setTotalPages] = useState<number>(1);
 
     useEffect(() => {
-        setItems(vendor.items)
+        // setItems(vendor.items)
+        console.log("items", items)
         setTotalPages(Math.ceil(items.length / ITEMS_PER_PAGE));
     }, [setItems, items, dispatch])
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
-        console.log(currentPage)
     };
-
 
     if (vendor.loading) {
         return <p>Loading</p>
@@ -110,7 +100,7 @@ const SellerTable = ({ items, setItems }: { items: IItem[], setItems: any }) => 
                                 </TableHeader>
                                 <TableBody>
                                     {
-                                        items.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((item: IItem) => (
+                                        items.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((item) => (
                                             <TableRow key={item._id}>
                                                 <TableCell className="font-medium">{item.itemName}</TableCell>
                                                 <TableCell>{item.itemCategory}</TableCell>

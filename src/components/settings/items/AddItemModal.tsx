@@ -23,7 +23,7 @@ interface IFormInputs {
     itemStock: number;
 }
 const AddItemModal = ({ items, setItems }: { items: any; setItems: React.Dispatch<React.SetStateAction<any[]>> }) => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<IFormInputs>();
+    const { register, handleSubmit, reset } = useForm<IFormInputs>();
     const [files, setFiles] = useState<any>();
     const dispatch = useAppDispatch();
     const user = useAppSelector((state: RootState) => state.auth.data);
@@ -59,8 +59,6 @@ const AddItemModal = ({ items, setItems }: { items: any; setItems: React.Dispatc
             reset();
         }
     }
-
-
 
     return (
         <DialogContent>

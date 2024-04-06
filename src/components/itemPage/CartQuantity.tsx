@@ -27,23 +27,22 @@ const CartQuantity = ({ price, itemID, itemQty, userID }: { price: number, itemI
 
     const handleQuantity = (operation: string) => {
         if (user.isLogged) {
-            if (operation === "minus") {
-                setQuantity(prev => prev - 1)
-                dispatch(cartActions.minusPrice({ itemPrice: price, quantity: quantity, _id: itemID }))
+            if (operation === "minus" && quantity > 1) {
+                setQuantity(prev => prev - 1);
+                dispatch(cartActions.minusPrice({ itemPrice: price, quantity: 1, _id: itemID })); // Dispatch with quantity 1
                 const items = {
-                    items: [{ itemQuantity: 1, itemID: itemID }],
+                    items: [{ itemQuantity: 1, itemID: itemID }], // Here, only one item with quantity 1 is passed
                     userID: userID
-                }
-                dispatch(minusToCart(items))
-            }
-            else if (operation === "plus") {
-                setQuantity(prev => prev + 1)
-                dispatch(cartActions.addPrice({ itemPrice: price, quantity: quantity, _id: itemID }))
+                };
+                dispatch(minusToCart(items));
+            } else if (operation === "plus") {
+                setQuantity(prev => prev + 1);
+                dispatch(cartActions.addPrice({ itemPrice: price, quantity: 1, _id: itemID })); // Dispatch with quantity 1
                 const items = {
-                    items: [{ itemQuantity: 1, itemID: itemID }],
+                    items: [{ itemQuantity: 1, itemID: itemID }], // Here, only one item with quantity 1 is passed
                     userID: userID
-                }
-                dispatch(addToCart(items))
+                };
+                dispatch(addToCart(items));
             }
         }
         else {
@@ -59,8 +58,8 @@ const CartQuantity = ({ price, itemID, itemQty, userID }: { price: number, itemI
     }
 
     return (
-        <div className='flex border border-secondary max-w-max items-center gap-2'>
-            <Button variant="outline" size="icon" onClick={() => handleQuantity("minus")}><Minus className="h-4 w-4" /></Button>
+        <div className='flex max-w-max items-center gap-2'>
+            <Button variant="outline" disabled={quantity === 1} size="icon" onClick={() => handleQuantity("minus")}><Minus className="h-4 w-4" /></Button>
             <p className='font-medium px-2 text-sm'>{quantity}</p>
             <Button variant="outline" size="icon" onClick={() => handleQuantity("plus")}><Plus className="h-4 w-4" /></Button>
         </div>

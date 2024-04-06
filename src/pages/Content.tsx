@@ -3,7 +3,7 @@ import Feed from "@/components/mainPage/Feed";
 
 const Content = () => {
 	return (
-		<main className="flex container py-8 m-auto gap-2 max-lg:flex-col w-full">
+		<main className="flex container relative my-16 py-8 m-auto gap-2 max-xl:flex-col w-full">
 			<FilterProduct />
 			<Feed />
 		</main>

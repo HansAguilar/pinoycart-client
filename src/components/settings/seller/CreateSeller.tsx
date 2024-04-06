@@ -46,11 +46,7 @@ const CreateSeller = () => {
 
     useEffect(() => {
         if (!user?.isLogged) {
-            navigate("/challenge")
-        }
-
-        else {
-            dispatch(fetchVendorInfo(user.data?.vendorInfo!))
+            return navigate("/challenge")
         }
     }, [])
 
