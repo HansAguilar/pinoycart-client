@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Separator } from '../../ui/separator';
-import { UpdateVendor, UpdateVendorBanner, createVendor, fetchVendorInfo } from '@/store/features/vendor/vendorSlice';
+import { UpdateVendor, UpdateVendorBanner, createVendor } from '@/store/features/vendor/vendorSlice';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
 import { Input } from '../../ui/input';
@@ -52,13 +52,19 @@ const CreateSeller = () => {
 
     const onSubmit = (data: IFormInputs) => {
         if (user?.data?.role === "customer") {
-            const formData = new FormData();
-            formData.append("vendorName", data.vendorName)
-            formData.append("vendorDesc", data.vendorDesc)
-            formData.append("image", imageSend)
-            formData.append("userID", user.data?._id as string)
-            dispatch(createVendor(formData))
-            toast.success("Seller created successfully", { duration: 2000 })
+            if (imageSend) {
+                const formData = new FormData();
+                formData.append("vendorName", data.vendorName)
+                formData.append("vendorDesc", data.vendorDesc)
+                formData.append("image", imageSend)
+                formData.append("userID", user.data?._id as string)
+                dispatch(createVendor(formData))
+                toast.success("Seller created successfully", { duration: 2000 })
+                window.location.reload();
+            }
+            else {
+                toast.error("Please upload a profile", { duration: 2000 })
+            }
         }
 
         else {
@@ -160,7 +166,7 @@ const CreateSeller = () => {
                                                 {
                                                     user?.data?.role === "vendor" && <Button className="max-w-max" variant="secondary" onClick={() => setEditUserInfo(false)}>Cancel</Button>
                                                 }
-                                                <Button className="max-w-max" type="submit">
+                                                <Button className="max-w-max" type="submit" disabled={vendor.loading}>
                                                     {
                                                         user?.data?.role === "vendor"
                                                             ?

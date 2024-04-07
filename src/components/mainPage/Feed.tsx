@@ -40,7 +40,7 @@ const Feed = () => {
 
                                         <div className='flex items-center gap-2'>
                                             <h2 className='line-through text-muted-foreground font-medium'>₱{(Number(item.itemPrice) + 10).toFixed(2)}</h2>
-                                            <h2 className='text-primary font-medium'>₱{(Number(item.itemPrice)).toFixed(2)}</h2>
+                                            <h2 className='text-primary font-medium'>₱{item.itemPrice.toLocaleString()}</h2>
                                         </div>
 
                                         <div className="flex items-center pb-2">

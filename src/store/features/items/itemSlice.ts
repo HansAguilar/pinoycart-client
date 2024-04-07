@@ -5,7 +5,7 @@ import { addItemApi, deleteItemByIDAPI, getItemByIDAPI, updateItemByIDAPI } from
 
 
 const initialState: IItemsState = {
-	loading: true,
+	loading: false,
 	items: [],
 	currentItem: undefined
 }

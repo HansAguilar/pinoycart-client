@@ -6,7 +6,7 @@ import { changePasswordAPI, editUserAPI } from "@/api/userApi";
 const initialState: IAuthState = {
 	isLogged: false,
 	data: null,
-	loading: true,
+	loading: false,
 }
 
 const authSlice = createSlice({

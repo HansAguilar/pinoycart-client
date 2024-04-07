@@ -3,7 +3,7 @@ interface CartItem {
     itemName: string,
     itemDesc: string,
     itemPrice: number,
-    itemCategory: string[],
+    itemCategory: string,
     itemStock: number,
     itemImages: string[],
     itemLikes: number,

@@ -5,7 +5,7 @@ import Authentication from './pages/Authentication'
 import Layout from './components/layout/Layout'
 import { Provider } from 'react-redux';
 import { persistor, store } from './store/store'
-import { PersistGate } from 'redux-persist/integration/react'
+import { PersistGate } from 'redux-persist/integration/react';
 
 function App() {
   return (
@@ -16,8 +16,6 @@ function App() {
             <Routes>
               <Route path="/*" element={<Layout />} />
               <Route element={<Authentication />} path='/challenge' />
-              {/* <Route element={<PrivateRoutes />}> */}
-              {/* </Route> */}
             </Routes>
           </Router>
         </ThemeProvider >

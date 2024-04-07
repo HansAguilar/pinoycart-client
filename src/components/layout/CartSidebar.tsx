@@ -117,7 +117,7 @@ const CartSidebar = () => {
                     <p>{item.itemName}</p>
                     <div className='flex items-center gap-8 mt-auto'>
                         <CartQuantity price={item.itemPrice} itemID={item._id} itemQty={item.itemStock} userID={user.data?._id as string} />
-                        <p className="text-primary font-medium text-lg">₱ {item.itemPrice}</p>
+                        <p className="text-primary font-medium text-lg">₱{item.itemPrice.toLocaleString()}</p>
                     </div>
                 </div>
             </div>
@@ -149,13 +149,13 @@ const CartSidebar = () => {
 
             <div className="flex items-center justify-between">
                 <h3>TOTAL</h3>
-                <p className='text-lg text-primary'>₱{cart.total ? cart.total.toFixed(2) : total.toFixed(2)}</p>
+                <p className='text-lg text-primary'>₱{cart.total ? cart.total.toFixed(2).toLocaleString() : total.toLocaleString()}</p>
             </div>
 
             <Separator className="mt-4 mb-4" />
 
             <SheetFooter>
-                <Button disabled={submitted} onClick={handleCheckout}>
+                <Button disabled={submitted || displayItems.length < 1} onClick={handleCheckout}>
                     <div role="status">
                         <span>
                             {

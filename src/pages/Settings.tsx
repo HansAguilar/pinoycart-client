@@ -52,7 +52,7 @@ const Settings = () => {
                                 <NavLink
                                     key={link.to}
                                     to={link.to}
-                                    className={`${activeTab === link.to ? "bg-secondary" : ""} rounded px-4 py-2 w-52 max-lg:w-auto font-semibold text-sm`}
+                                    className={`${activeTab === link.to ? "bg-slate-700 text-white" : ""} rounded px-4 py-2 w-52 max-lg:w-auto font-semibold text-sm`}
                                     onClick={() => setActiveTab(link.to)}
                                 >
                                     {link.title}

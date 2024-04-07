@@ -4,7 +4,7 @@ import { UpdateBannerAPI, UpdateVendorInfo, createVendorApi, getVendorByID } fro
 
 const initialState: IVendorState = {
     data: null,
-    loading: true,
+    loading: false,
     items: [],
     msg: ""
 }

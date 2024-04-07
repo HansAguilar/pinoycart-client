@@ -43,8 +43,9 @@ const CardItem = ({ item, quantity, handleAddToCart, vendorInfo, handleQuantity,
                 </div>
 
                 <div className='flex items-center gap-2'>
-                    <h2 className='text-xl line-through text-muted-foreground font-medium'>₱{(Number(item.currentItem?.itemPrice) + 10).toFixed(2)}</h2>
-                    <h2 className='text-xl text-primary font-medium'>₱{(Number(item.currentItem?.itemPrice)).toFixed(2)}</h2>
+                    <h2 className='text-xl line-through text-muted-foreground font-medium'>₱{(item.currentItem?.itemPrice + 10).toFixed(2).toLocaleString()}</h2>
+                    <h2 className='text-xl text-primary font-medium'>₱{item.currentItem?.itemPrice.toFixed(2).toLocaleString()}</h2>
+
                 </div>
 
                 <p>{item.currentItem?.itemDesc}</p>

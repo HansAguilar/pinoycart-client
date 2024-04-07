@@ -27,6 +27,15 @@ const ItemPage = () => {
         setShuffledItems(shuffled);
     }, [item]);
 
+    useEffect(() => {
+        if (item.currentItem) {
+            document.title = `${item.currentItem.itemName}`;
+        } 
+
+        return () => {
+            document.title = 'PinoyCart';
+        }
+    }, [item.currentItem]);
 
     const displayOtherProducts = () => {
         if (item.loading) {
@@ -60,8 +69,8 @@ const ItemPage = () => {
                                 </div>
 
                                 <div className='flex items-center gap-2'>
-                                    <h2 className='line-through text-muted-foreground font-medium'>₱{(Number(allItem.itemPrice) + 10).toFixed(2)}</h2>
-                                    <h2 className='text-primary font-medium'>₱{(Number(allItem.itemPrice)).toFixed(2)}</h2>
+                                    <h2 className='line-through text-muted-foreground font-medium'>₱{(allItem.itemPrice + 10).toLocaleString()}</h2>
+                                    <h2 className='text-primary font-medium'>₱{allItem.itemPrice.toLocaleString()}</h2>
                                 </div>
 
                                 <div className="flex items-center pb-2">
@@ -80,7 +89,7 @@ const ItemPage = () => {
     }
 
 
-    //! DITO NAGTAPOS SA CART GUESS
+    //^ ADD ITEMS TO LOCAL STORAGE 
     const checkGuessCart = (item: any) => {
         const getCartFromLocalStorage = localStorage.getItem('cart');
         const tempCart: any[] = getCartFromLocalStorage ? JSON.parse(getCartFromLocalStorage) : [];
@@ -180,7 +189,6 @@ const ItemPage = () => {
         const bgColor = `rgb(${avgR}, ${avgG}, ${avgB})`;
         setAmbianceColor(bgColor); // Update the state with the ambiance color
     }, []);
-
 
     return (
         <div className='flex flex-col container my-8 max-w-4xl gap-4'>
