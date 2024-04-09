@@ -17,38 +17,53 @@ const Success = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (user.isLogged) {
-            const session_id = a.get('session_id');
-            const fetchSuccess = async () => {
-                try {
-                    const result = await axios.post(`http://localhost:3000/api/v1/success`,
-                        { session_id: session_id, userID: user.data?._id },
-                        {
-                            headers: {
-                                Authorization: `Bearer ${localStorage.getItem('token')}`,
-                            }
-                        })
-
+        let isMounted = true; // Flag to track component mount status
+    
+        const fetchSuccess = async (session_id: string) => {
+            try {
+                const result = await axios.post(
+                    `http://localhost:3000/api/v1/success`,
+                    { session_id: session_id, userID: user.data?._id },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        }
+                    }
+                );
+    
+                // Check if component is still mounted before updating state
+                if (isMounted) {
                     setMessage(result.data.message);
                     setLoading(false);
                     setError(false);
-
-                    if(result.data.cache){
-                        dispatch(cartActions.clearCart())
-
+    
+                    if (result.data.cache) {
+                        dispatch(cartActions.clearCart());
                     }
                 }
-
-                catch (error: any) {
+            } catch (error: any) {
+                // Check if component is still mounted before updating state
+                if (isMounted) {
                     setLoading(false);
                     setError(true);
                     setMessage(error.response.data.message);
                     console.log(error.response.data.message);
                 }
             }
-            fetchSuccess()
+        };
+    
+        if (user.isLogged && a.has('session_id')) {
+            const session_id = a.get('session_id');
+            fetchSuccess(session_id!);
         }
-    }, [])
+    
+        // Cleanup function to set isMounted to false when component unmounts
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+    
+
 
     if (loading) {
         return (
@@ -63,7 +78,7 @@ const Success = () => {
 
     return (
         <div className="my-16 py-8 flex items-center flex-col justify-center h-screen w-full px-4">
-            <div className="flex flex-col items-center gap-4 bg-popover-foreground/20 w-full max-w-lg p-10 rounded-md">
+            <div className="flex flex-col items-center gap-4 bg-secondary w-full max-w-lg p-10 rounded-md">
                 <div className={`${error ? "bg-red-300" : "bg-green-300"} p-4 rounded-full`}>
                     <div className={`${error ? "bg-red-400" : "bg-green-400"} p-4 rounded-full`}>
                         <div className={`${error ? "bg-red-500" : "bg-green-500"} p-2 rounded-full`}>

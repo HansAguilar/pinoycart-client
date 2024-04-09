@@ -37,7 +37,8 @@ const Header = () => {
 
 	return (
 		<Sheet>
-			<header className="bg-secondary fixed w-full z-50">
+			//! dto nahinto
+			<header className="bg-secondary/30 fixed w-full z-50 backdrop-blur-3xl min-h-[2rem]">
 				<NavigationMenu className="flex items-center flex-wrap">
 					<h2 className="text-3xl font-semibold tracking-tight text-center p-2 cursor-pointer" onClick={() => navigate("/")}>
 						PinoyCart

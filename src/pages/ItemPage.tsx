@@ -11,6 +11,7 @@ import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from '../components/ui/badge';
 import CardItem from '@/components/itemPage/CardItem';
+import Reviews from '@/components/itemPage/Reviews';
 
 const ItemPage = () => {
     const { id } = useParams();
@@ -30,7 +31,7 @@ const ItemPage = () => {
     useEffect(() => {
         if (item.currentItem) {
             document.title = `${item.currentItem.itemName}`;
-        } 
+        }
 
         return () => {
             document.title = 'PinoyCart';
@@ -136,7 +137,7 @@ const ItemPage = () => {
         if (operation === "minus" && quantity > 1) {
             return setQuantity(prev => prev - 1)
         }
-        else if (operation === "plus") {
+        else if (operation === "plus" && (quantity < item.currentItem?.itemStock!)) {
             return setQuantity(prev => prev + 1)
         }
     }
@@ -191,7 +192,7 @@ const ItemPage = () => {
     }, []);
 
     return (
-        <div className='flex flex-col container my-8 max-w-4xl gap-4'>
+        <div className='flex flex-col container mb-8 max-w-4xl gap-4 mt-[calc(2rem+2rem)]'>
             <NavLink to="/" className='flex items-center max-w-max gap-2'>
                 <ArrowLeft className='h-4 w-4' />
                 <p className='font-medium'>Go back</p>
@@ -216,13 +217,17 @@ const ItemPage = () => {
             }
 
             <div>
-                <p className='text-sm'>Other products from {vendorInfo.data?.vendorName}</p>
+                <p className='text-sm mt-4 mb-2'>Other products from {vendorInfo.data?.vendorName}</p>
                 <div className='grid max-md:grid-cols-3 max-sm:grid-cols-2 max-xs:grid-cols-2 grid-cols-4 gap-4'>
                     {
                         vendorInfo && displayOtherProducts()
                     }
                 </div>
             </div>
+
+            {
+                user.data?.orders.includes(id!) && <Reviews />
+            }
         </div>
     )
 }
