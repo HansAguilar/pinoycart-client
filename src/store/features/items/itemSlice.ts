@@ -80,7 +80,7 @@ export const getItemByID = createAsyncThunk(
 	async (itemID: any) => {
 		try {
 			const response = await getItemByIDAPI(itemID);
-			return response.data.getItem;
+			return response.data;
 		} catch (error) {
 			console.log(error);
 		}

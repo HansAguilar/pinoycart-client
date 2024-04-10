@@ -33,19 +33,23 @@ export interface IItemsState {
     currentItem: {
         _id: string,
         vendorID: string;
-        itemName: string,
-        itemDesc: string,
-        itemPrice: number,
-        itemCategory: string,
-        itemStock: number,
-        itemImages: string[],
-        itemLikes: number,
-        itemRatings: number,
+        itemName: string;
+        itemDesc: string;
+        itemPrice: number;
+        itemCategory: string;
+        itemStock: number;
+        itemImages: string[];
+        itemLikes: number;
+        itemRatings: number;
         itemReviews: [
             {
-                userID: string,
-                rating: number,
-                comment: string
+                userID: string;
+                username: string;
+                likes: number;
+                rating: number;
+                isLiked: boolean;
+                date: Date | string;
+                comment: string;
             }
         ]
     } | undefined

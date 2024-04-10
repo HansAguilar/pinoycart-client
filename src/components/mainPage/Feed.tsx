@@ -20,7 +20,7 @@ const Feed = () => {
             <div className="w-full grid max-md:grid-cols-3 lg:grid-cols-5 md:grid-cols-5 sm:grid-cols-4 min-[400px]:grid-cols-2 max-sm:grid-cols-2 gap-2 max-sm:gap-4">
                 {
                     data?.items?.length > 0 ?
-                        data?.items.filter(item => item.itemStock > 0).map(item => (
+                        data?.items.map(item => (
                             <NavLink to={`item/${item._id}`} key={item._id} className="hover:shadow">
                                 <Card className="rounded-none flex flex-col lg:w-full gap-2" key={item.itemName}>
                                     {
