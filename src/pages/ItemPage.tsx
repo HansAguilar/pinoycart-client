@@ -1,7 +1,7 @@
 import { getItemByID } from '@/store/features/items/itemSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { RootState } from '@/store/store'
-import { ArrowLeft, ChevronDown, ChevronUp, LucideChevronDown, LucideStar, LucideThumbsUp, Star, ThumbsUp, ThumbsUpIcon } from 'lucide-react';
+import { ArrowLeft, LucideStar } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useParams } from 'react-router-dom';
 import { fetchVendorInfo } from '@/store/features/vendor/vendorSlice';
@@ -12,25 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from '../components/ui/badge';
 import CardItem from '@/components/itemPage/CardItem';
 import Reviews from '@/components/itemPage/Reviews';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 
-const StarRating = ({ rating }: { rating: number }) => {
-    const totalStars = 5;
-    const filledStars = Array.from({ length: rating }).map((_, index) => (
-        <Star key={index} className='text-yellow-400' size={16} fill='yellow' />
-    ));
-    const emptyStars = Array.from({ length: totalStars - rating }).map((_, index) => (
-        <Star key={rating + index} className='text-gray-500' size={16} />
-    ));
-
-    return (
-        <div className="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
-            {filledStars}
-            {emptyStars}
-        </div>
-    );
-};
 
 const ItemPage = () => {
     const { id } = useParams();
@@ -41,7 +23,6 @@ const ItemPage = () => {
     const [quantity, setQuantity] = useState<number>(1);
     const [shuffledItems, setShuffledItems] = useState<any[]>([]);
 
-    const [reviewLikes, setReviewLikes] = useState<number>(0);
 
     useEffect(() => {
         //^ RANDOM ITEM RECOOMENDATION
@@ -239,49 +220,6 @@ const ItemPage = () => {
                     />
             }
 
-            <article>
-                <p className="font-medium py-4">Product Reviews</p>
-
-                {
-                    item.currentItem?.itemReviews.map(review => (
-                        <>
-                            <div className="flex items-start font-medium justify-between">
-                                <div className="flex items-center mb-4 font-medium">
-                                    <Avatar className='w-10 h-10 me-4 rounded-full'>
-                                        <AvatarImage src={`https://ui-avatars.com/api/?name=${review.username.substring(0, 2)}&background=6225c5&color=fff`} />
-                                        <AvatarFallback>CN</AvatarFallback>
-                                    </Avatar>
-                                    <p>{review.username} <time dateTime="2014-08-16 19:00" className="block text-sm text-gray-500 dark:text-gray-400">{new Date(review.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time></p>
-                                </div>
-                                <div className="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
-                                    <StarRating rating={review.rating} />
-                                </div>
-                            </div>
-
-
-                            <p className="mb-2 text-gray-500">{review.comment}</p>
-
-                            <aside>
-                                <div className="flex items-center">
-                                    <div className="flex items-center">
-                                        <Button variant="ghost" className='group' size="icon" onClick={() => setReviewLikes(review.likes + 1)}>
-                                            <ThumbsUp size={18} className={`text-gray-500 max-w-max group-hover:text-primary ${review.isLiked && "text-primary"} cursor-pointer`} />
-                                        </Button>
-                                        <p className="mt-1 font-medium text-xs text-gray-500"> {reviewLikes > 0 ? reviewLikes : review.likes} people found this helpful</p>
-                                    </div>
-
-                                    <a href="#" className="ps-4 text-xs font-medium text-blue-600 hover:underline dark:text-blue-500 border-gray-600 ms-4 border-s md:mb-0">Report abuse</a>
-                                </div>
-                            </aside>
-                        </>
-
-                    ))
-                }
-
-
-            </article>
-
-
             <div>
                 <p className='text-sm mt-4 mb-2'>Other products from {vendorInfo.data?.vendorName}</p>
                 <div className='grid max-md:grid-cols-3 max-sm:grid-cols-2 max-xs:grid-cols-2 grid-cols-4 gap-4'>
@@ -292,7 +230,7 @@ const ItemPage = () => {
             </div>
 
             {
-                user.data?.orders.includes(id!) && <Reviews />
+                <Reviews itemID={id} userID={user.data?._id} />
             }
         </div>
     )

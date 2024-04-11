@@ -43,8 +43,10 @@ export interface IItemsState {
         itemRatings: number;
         itemReviews: [
             {
-                userID: string;
-                username: string;
+                userID: {
+                    username: string;
+                    _id: string;
+                };
                 likes: number;
                 rating: number;
                 isLiked: boolean;

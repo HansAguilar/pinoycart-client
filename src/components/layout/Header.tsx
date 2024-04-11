@@ -67,7 +67,7 @@ const Header = () => {
 								<NavigationMenuItem>
 									<DropdownMenu>
 										<DropdownMenuTrigger asChild>
-											<Button variant="ghost">
+											<Button variant="ghost" className="hover:bg-transparent">
 												<Avatar>
 													<AvatarImage src={`https://ui-avatars.com/api/?name=${user.data?.username.charAt(0)}&background=6225c5&color=fff`} />
 													<AvatarFallback>CN</AvatarFallback>

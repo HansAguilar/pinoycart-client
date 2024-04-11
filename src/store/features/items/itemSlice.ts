@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { IItemsState } from "./itemTypes";
-import { addItemApi, deleteItemByIDAPI, getItemByIDAPI, updateItemByIDAPI } from "@/api/itemsApi";
+import { addItemApi, addReviewAPI, deleteItemByIDAPI, getItemByIDAPI, updateItemByIDAPI } from "@/api/itemsApi";
 
 
 const initialState: IItemsState = {
@@ -47,7 +47,15 @@ const itemSlice = createSlice({
 			.addCase(removeItemByID.fulfilled, (state) => {
 				state.loading = true;
 			})
-			
+
+			.addCase(addReview.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(addReview.fulfilled, (state, action) => {
+				state.loading = true;
+				state.currentItem = action.payload
+			})
+
 	},
 })
 
@@ -92,6 +100,19 @@ export const removeItemByID = createAsyncThunk(
 	async (itemID: any) => {
 		try {
 			const response = await deleteItemByIDAPI(itemID);
+			return response.data;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+)
+
+
+export const addReview = createAsyncThunk(
+	"items/addReview",
+	async (data: any) => {
+		try {
+			const response = await addReviewAPI(data);
 			return response.data;
 		} catch (error) {
 			console.log(error);
