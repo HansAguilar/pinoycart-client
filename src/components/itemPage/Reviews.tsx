@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Button } from "../ui/button";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { LucideStar, Star, ThumbsUp } from 'lucide-react';
-import { useForm } from 'react-hook-form';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { RootState } from '@/store/store';
 import { toast } from 'sonner';
 import { addReview } from '@/store/features/items/itemSlice';
+
 interface IFormInputs {
     rating: number;
     comment: string;
@@ -34,17 +34,19 @@ const StarRating = ({ rating }: { rating: number }) => {
 };
 
 
-const Reviews = ({ itemID, userID }: { itemID: string | undefined, userID: string | undefined }) => {
+const Reviews = ({ itemID }: { itemID: string }) => {
+    const item = useAppSelector((state: RootState) => state.items);
+    const user = useAppSelector((state: RootState) => state.auth.data);
+    const dispatch = useAppDispatch();
+
     const [sendData, setSendData] = useState<IFormInputs>({
         comment: "",
         rating: 0,
         itemID: itemID,
-        userID: userID
+        userID: user?._id
     });
-    const [reviewLikes, setReviewLikes] = useState<number>(0);
 
-    const item = useAppSelector((state: RootState) => state.items);
-    const dispatch = useAppDispatch();
+    const [reviewLikes, setReviewLikes] = useState<number>(0);
 
     const onSubmit = (e: any) => {
         e.preventDefault();
@@ -57,10 +59,7 @@ const Reviews = ({ itemID, userID }: { itemID: string | undefined, userID: strin
 
     return (
         <article>
-
             <Dialog>
-                <DialogTrigger className='max-w-max bg-primary px-4 py-2 rounded'>Add a review</DialogTrigger>
-
                 {
                     <DialogContent>
                         <DialogHeader>
@@ -114,55 +113,53 @@ const Reviews = ({ itemID, userID }: { itemID: string | undefined, userID: strin
                     </DialogContent>
                 }
 
+                <p className="font-medium py-4">Product Reviews</p>
 
-            </Dialog >
-
-            <p className="font-medium py-4">Product Reviews</p>
-
-            {
-                item.currentItem?.itemReviews && item.currentItem?.itemReviews.length > 0 ?
-                    item.currentItem?.itemReviews.map(review => (
-                        <div className='bg-secondary p-4 border'>
-                            <div className="flex items-start font-medium justify-between">
-                                <div className="flex items-center mb-4 font-medium">
-                                    <Avatar className='w-10 h-10 me-4 rounded-full'>
-                                        <AvatarImage src={`https://ui-avatars.com/api/?name=${review.userID.username.substring(0, 2)}&background=6225c5&color=fff`} />
-                                        <AvatarFallback>CN</AvatarFallback>
-                                    </Avatar>
-                                    <p>{review.userID.username} <time dateTime="2014-08-16 19:00" className="block text-sm text-gray-500 dark:text-gray-400">{new Date(review.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time></p>
+                {
+                    item.currentItem?.itemReviews && item.currentItem?.itemReviews.length > 0 ?
+                        item.currentItem?.itemReviews.map(review => (
+                            <div className='bg-secondary p-4 border'>
+                                <div className="flex items-start font-medium justify-between">
+                                    <div className="flex items-center mb-4 font-medium">
+                                        <Avatar className='w-10 h-10 me-4 rounded-full'>
+                                            <AvatarImage src={`https://ui-avatars.com/api/?name=${review.userID.username?.substring(0, 2)}&background=6225c5&color=fff`} />
+                                            <AvatarFallback>CN</AvatarFallback>
+                                        </Avatar>
+                                        <p>{review.userID.username} <time dateTime="2014-08-16 19:00" className="block text-sm text-gray-500 dark:text-gray-400">{new Date(review.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time></p>
+                                    </div>
+                                    <div className="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
+                                        <StarRating rating={review.rating} />
+                                    </div>
                                 </div>
-                                <div className="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
-                                    <StarRating rating={review.rating} />
-                                </div>
+
+                                <p className="mb-2 text-gray-500">{review.comment}</p>
+
+                                <aside>
+                                    <div className="flex items-center">
+                                        <div className="flex items-center">
+                                            <Button variant="ghost" className='group' size="icon" onClick={() => setReviewLikes(review.likes + 1)}>
+                                                <ThumbsUp size={18} className={`text-gray-500 max-w-max group-hover:text-primary ${review.isLiked && "text-primary"} cursor-pointer`} />
+                                            </Button>
+                                            <p className="mt-1 font-medium text-xs text-gray-500"> {reviewLikes > 0 ? reviewLikes : review.likes} people found this helpful</p>
+                                        </div>
+
+                                        <a href="#" className="ps-4 text-xs font-medium text-blue-600 hover:underline dark:text-blue-500 border-gray-600 ms-4 border-s md:mb-0">Report abuse</a>
+                                    </div>
+                                </aside>
                             </div>
 
-                            <p className="mb-2 text-gray-500">{review.comment}</p>
-
-                            <aside>
-                                <div className="flex items-center">
-                                    <div className="flex items-center">
-                                        <Button variant="ghost" className='group' size="icon" onClick={() => setReviewLikes(review.likes + 1)}>
-                                            <ThumbsUp size={18} className={`text-gray-500 max-w-max group-hover:text-primary ${review.isLiked && "text-primary"} cursor-pointer`} />
-                                        </Button>
-                                        <p className="mt-1 font-medium text-xs text-gray-500"> {reviewLikes > 0 ? reviewLikes : review.likes} people found this helpful</p>
-                                    </div>
-
-                                    <a href="#" className="ps-4 text-xs font-medium text-blue-600 hover:underline dark:text-blue-500 border-gray-600 ms-4 border-s md:mb-0">Report abuse</a>
-                                </div>
-                            </aside>
+                        ))
+                        :
+                        <div className="flex flex-col items-center justify-center bg-secondary rounded-lg p-10">
+                            <h2 className="text-xl font-semibold text-gray-500">No Reviews Yet</h2>
+                            <p className="text-gray-600 mb-2">We don't have any reviews for this product yet.</p>
+                            {
+                                user?.orders.includes(itemID) && <DialogTrigger className='max-w-max bg-primary px-4 py-2 rounded'>Add a review</DialogTrigger>
+                            }
                         </div>
-
-                    ))
-                    :
-                    <div className="flex flex-col items-center justify-center p-10 bg-secondary rounded-lg">
-                        <img src="https://example.com/no-reviews-icon.png" alt="No reviews" className="w-24 h-24 mb-5" />
-                        <h2 className="text-xl font-semibold text-gray-800">No Reviews Yet</h2>
-                        <p className="text-gray-600">We don't have any reviews for this product yet. Be the first to write a review!</p>
-                        <button className="mt-4 px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Write a Review</button>
-                    </div>
-            }
+                }
+            </Dialog >
         </article>
-
     );
 };
 

@@ -1,8 +1,8 @@
 interface IUserInfo {
-    cart: [string];
+    cart: string[];
     email: string;
-    followed: [string];
-    orders: [string];
+    followed: string[];
+    orders: string[];
     phone: string;
     role: string;
     username: string

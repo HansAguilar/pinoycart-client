@@ -15,7 +15,7 @@ import Reviews from '@/components/itemPage/Reviews';
 
 
 const ItemPage = () => {
-    const { id } = useParams();
+    const { id  } = useParams();
     const item = useAppSelector((state: RootState) => state.items);
     const user = useAppSelector((state: RootState) => state.auth);
     const vendorInfo = useAppSelector((state: RootState) => state.vendor);
@@ -230,7 +230,7 @@ const ItemPage = () => {
             </div>
 
             {
-                <Reviews itemID={id} userID={user.data?._id} />
+                <Reviews itemID={id ?? ''} />
             }
         </div>
     )
