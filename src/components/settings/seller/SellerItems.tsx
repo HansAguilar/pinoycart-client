@@ -15,6 +15,10 @@ const SellerItems = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (!user?.isLogged) {
+            return navigate("/challenge")
+        }
+
         const fetchData = async () => {
             try {
                 if (!user?.isLogged) {
@@ -29,7 +33,6 @@ const SellerItems = () => {
 
         if (user?.isLogged) {
             fetchData();
-            console.log("wa", vendor.items);
         }
     }, [user]);
 
@@ -47,7 +50,7 @@ const SellerItems = () => {
 
                 <div className="flex flex-col w-2/3 px-4 max-lg:p-0 max-lg:w-full">
                     <div className="py-2">
-                        <h3 className="text-lg font-medium">Items</h3>
+                        <h3 className="text-lg font-semibold">Items</h3>
                         <p className="text-sm text-muted-foreground mb-4">
                             This is where you can add and view items.
                         </p>

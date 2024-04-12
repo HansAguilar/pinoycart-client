@@ -23,4 +23,16 @@ export const verifyAPI = async (token: any) => {
 	catch (error: any) {
 		return error.response.data;
 	}
+};
+
+
+export const getUserByIdAPI = async (userID: string) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/get-user`, { userID: userID });
+		return response.data.data;
+	}
+
+	catch (error: any) {
+		return error.response.data;
+	}
 }

@@ -63,8 +63,7 @@ const SellerTable = ({ items, setItems }: { items: IItems[], setItems: any }) =>
 
     useEffect(() => {
         // setItems(vendor.items)
-        console.log("items", items)
-        setTotalPages(Math.ceil(items.length / ITEMS_PER_PAGE));
+        setTotalPages(Math.ceil(items?.length / ITEMS_PER_PAGE));
     }, [setItems, items, dispatch])
 
     const handlePageChange = (pageNumber: number) => {
@@ -86,7 +85,7 @@ const SellerTable = ({ items, setItems }: { items: IItems[], setItems: any }) =>
                         <EditModal selectedItem={selectedItem} setAction={setAction} dispatch={dispatch} items={items} setItems={setItems} />
                 }
                 {
-                    items.length > 0 ?
+                    items?.length > 0 ?
                         <>
                             <Table className="overflow-y-auto h-40">
                                 <TableHeader>

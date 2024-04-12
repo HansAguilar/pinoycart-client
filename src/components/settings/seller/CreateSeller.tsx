@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Separator } from '../../ui/separator';
-import { UpdateVendor, UpdateVendorBanner, createVendor } from '@/store/features/vendor/vendorSlice';
+import { UpdateVendor, UpdateVendorBanner, createVendor, fetchVendorInfo } from '@/store/features/vendor/vendorSlice';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
 import { Input } from '../../ui/input';
@@ -19,6 +19,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Card } from '../../ui/card';
+import { getUserByID } from '@/store/features/auth/authSlice';
 
 interface IFormInputs {
     vendorName: string;
@@ -48,6 +49,10 @@ const CreateSeller = () => {
         if (!user?.isLogged) {
             return navigate("/challenge")
         }
+
+        if (user.data?.role === "vendor") {
+            dispatch(fetchVendorInfo(user.data?.vendorInfo!))
+        }
     }, [])
 
     const onSubmit = (data: IFormInputs) => {
@@ -58,9 +63,11 @@ const CreateSeller = () => {
                 formData.append("vendorDesc", data.vendorDesc)
                 formData.append("image", imageSend)
                 formData.append("userID", user.data?._id as string)
-                dispatch(createVendor(formData))
+                dispatch(createVendor(formData));
                 toast.success("Seller created successfully", { duration: 2000 })
-                window.location.reload();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000)
             }
             else {
                 toast.error("Please upload a profile", { duration: 2000 })
@@ -104,7 +111,7 @@ const CreateSeller = () => {
                     showForm ?
                         <>
                             <div className="py-2">
-                                <h3 className="text-lg font-medium">Vendor</h3>
+                                <h3 className="text-lg font-semibold">Seller</h3>
                                 <p className="text-sm text-muted-foreground mb-4">
                                     This is how others will see you on the site.
                                 </p>

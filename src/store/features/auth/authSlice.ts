@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IAuthState } from "./authTypes";
-import { verifyAPI } from "@/api/authApi";
+import { getUserByIdAPI, verifyAPI } from "@/api/authApi";
 import { changePasswordAPI, editUserAPI } from "@/api/userApi";
 
 const initialState: IAuthState = {
@@ -39,6 +39,15 @@ const authSlice = createSlice({
 				state.loading = false
 				state.data = action.payload
 			})
+
+			.addCase(getUserByID.pending, (state) => {
+				state.loading = true
+			})
+
+			.addCase(getUserByID.fulfilled, (state, action) => {
+				state.loading = false
+				state.data = action.payload
+			})
 	}
 })
 
@@ -46,6 +55,16 @@ export const verifyToken = createAsyncThunk("auth/verifyToken", async () => {
 	try {
 		const token = localStorage.getItem("token");
 		const response = await verifyAPI(token);
+		return response;
+	}
+	catch (error: any) {
+		console.log(error);
+	}
+})
+
+export const getUserByID = createAsyncThunk("auth/getUserByID", async (userID: string) => {
+	try {
+		const response = await getUserByIdAPI(userID);
 		return response;
 	}
 	catch (error: any) {

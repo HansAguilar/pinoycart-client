@@ -6,6 +6,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import UserProfile from "../components/settings/user/UserProfile";
 import { Separator } from "@/components/ui/separator";
 import { fetchVendorInfo } from "@/store/features/vendor/vendorSlice";
+import { getUserByID } from "@/store/features/auth/authSlice";
 
 const settingsLinks = [
     { to: "/settings", title: "User" },
@@ -18,7 +19,6 @@ const Settings = () => {
     const user = useAppSelector((state: RootState) => state.auth);
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("/settings");
-    const [vendorData, setVendorData] = useState<string | boolean>(false);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -26,12 +26,13 @@ const Settings = () => {
             navigate('/challenge');
         }
 
-        else {
-            if (user.data?.role === "vendor") {
-                setVendorData(true)
-                dispatch(fetchVendorInfo(user.data?.vendorInfo!))
-            }
-        }
+        // else {
+        //     if (user.data?.role === "vendor") {
+        //         dispatch(fetchVendorInfo(user.data?.vendorInfo!))
+        //     }
+        // }
+
+        dispatch(getUserByID(user.data?._id!))
     }, [user.isLogged, user.data?.role])
 
     return (
