@@ -28,7 +28,11 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // Create the Redux store
 export const store = configureStore({
-    reducer: persistedReducer
+    reducer: persistedReducer,
+    middleware: getDefaultMiddleware =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
 });
 
 

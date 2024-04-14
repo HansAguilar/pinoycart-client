@@ -15,7 +15,7 @@ export interface IItems {
     itemPrice: number,
     itemCategory: string,
     itemStock: number,
-    itemImages: string[],
+    itemImages?: string[],
     itemRatings?: number,
     itemLikes?: number,
     itemReviews?: [
@@ -32,16 +32,16 @@ export interface IItemsState {
     items: IItems[];
     currentItem: {
         _id: string,
-        vendorID: string;
+        vendorID?: string;
         itemName: string;
         itemDesc: string;
         itemPrice: number;
         itemCategory: string;
         itemStock: number;
-        itemImages: string[];
+        itemImages?: string[] | undefined;
         itemLikes: number;
         itemRatings: number;
-        itemReviews: [
+        itemReviews?: [
             {
                 userID: {
                     username: string;

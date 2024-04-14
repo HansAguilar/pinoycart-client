@@ -15,7 +15,7 @@ import Reviews from '@/components/itemPage/Reviews';
 
 
 const ItemPage = () => {
-    const { id  } = useParams();
+    const { id } = useParams();
     const item = useAppSelector((state: RootState) => state.items);
     const user = useAppSelector((state: RootState) => state.auth);
     const vendorInfo = useAppSelector((state: RootState) => state.vendor);
@@ -220,8 +220,10 @@ const ItemPage = () => {
                     />
             }
 
+            <Reviews itemID={id ?? ''} />
+
             <div>
-                <p className='text-sm mt-4 mb-2'>Other products from {vendorInfo.data?.vendorName}</p>
+                <p className='mt-4 mb-2'>Other products from {vendorInfo.data?.vendorName}</p>
                 <div className='grid max-md:grid-cols-3 max-sm:grid-cols-2 max-xs:grid-cols-2 grid-cols-4 gap-4'>
                     {
                         vendorInfo && displayOtherProducts()
@@ -229,9 +231,6 @@ const ItemPage = () => {
                 </div>
             </div>
 
-            {
-                <Reviews itemID={id ?? ''} />
-            }
         </div>
     )
 

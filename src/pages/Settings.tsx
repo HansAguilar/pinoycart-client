@@ -20,18 +20,18 @@ const Settings = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("/settings");
     const dispatch = useAppDispatch();
+    const vendor = useAppSelector((state: RootState) => state.vendor);
 
     useEffect(() => {
         if (!user.isLogged) {
             navigate('/challenge');
         }
 
-        // else {
-        //     if (user.data?.role === "vendor") {
-        //         dispatch(fetchVendorInfo(user.data?.vendorInfo!))
-        //     }
-        // }
-
+        else {
+            if (user.data?.role === "vendor") {
+                dispatch(fetchVendorInfo(user.data?.vendorInfo!))
+            }
+        }
         dispatch(getUserByID(user.data?._id!))
     }, [user.isLogged, user.data?.role])
 

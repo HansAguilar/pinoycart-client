@@ -150,16 +150,19 @@ const Reviews = ({ itemID }: { itemID: string }) => {
 
                         ))
                         :
-                        <div className="flex flex-col items-center justify-center bg-secondary rounded-lg p-10">
-                            <h2 className="text-xl font-semibold text-gray-500">No Reviews Yet</h2>
-                            <p className="text-gray-600 mb-2">We don't have any reviews for this product yet.</p>
-                            {
-                                user?.orders.includes(itemID) && <DialogTrigger className='max-w-max bg-primary px-4 py-2 rounded'>Add a review</DialogTrigger>
-                            }
+                        <div className="rounded p-10 opacity-80 bg-secondary">
+                            <div className='flex items-center flex-col z-20'>
+                                <h2 className="text-xl font-semibold text-gray-500">No Reviews Yet</h2>
+                                <p className="text-gray-600 mb-2">We don't have any reviews for this product yet.</p>
+                                {
+                                    user?.orders.includes(itemID) && <DialogTrigger className='max-w-max bg-primary px-4 py-2 rounded'>Add a review</DialogTrigger>
+                                }
+                            </div>
+
                         </div>
                 }
             </Dialog >
-        </article>
+        </article >
     );
 };
 

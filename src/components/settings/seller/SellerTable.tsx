@@ -62,9 +62,10 @@ const SellerTable = ({ items, setItems }: { items: IItems[], setItems: any }) =>
     const [totalPages, setTotalPages] = useState<number>(1);
 
     useEffect(() => {
-        // setItems(vendor.items)
+        setItems(vendor.items)
+        console.log("a")
         setTotalPages(Math.ceil(items?.length / ITEMS_PER_PAGE));
-    }, [setItems, items, dispatch])
+    }, [setItems, items, dispatch, vendor])
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
@@ -94,14 +95,14 @@ const SellerTable = ({ items, setItems }: { items: IItems[], setItems: any }) =>
                                         <TableHead>Category</TableHead>
                                         <TableHead>Stock</TableHead>
                                         <TableHead>Price</TableHead>
-                                        <TableHead></TableHead>
+                                        <TableHead>Action</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {
                                         items.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((item) => (
                                             <TableRow key={item._id}>
-                                                <TableCell className="font-medium">{item.itemName}</TableCell>
+                                                <TableCell>{item.itemName}</TableCell>
                                                 <TableCell>{item.itemCategory}</TableCell>
                                                 <TableCell>{item.itemStock}</TableCell>
                                                 <TableCell>₱ {item.itemPrice}</TableCell>

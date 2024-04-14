@@ -15,6 +15,7 @@ const SellerItems = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log("seller items")
         if (!user?.isLogged) {
             return navigate("/challenge")
         }
@@ -35,6 +36,10 @@ const SellerItems = () => {
             fetchData();
         }
     }, [user]);
+
+    useEffect(() => {
+        setItems(vendor.items);
+    }, [vendor])
 
     if (user.data?.role !== "vendor") {
         return (
