@@ -14,7 +14,7 @@ const CardItem = ({ item, quantity, handleAddToCart, vendorInfo, handleQuantity,
                             item.currentItem?.itemImages?.map((img: string) => {
                                 return (
                                     <CarouselItem key={img}>
-                                        <img src={`http://localhost:3000/uploads/${img}`} ref={imgRef} onLoad={readImageData} className='h-full m-auto object-contain' />
+                                        <img src={`${img}`} alt={`${item.currentItem?.itemName}`} ref={imgRef} onLoad={readImageData} className='h-full m-auto object-contain' />
                                     </CarouselItem>
                                 )
                             })

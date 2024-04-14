@@ -93,6 +93,9 @@ const CreateSeller = () => {
 
         setFile(URL.createObjectURL(uploadedFile));
         if (user.data?.role === "vendor") {
+            const formData = new FormData();
+            formData.append("image", uploadedFile);
+            formData.append("vendorID", vendor.data?._id!);
             dispatch(UpdateVendorBanner({ image: uploadedFile, vendorID: vendor.data?._id! }))
             toast.success("Updated profile successfully", { duration: 2000 })
         }

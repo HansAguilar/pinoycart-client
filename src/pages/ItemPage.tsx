@@ -58,8 +58,8 @@ const ItemPage = () => {
                     <Link key={index} to={`/item/${allItem._id}`}>
                         <Card className="rounded-none flex flex-col lg:w-full gap-2" key={allItem.itemName}>
                             <img
-                                src={`http://localhost:3000/uploads/${allItem.itemImages[0]}`}
-                                alt="Photo"
+                                src={`${allItem.itemImages[0]}`}
+                                alt={`${allItem.itemName}`}
                                 className="object-cover max-sm:h-40 h-48 w-full"
                             />
 
@@ -196,7 +196,7 @@ const ItemPage = () => {
     }, []);
 
     return (
-        <div className='flex flex-col container mb-8 max-w-4xl gap-4 mt-[calc(2rem+4rem)]'>
+        <div className='flex flex-col container mb-8 max-w-4xl gap-4 mt-[calc(2rem+3.5rem)]'>
             <NavLink to="/" className='flex items-center max-w-max gap-2'>
                 <ArrowLeft className='h-4 w-4' />
                 <p className='font-medium'>Go back</p>
@@ -220,7 +220,13 @@ const ItemPage = () => {
                     />
             }
 
-            <Reviews itemID={id ?? ''} />
+            {
+                item.loading ?
+                    <Skeleton className='h-48 w-full'>
+                    </Skeleton>
+                    :
+                    <Reviews itemID={id ?? ''} />
+            }
 
             <div>
                 <p className='mt-4 mb-2'>Other products from {vendorInfo.data?.vendorName}</p>

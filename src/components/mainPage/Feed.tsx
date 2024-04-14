@@ -25,8 +25,8 @@ const Feed = () => {
                                 <Card className="rounded-none flex flex-col lg:w-full gap-2" key={item.itemName}>
                                     {
                                         <img
-                                            src={`http://localhost:3000/uploads/${item.itemImages[0]}`}
-                                            alt="Photo"
+                                            src={`${item.itemImages[0]}`}
+                                            alt={`${item.itemName}`}
                                             className="object-cover max-sm:h-40 h-48 w-full"
                                         />
                                     }

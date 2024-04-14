@@ -77,6 +77,7 @@ export const UpdateVendorBanner = createAsyncThunk(
     }
 )
 
+
 export const fetchVendorInfo = createAsyncThunk(
     "vendor/getVendorByID",
     async (vendorID: string) => {
