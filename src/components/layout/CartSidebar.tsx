@@ -105,7 +105,10 @@ const CartSidebar = () => {
         <div key={item._id}>
             <div className="rounded-sm flex items-center gap-4">
                 <div className="relative">
-                    <img src={item.itemImages ? `http://localhost:3000/uploads/${item.itemImages[0]}` : ""} className='min-w-[90px] max-w-[30px] h-24 object-cover' />
+                    <img
+                        src={item.itemImages ? `${item.itemImages[0]}` : ""}
+                        className='w-auto h-24 object-cover max-w-[90px] min-w-[30px]'
+                    />
                     <div
                         onClick={() => handleRemoveItemCart(item._id)}
                         className="bg-secondary absolute -top-2 -left-2 rounded-full p-1 hover:bg-destructive transition-all duration-100 ease-linear cursor-pointer"

@@ -63,7 +63,6 @@ const SellerTable = ({ items, setItems }: { items: IItems[], setItems: any }) =>
 
     useEffect(() => {
         setItems(vendor.items)
-        console.log("a")
         setTotalPages(Math.ceil(items?.length / ITEMS_PER_PAGE));
     }, [setItems, items, dispatch, vendor])
 

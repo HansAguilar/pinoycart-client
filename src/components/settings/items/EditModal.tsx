@@ -117,7 +117,6 @@ export const EditModal = ({ selectedItem, setAction, dispatch, items, setItems }
         }
     };
 
-
     const fileToDataURL = (file: any) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -140,7 +139,7 @@ export const EditModal = ({ selectedItem, setAction, dispatch, items, setItems }
     useEffect(() => {
         setPreviewImages(selectedItem.itemImages);
         setFiles(selectedItem.itemImages);
-    }, [])
+    }, [selectedItem])
 
     return (
         <AlertDialogContent className="min-h-[80%] h-[80%] overflow-auto w-11/12">
@@ -188,7 +187,7 @@ export const EditModal = ({ selectedItem, setAction, dispatch, items, setItems }
                                     {previewImages?.map((imageDataURL: string, index: number) => (
                                         <img
                                             key={index}
-                                            src={!localImage ? `http://localhost:3000/uploads/${imageDataURL}` : imageDataURL}
+                                            src={imageDataURL}
                                             alt={`Preview ${index + 1}`}
                                             className='w-full h-56 '
                                         />
@@ -256,13 +255,13 @@ export const EditModal = ({ selectedItem, setAction, dispatch, items, setItems }
                     {errors.itemStock && <p className='text-sm text-destructive font-medium'>{errors.itemStock.message}</p>}
                 </div>
 
-                <AlertDialogFooter className="flex items-center flex-row justify-center">
-                    <AlertDialogCancel className="max-w-max" onClick={() => {
+                <AlertDialogFooter className="flex items-center flex-row justify-end gap-2">
+                    <AlertDialogCancel className="max-w-max m-0" onClick={() => {
                         setAction("");
                         setImageError("");
                         reset()
                     }}>Cancel</AlertDialogCancel>
-                    <Button className="max-w-max px-2">Save Changes</Button>
+                    <Button className="max-w-max py-0 px-2">Save Changes</Button>
                 </AlertDialogFooter>
             </form>
         </AlertDialogContent>

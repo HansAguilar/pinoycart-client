@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/tooltip"
 import { Card } from '../../ui/card';
 import { getUserByID } from '@/store/features/auth/authSlice';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface IFormInputs {
     vendorName: string;
@@ -122,16 +123,25 @@ const CreateSeller = () => {
                             <Separator />
 
                             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 mt-4">
-                                <div className="flex flex-col gap-2">
-                                    <label htmlFor="image" className="font-medium text-sm">Seller Profile</label>
-                                    <Avatar className="rounded-none w-full h-[250px] relative">
-                                        <AvatarImage src={file ? file : `http://localhost:3000/uploads/${vendor.data?.vendorBanner}`} className="w-full rounded-none object-cover aspect-auto" />
-                                        <AvatarFallback className="rounded-none">:)</AvatarFallback>
-                                        <Input id="image" type="file" {...register("image")} accept='image/*' onChange={handleChange} className="pointer-events-none w-full h-full hidden" />
-                                        <label htmlFor="image" className='absolute p-2 cursor-pointer right-0 top-0 bg-secondary/60'><Upload className='h-4 w-4' /></label>
-                                    </Avatar>
+                                <label htmlFor="image" className="flex flex-col gap-2">
+                                    <div className="font-medium text-sm">Seller Profile</div>
+                                    {vendor.loading ? (
+                                        <Skeleton className='bg-primary w-full h-[250px] opacity-20'>
+                                            <svg className="animate-spin h-32 w-32 text-white z-50" viewBox="0 0 24 24">
+                                                a
+                                            </svg>
+                                        </Skeleton>
+                                    ) : (
+                                        <Avatar className="rounded-none w-full h-auto relative">
+                                            <AvatarImage src={file ? file : `${vendor.data?.vendorBanner}`} className="w-full rounded-none aspect-auto" />
+                                            <AvatarFallback className="rounded-none">:)</AvatarFallback>
+                                            <Input id="image" type="file" {...register("image")} accept='image/*' onChange={handleChange} className="pointer-events-none w-full h-full hidden" />
+                                            <label htmlFor="image" className='absolute p-2 cursor-pointer right-0 top-0 bg-secondary/60'><Upload className='h-4 w-4' /></label>
+                                        </Avatar>
+                                    )}
                                     <p className="text-[0.8rem] font-medium text-destructive">{errorImg}</p>
-                                </div>
+                                </label>
+
 
                                 {
                                     !editUserInfo

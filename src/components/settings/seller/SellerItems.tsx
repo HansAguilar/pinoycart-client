@@ -7,18 +7,25 @@ import { useAppSelector } from "@/store/hooks";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "@/store/store";
 import { IItems } from "@/store/features/items/itemTypes";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useAppDispatch } from './../../../store/hooks';
+import { fetchVendorInfo } from "@/store/features/vendor/vendorSlice";
 
 const SellerItems = () => {
     const [items, setItems] = useState<IItems[]>([]); //! nandito ung items para ma share ung pag update sa table pag ka add sa modal
     const user = useAppSelector((state: RootState) => state.auth);
     const vendor = useAppSelector((state: RootState) => state.vendor);
+    
+    const dispatch = useAppDispatch();
+
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("seller items")
         if (!user?.isLogged) {
             return navigate("/challenge")
         }
+        
+        dispatch(fetchVendorInfo(vendor.data?._id!))
 
         const fetchData = async () => {
             try {
@@ -63,11 +70,18 @@ const SellerItems = () => {
 
                     <Separator />
 
-                    <AddItemModal items={items} setItems={setItems} />
+                    {
+                        vendor.loading ?
+                            <Skeleton className="h-64 w-full pt-5">
+                            </Skeleton>
+                            :
+                            <>
+                                <AddItemModal items={items} setItems={setItems} />
+                                <Separator />
+                                <SellerTable items={items} setItems={setItems} />
+                            </>
+                    }
 
-                    <Separator />
-
-                    <SellerTable items={items} setItems={setItems} />
                 </div>
             </main>
         </Dialog>

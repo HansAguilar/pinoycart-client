@@ -47,7 +47,7 @@ export const UpdateBannerAPI = async (image: File, vendorID: string) => {
 		formData.append('image', image);
 		formData.append('vendorID', vendorID);
 
-		const response = await axios.post(`${BASE_URL}/update-vendor-banner`, formData, {
+		const response = await axios.patch(`${BASE_URL}/update-vendor-banner`, formData, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 				"Content-Type": "multipart/form-data"

@@ -46,7 +46,7 @@ const CardItem = ({ item, quantity, handleAddToCart, vendorInfo, handleQuantity,
 
                 <div className='flex flex-col justify-between gap-4'>
                     <div className='flex items-center gap-2'>
-                        <img src={`http://localhost:3000/uploads/${vendorInfo.data?.vendorBanner}`} className='aspect-square rounded border w-8 h-8' alt=":)" />
+                        <img src={`${vendorInfo.data?.vendorBanner}`} className='aspect-square rounded border w-8 h-8 object-contain' alt=":)" />
                         <p className='text-sm font-medium text-muted-foreground'>{vendorInfo.data?.vendorName}</p>
                     </div>
                     <div className='flex justify-between gap-4 w-full items-center'>

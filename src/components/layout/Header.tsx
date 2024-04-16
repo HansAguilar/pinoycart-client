@@ -10,7 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { Link, useNavigate } from "react-router-dom"
-import { authActions } from "@/store/features/auth/authSlice"
+import { authActions, getUserByID } from "@/store/features/auth/authSlice"
 import { RootState } from "@/store/store"
 import { useEffect, useState } from "react"
 import { Sheet, SheetTrigger } from "@/components/ui/sheet"
@@ -33,6 +33,10 @@ const Header = () => {
 				setCartLength(localCartLength.length)
 			}
 		}
+
+		dispatch(getUserByID(user.data?._id!));
+
+		console.log(user.data)
 	}, [user.isLogged, cartLength, JSON.parse(localStorage.getItem('cart')!)?.length])
 
 	return (
@@ -79,9 +83,6 @@ const Header = () => {
 											<DropdownMenuLabel className="font-normal">
 												<div className="flex flex-col space-y-1">
 													<p className="text-sm font-medium leading-none">{user.data?.username}</p>
-													<p className="text-xs leading-none text-muted-foreground">
-														{user.data?.email}
-													</p>
 												</div>
 											</DropdownMenuLabel>
 											<DropdownMenuSeparator />

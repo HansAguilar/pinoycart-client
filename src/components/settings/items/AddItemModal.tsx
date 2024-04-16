@@ -33,7 +33,10 @@ const options = [
     { value: 'Automotive', label: 'Automotive' },
     { value: 'Furniture & Decor', label: 'Furniture & Decor' },
     { value: 'Jewelry & Watches', label: 'Jewelry & Watches' },
+    { value: 'Musical Instruments', label: 'Musical Instruments' }, 
 ];
+
+
 interface IFormInputs {
     itemName: string;
     itemDesc: string;
