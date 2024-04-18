@@ -5,7 +5,7 @@ const customerCare = {
 
 const aboutUs = {
     sectionTitle: "About",
-    links: ["About Lazada", "Afﬁliate Program", "Careers", "Terms & Conditions", "Privacy Policy", "Press & Media", "Intellectual Property Protection"]
+    links: ["About PinoyCart", "Afﬁliate Program", "Careers", "Terms & Conditions", "Privacy Policy", "Press & Media", "Intellectual Property Protection"]
 };
 
 const payments = {
