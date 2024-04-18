@@ -9,7 +9,6 @@ import Success from '../Success'
 import Cancel from '../Cancel'
 import Footer from './Footer'
 import Settings from '@/pages/Settings'
-import SellerProfile from '../settings/seller/SellerProfile'
 import SellerItems from '../settings/seller/SellerItems'
 import CreateSeller from '../settings/seller/CreateSeller'
 

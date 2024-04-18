@@ -12,8 +12,6 @@ import { Input } from "../../ui/input";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { changePassword } from "@/store/features/auth/authSlice";
 import { toast } from "sonner";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { AlertTriangleIcon } from "lucide-react";
 
 export default function ChangePasswordModal() {
     const [passwordForm, setPasswordForm] = useState({ newPass: "", confirmPass: "" });

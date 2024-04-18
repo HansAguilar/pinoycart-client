@@ -1,10 +1,10 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../ui/carousel'
-import { LucideStar, Minus, Plus } from 'lucide-react'
+import { Minus, Plus } from 'lucide-react'
 import { Separator } from '../ui/separator'
 import { Button } from '../ui/button'
 
 
-const CardItem = ({ item, quantity, handleAddToCart, vendorInfo, handleQuantity, imgRef, readImageData, ambianceColor }) => {
+const CardItem = ({ item, quantity, handleAddToCart, vendorInfo, handleQuantity, imgRef, readImageData, ambianceColor }: { item: any, quantity: any, handleAddToCart: any, vendorInfo: any, handleQuantity: any, imgRef: any, readImageData: any, ambianceColor: any }) => {
     return (
         <div className='flex rounded max-md:flex-col max-md:gap-4'>
             <div className='w-2/4 max-md:w-full flex items-center justify-center' style={{ backgroundColor: ambianceColor }}>

@@ -44,13 +44,12 @@ interface IFormInputs {
     itemPrice: number;
     itemStock: number;
 }
-const AddItemModal = ({ items, setItems }: { items: any; setItems: React.Dispatch<React.SetStateAction<any[]>> }) => {
+const AddItemModal = ({  setItems }: {  setItems: React.Dispatch<React.SetStateAction<any[]>> }) => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<IFormInputs>();
     const [files, setFiles] = useState<File[]>([]);
     const [selectedOption, setSelectedOption] = useState("");
     const [submitting, setSubmitting] = useState(false);
 
-    const user = useAppSelector((state: RootState) => state.auth.data);
     const vendor = useAppSelector((state: RootState) => state.vendor.data);
     const dispatch = useAppDispatch();
 

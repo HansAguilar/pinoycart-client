@@ -76,7 +76,7 @@ const SellerItems = () => {
                             </Skeleton>
                             :
                             <>
-                                <AddItemModal items={items} setItems={setItems} />
+                                <AddItemModal setItems={setItems} />
                                 <Separator />
                                 <SellerTable items={items} setItems={setItems} />
                             </>

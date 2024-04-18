@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 import { Button } from "../ui/button"
 import { Slider } from "@/components/ui/slider"
 import { Input } from "../ui/input"
@@ -7,18 +7,7 @@ import { MixerHorizontalIcon } from "@radix-ui/react-icons"
 
 const FilterProduct = () => {
     const [value, setValue] = useState<number[]>([0]);
-    const [showFilterModal, setShowFilterModal] = useState<boolean>(window.innerWidth >= 1024);
     const [showModal, setShowModal] = useState(true);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setShowFilterModal(window.innerWidth < 1024);
-        };
-        window.addEventListener("resize", handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        }
-    }, [])
 
     return (
         <div className={`flex-col max-xl:flex-col w-1/4 flex gap-4 max-xl:w-full`}>

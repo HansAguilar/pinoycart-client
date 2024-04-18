@@ -20,7 +20,6 @@ const Settings = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("/settings");
     const dispatch = useAppDispatch();
-    const vendor = useAppSelector((state: RootState) => state.vendor);
 
     useEffect(() => {
         if (!user.isLogged) {

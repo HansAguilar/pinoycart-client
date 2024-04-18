@@ -13,9 +13,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
 
 export type TableType = {
     _id: string;
@@ -88,7 +85,7 @@ interface DataTableProps<TData, TValue> {
     setSelectedItem?: (rowData: TData) => void;
 }
 
-export function DataTable<TData, TValue>({ columns, data, setAction, setSelectedItem }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
         columns,

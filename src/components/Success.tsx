@@ -7,7 +7,7 @@ import { Skeleton } from "./ui/skeleton";
 import { cartActions } from "@/store/features/cart/cartSlice";
 
 const Success = () => {
-    const [a, setSearchParams] = useSearchParams();
+    const [a, ] = useSearchParams();
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(true);
 

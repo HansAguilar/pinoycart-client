@@ -1,5 +1,5 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ICreateVendor, IVendorState } from "./vendorTypes";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { IVendorState } from "./vendorTypes";
 import { UpdateBannerAPI, UpdateVendorInfo, createVendorApi, getVendorByID } from "@/api/vendorApi";
 
 const initialState: IVendorState = {
@@ -13,13 +13,10 @@ const vendorSlice = createSlice({
     initialState,
     name: "vendor",
     reducers: {
-        createVendor: (state, action: PayloadAction<ICreateVendor>) => {
-
-        }
     },
     extraReducers(builder) {
         builder
-            .addCase(createVendor.pending, (state, action) => {
+            .addCase(createVendor.pending, (state) => {
                 state.loading = true
             })
             .addCase(createVendor.fulfilled, (state, action) => {

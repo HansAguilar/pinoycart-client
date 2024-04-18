@@ -12,7 +12,7 @@ import ChangePasswordModal from "./ChangePasswordModal"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../ui/tooltip"
 import { Edit2 } from "lucide-react"
 import { Card } from "../../ui/card"
-import { editUser, verifyToken } from "@/store/features/auth/authSlice"
+import { editUser } from "@/store/features/auth/authSlice"
 import { toast } from "sonner"
 
 const profileFormSchema = z.object({

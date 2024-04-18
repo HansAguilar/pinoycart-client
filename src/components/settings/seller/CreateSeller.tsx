@@ -19,7 +19,6 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Card } from '../../ui/card';
-import { getUserByID } from '@/store/features/auth/authSlice';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface IFormInputs {

@@ -1,4 +1,4 @@
-import { AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import {  AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateItem } from "@/store/features/items/itemSlice";
@@ -47,8 +47,6 @@ export const EditModal = ({ selectedItem, setAction, dispatch, items, setItems }
     const [files, setFiles] = useState<any>();
     const [selectedOption, setSelectedOption] = useState("");
     const [previewImages, setPreviewImages] = useState(selectedItem?.itemImages || []);
-    const [localImage, setLocalImage] = useState<boolean>(false);
-
     const [imageError, setImageError] = useState("");
 
     const onSubmit = (data: any) => {
@@ -101,7 +99,6 @@ export const EditModal = ({ selectedItem, setAction, dispatch, items, setItems }
         if (files.length > 0 && files.length <= 4) {
             const isFileSizeValid = Array.from(files).every((file) => file.size <= maxSizeInBytes);
             if (isFileSizeValid) {
-                setLocalImage(true);
                 const imageFiles = Array.from(files).filter((file: any) => file.type.startsWith('image/'));
                 Promise.all(imageFiles.map(fileToDataURL)).then((imageDataURLs: any[]) => {
                     setPreviewImages(imageDataURLs);

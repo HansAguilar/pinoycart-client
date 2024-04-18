@@ -15,10 +15,9 @@ import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { useNavigate } from "react-router-dom"
 import { TabsContent } from "@/components/ui/tabs"
-import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import { useAppDispatch } from "@/store/hooks"
 import { useState } from "react"
 import { loginAPI } from "@/api/authApi"
-import { RootState } from "@/store/store"
 import { authActions, verifyToken } from "@/store/features/auth/authSlice"
 
 const formSchema = z.object({
@@ -32,7 +31,6 @@ const formSchema = z.object({
 
 const Login = () => {
 	const [errorMsg, setErrorMsg] = useState<string>("");
-	const userAuth = useAppSelector((state: RootState) => state.auth);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 

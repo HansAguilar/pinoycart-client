@@ -1,14 +1,14 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { RootState } from "@/store/store";
-import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "../../ui/separator";
 import { Button } from "../../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { UpdateVendor, UpdateVendorBanner, createVendor, fetchVendorInfo } from "@/store/features/vendor/vendorSlice";
+import { UpdateVendor, UpdateVendorBanner, createVendor } from "@/store/features/vendor/vendorSlice";
 import { toast } from "sonner"
+import { useState } from "react";
 
 interface IFormInputs {
     vendorName: string;
@@ -48,7 +48,7 @@ const SellerProfile = () => {
             formData.append("vendorName", data.vendorName)
             formData.append("vendorDesc", data.vendorDesc)
             formData.append("vendorID", vendor.data?._id!)
-            dispatch(UpdateVendor(formData))
+            dispatch(UpdateVendor(formData as any))
             toast.success("Updated successfully", { duration: 2000 })
         }
     }
@@ -68,7 +68,7 @@ const SellerProfile = () => {
         if (user?.role === "vendor") {
             const formData = new FormData();
             formData.append("image", uploadedFile)
-            dispatch(UpdateVendorBanner(formData))
+            dispatch(UpdateVendorBanner(formData as any))
         }
 
         else {

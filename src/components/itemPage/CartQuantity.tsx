@@ -2,7 +2,7 @@ import { Minus, Plus } from 'lucide-react';
 import { memo, useState } from 'react'
 import { Button } from '../ui/button';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { addToCart, cartActions, minusToCart, removeCart } from '@/store/features/cart/cartSlice';
+import { addToCart, cartActions, minusToCart } from '@/store/features/cart/cartSlice';
 import { RootState } from '@/store/store';
 
 const updateLocalCartStock = (operation: string, quantity: number, itemID: string) => {

@@ -1,4 +1,4 @@
-import { SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '../ui/sheet'
+import { SheetContent, SheetFooter, SheetHeader, SheetTitle } from '../ui/sheet'
 import { Separator } from '../ui/separator'
 import { Cross2Icon } from '@radix-ui/react-icons'
 import CartQuantity from '../itemPage/CartQuantity'
