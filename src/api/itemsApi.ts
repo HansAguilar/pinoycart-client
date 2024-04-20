@@ -1,11 +1,10 @@
 import axios from "axios"
 
-const BASE_URL = "https://pinoycart-server.vercel.app/api/v1";
+const BASE_URL = "http://localhost:3000/api/v1";
 
 export const addItemApi = async (items: any) => {
 	const token = localStorage.getItem("token");
 
-	console.log("items: ", items)
 	try {
 		const response = await axios.post(`${BASE_URL}/add-item`, items, {
 			headers: {

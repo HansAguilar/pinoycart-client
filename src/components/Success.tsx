@@ -22,7 +22,7 @@ const Success = () => {
         const fetchSuccess = async (session_id: string) => {
             try {
                 const result = await axios.post(
-                    `https://pinoycart-server.vercel.app/api/v1/success`,
+                    `http://localhost:3000/api/v1/success`,
                     { session_id: session_id, userID: user.data?._id },
                     {
                         headers: {
