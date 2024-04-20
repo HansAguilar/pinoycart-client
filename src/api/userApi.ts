@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const BASE_URL = "http://localhost:3000/api/v1";
+const BASE_URL = "https://pinoycart-server.vercel.app/api/v1";
 
 export const addToCartAPI = async (items: any, userID: string) => {
     const token = localStorage.getItem("token");
