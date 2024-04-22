@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { IItemsState } from "./itemTypes";
 import { addItemApi, addReviewAPI, deleteItemByIDAPI, fetchAllItemsAPI, getItemByIDAPI, updateItemByIDAPI } from "@/api/itemsApi";
 
