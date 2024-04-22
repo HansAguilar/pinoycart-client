@@ -39,7 +39,7 @@ const Signup = () => {
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		try {
-			await axios.post("http://localhost:3000/api/v1/user/register", values)
+			await axios.post("https://pinoycart-server.vercel.app/api/v1/user/register", values)
 			window.location.reload();
 			setErrorMessage("");
 		}

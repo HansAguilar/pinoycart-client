@@ -1,11 +1,10 @@
 import axios from "axios"
-
-const BASE_URL = "http://localhost:3000/api/v1";
+import { PROD_URL } from "./url";
 
 export const addToCartAPI = async (items: any, userID: string) => {
     const token = localStorage.getItem("token");
     try {
-        const response = await axios.post(`${BASE_URL}/add-cart`, {
+        const response = await axios.post(`${PROD_URL}/add-cart`, {
             items,
             userID
         }, {
@@ -24,7 +23,7 @@ export const addToCartAPI = async (items: any, userID: string) => {
 export const editUserAPI = async (userID: string, username: string) => {
     const token = localStorage.getItem("token");
     try {
-        const response = await axios.patch(`${BASE_URL}/edit-user`, {
+        const response = await axios.patch(`${PROD_URL}/edit-user`, {
             userID,
             username
         }, {
@@ -43,7 +42,7 @@ export const editUserAPI = async (userID: string, username: string) => {
 export const minusToCartAPI = async (items: any, userID: string) => {
     const token = localStorage.getItem("token");
     try {
-        const response = await axios.post(`${BASE_URL}/minus-cart`, {
+        const response = await axios.post(`${PROD_URL}/minus-cart`, {
             items,
             userID
         }, {
@@ -62,7 +61,7 @@ export const minusToCartAPI = async (items: any, userID: string) => {
 export const getCartAPI = async (userID: string) => {
     const token = localStorage.getItem("token");
     try {
-        const response = await axios.post(`${BASE_URL}/get-cart`, { userID: userID }, {
+        const response = await axios.post(`${PROD_URL}/get-cart`, { userID: userID }, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -78,7 +77,7 @@ export const getCartAPI = async (userID: string) => {
 export const removeCartAPI = async (cartID: string, userID: string) => {
     const token = localStorage.getItem("token");
     try {
-        const response = await axios.post(`${BASE_URL}/remove-cart`,
+        const response = await axios.post(`${PROD_URL}/remove-cart`,
             { cartID: cartID, userID: userID }
             ,
             {
@@ -98,7 +97,7 @@ export const removeCartAPI = async (cartID: string, userID: string) => {
 export const changePasswordAPI = async (userID: string, password: string) => {
     const token = localStorage.getItem("token");
     try {
-        const response = await axios.post(`${BASE_URL}/change-password`,
+        const response = await axios.post(`${PROD_URL}/change-password`,
             { userID: userID, password: password }
             ,
             {

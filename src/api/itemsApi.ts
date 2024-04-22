@@ -1,12 +1,11 @@
 import axios from "axios"
-
-const BASE_URL = "http://localhost:3000/api/v1";
+import { PROD_URL } from "./url";
 
 export const addItemApi = async (items: any) => {
 	const token = localStorage.getItem("token");
 
 	try {
-		const response = await axios.post(`${BASE_URL}/add-item`, items, {
+		const response = await axios.post(`${PROD_URL}/add-item`, items, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 				'Content-Type': 'multipart/form-data',
@@ -26,7 +25,7 @@ export const addItemApi = async (items: any) => {
 export const updateItemByIDAPI = async (formdata: any) => {
 	const token = localStorage.getItem("token");
 	try {
-		const response = await axios.patch(`${BASE_URL}/update-item`,
+		const response = await axios.patch(`${PROD_URL}/update-item`,
 			formdata,
 			{
 				headers: {
@@ -47,7 +46,7 @@ export const updateItemByIDAPI = async (formdata: any) => {
 export const getItemByIDAPI = async (itemID: any) => {
 	const token = localStorage.getItem("token");
 	try {
-		const response = await axios.get(`${BASE_URL}/get-item/${itemID}`,
+		const response = await axios.get(`${PROD_URL}/get-item/${itemID}`,
 			{
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -66,7 +65,7 @@ export const getItemByIDAPI = async (itemID: any) => {
 export const deleteItemByIDAPI = async (itemID: any) => {
 	const token = localStorage.getItem("token");
 	try {
-		const response = await axios.post(`${BASE_URL}/delete-item`,
+		const response = await axios.post(`${PROD_URL}/delete-item`,
 			{ itemID: itemID },
 			{
 				headers: {
@@ -86,8 +85,27 @@ export const deleteItemByIDAPI = async (itemID: any) => {
 export const addReviewAPI = async (data: any) => {
 	const token = localStorage.getItem("token");
 	try {
-		const response = await axios.post(`${BASE_URL}/add-review`,
+		const response = await axios.post(`${PROD_URL}/add-review`,
 			{ data },
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				}
+			});
+		return response;
+	}
+
+	catch (error: any) {
+		console.log(error);
+		return error.response.data;
+	}
+};
+
+
+export const fetchAllItemsAPI = async () => {
+	const token = localStorage.getItem("token");
+	try {
+		const response = await axios.get(`${PROD_URL}/get-items`,
 			{
 				headers: {
 					Authorization: `Bearer ${token}`,

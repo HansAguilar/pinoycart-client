@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Skeleton } from "./ui/skeleton";
 import { cartActions } from "@/store/features/cart/cartSlice";
+import { PROD_URL } from "@/api/url";
 
 const Success = () => {
     const [a, ] = useSearchParams();
@@ -22,7 +23,7 @@ const Success = () => {
         const fetchSuccess = async (session_id: string) => {
             try {
                 const result = await axios.post(
-                    `http://localhost:3000/api/v1/success`,
+                    `${PROD_URL}/success`,
                     { session_id: session_id, userID: user.data?._id },
                     {
                         headers: {

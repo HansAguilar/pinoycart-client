@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { IItemsState } from "./itemTypes";
-import { addItemApi, addReviewAPI, deleteItemByIDAPI, getItemByIDAPI, updateItemByIDAPI } from "@/api/itemsApi";
+import { addItemApi, addReviewAPI, deleteItemByIDAPI, fetchAllItemsAPI, getItemByIDAPI, updateItemByIDAPI } from "@/api/itemsApi";
 
 
 const initialState: IItemsState = {
@@ -125,12 +125,7 @@ export const fetchAllProducts = createAsyncThunk(
 	'items/fetchAll',
 	async () => {
 		try {
-			const token = localStorage.getItem("token");
-			const response = await axios.get("http://localhost:3000/api/v1/get-items", {
-				headers: {
-					Authorization: `Bearer ${token}`
-				}
-			});
+			const response = await fetchAllItemsAPI();
 			return response.data;
 		} catch (error) {
 			console.log(error);
