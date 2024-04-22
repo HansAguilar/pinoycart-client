@@ -101,7 +101,7 @@ const SellerProfile = () => {
                         <div className="flex flex-col gap-2 relative">
                             <label htmlFor="image">Seller Banner</label>
                             <Avatar className="h-36 w-full rounded-none">
-                                <AvatarImage src={file ? file : `http://localhost:3000/uploads/${vendor.data?.vendorBanner}`} className=" w-full rounded-none object-contain aspect-auto" />
+                                <AvatarImage src={file ? file : `${vendor.data?.vendorBanner}`} className=" w-full rounded-none object-contain aspect-auto" />
                                 <AvatarFallback className="rounded-none">CN</AvatarFallback>
                                 <Input id="image" type="file" {...register("image")} onChange={handleChange} className="pointer-events-none w-full h-full hidden" />
                             </Avatar>

@@ -12,7 +12,6 @@ export const createVendorApi = async (credentials: any) => {
 			}
 
 		});
-		console.log("response", response)
 		return response;
 	}
 

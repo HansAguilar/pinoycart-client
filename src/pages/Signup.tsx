@@ -39,8 +39,7 @@ const Signup = () => {
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		try {
-			const response = await axios.post("http://localhost:3000/api/v1/user/register", values)
-			console.log(response);
+			await axios.post("http://localhost:3000/api/v1/user/register", values)
 			window.location.reload();
 			setErrorMessage("");
 		}
