@@ -34,9 +34,10 @@ const Header = () => {
 			}
 		}
 
-		dispatch(getUserByID(user.data?._id!));
+		else {
+			dispatch(getUserByID(user.data?._id!));
+		}
 
-		console.log(user.data)
 	}, [user.isLogged, cartLength, JSON.parse(localStorage.getItem('cart')!)?.length])
 
 	return (
