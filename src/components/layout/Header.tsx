@@ -68,7 +68,7 @@ const Header = () => {
 						</NavigationMenuItem>
 
 						{
-							user.isLogged ?
+							user.isLogged && user.data ?
 								<NavigationMenuItem>
 									<DropdownMenu>
 										<DropdownMenuTrigger asChild>
