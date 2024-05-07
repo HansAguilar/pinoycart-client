@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import axios from 'axios'
+import { LOCAL_URL } from '@/api/url'
 
 const formSchema = z.object({
 	username: z.string().min(3, {
@@ -39,7 +40,7 @@ const Signup = () => {
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		try {
-			await axios.post("https://pinoycart-server.vercel.app/api/v1/user/register", values)
+			await axios.post(`${LOCAL_URL}/user/register`, values)
 			window.location.reload();
 			setErrorMessage("");
 		}

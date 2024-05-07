@@ -1,5 +1,5 @@
 import axios from "axios"
-import { PROD_URL } from "./url";
+import { LOCAL_URL, PROD_URL } from "./url";
 
 
 export const loginAPI = async (credentials: any) => {

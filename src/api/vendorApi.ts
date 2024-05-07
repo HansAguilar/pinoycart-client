@@ -1,5 +1,5 @@
 import axios from "axios"
-import { PROD_URL } from "./url";
+import { LOCAL_URL, PROD_URL } from "./url";
 
 export const createVendorApi = async (credentials: any) => {
 	const token = localStorage.getItem("token");
